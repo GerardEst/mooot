@@ -1,1 +1,1 @@
-The most and small Wordle approach
+The most simple Wordle approach
