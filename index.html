@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mooooot</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="./main.js" type="module"></script>
+</head>
+<body>
+    <header>
+        <div class="header__logo">
+            <img src="/assets/senyera.svg" alt="Mooooot Logo">
+            <h1>Mooooot</h1>
+        </div>
+    </header>
+    
+    <section class="wordgrid">
+        <div class="wordgrid__row">
+            <div id="l1_1" class="wordgrid__cell"></div>
+            <div id="l1_2" class="wordgrid__cell"></div>
+            <div id="l1_3" class="wordgrid__cell"></div>
+            <div id="l1_4" class="wordgrid__cell"></div>
+            <div id="l1_5" class="wordgrid__cell"></div>
+        </div>
+        <div class="wordgrid__row">
+            <div id="l2_1" class="wordgrid__cell"></div>
+            <div id="l2_2" class="wordgrid__cell"></div>
+            <div id="l2_3" class="wordgrid__cell"></div>
+            <div id="l2_4" class="wordgrid__cell"></div>
+            <div id="l2_5" class="wordgrid__cell"></div>
+        </div>
+        <div class="wordgrid__row">
+            <div id="l3_1" class="wordgrid__cell"></div>
+            <div id="l3_2" class="wordgrid__cell"></div>
+            <div id="l3_3" class="wordgrid__cell"></div>
+            <div id="l3_4" class="wordgrid__cell"></div>
+            <div id="l3_5" class="wordgrid__cell"></div>
+        </div>
+        <div class="wordgrid__row">
+            <div id="l4_1" class="wordgrid__cell"></div>
+            <div id="l4_2" class="wordgrid__cell"></div>
+            <div id="l4_3" class="wordgrid__cell"></div>
+            <div id="l4_4" class="wordgrid__cell"></div>
+            <div id="l4_5" class="wordgrid__cell"></div>
+        </div>
+        <div class="wordgrid__row">
+            <div id="l5_1" class="wordgrid__cell"></div>
+            <div id="l5_2" class="wordgrid__cell"></div>
+            <div id="l5_3" class="wordgrid__cell"></div>
+            <div id="l5_4" class="wordgrid__cell"></div>
+            <div id="l5_5" class="wordgrid__cell"></div>
+        </div>
+        <div class="wordgrid__row">
+            <div id="l6_1" class="wordgrid__cell"></div>
+            <div id="l6_2" class="wordgrid__cell"></div>
+            <div id="l6_3" class="wordgrid__cell"></div>
+            <div id="l6_4" class="wordgrid__cell"></div>
+            <div id="l6_5" class="wordgrid__cell"></div>
+        </div>
+    </section>
+
+    <section class="keyboard">
+        <div class="keyboard__row">
+            <div class="keyboard__key" data-key="Q">Q</div>
+            <div class="keyboard__key" data-key="W">W</div>
+            <div class="keyboard__key" data-key="E">E</div>
+            <div class="keyboard__key" data-key="R">R</div>
+            <div class="keyboard__key" data-key="T">T</div>
+            <div class="keyboard__key" data-key="Y">Y</div>
+            <div class="keyboard__key" data-key="U">U</div>
+            <div class="keyboard__key" data-key="I">I</div>
+            <div class="keyboard__key" data-key="O">O</div>
+            <div class="keyboard__key" data-key="P">P</div>
+        </div>
+        <div class="keyboard__row">
+            <div class="keyboard__key" data-key="A">A</div>
+            <div class="keyboard__key" data-key="S">S</div>
+            <div class="keyboard__key" data-key="D">D</div>
+            <div class="keyboard__key" data-key="F">F</div>
+            <div class="keyboard__key" data-key="G">G</div>
+            <div class="keyboard__key" data-key="H">H</div>
+            <div class="keyboard__key" data-key="J">J</div>
+            <div class="keyboard__key" data-key="K">K</div>
+            <div class="keyboard__key" data-key="L">L</div>
+            <div class="keyboard__key" data-key="Ç">Ç</div>
+        </div>
+        <div class="keyboard__row">
+            <div class="keyboard__back keyboard__key--wide" data-key="back"><img src="/assets/backspace.svg"></div>
+            <div class="keyboard__key" data-key="Z">Z</div>
+            <div class="keyboard__key" data-key="X">X</div>
+            <div class="keyboard__key" data-key="C">C</div>
+            <div class="keyboard__key" data-key="V">V</div>
+            <div class="keyboard__key" data-key="B">B</div>
+            <div class="keyboard__key" data-key="N">N</div>
+            <div class="keyboard__key" data-key="M">M</div>
+            <div class="keyboard__enter keyboard__key--wide" data-key="enter">Envia</div>
+        </div>
+    </section>
+
+    <!-- <section class="modal modal-instructions">
+        <div class="modal__content">
+            <h2 class="modal__title">Com jugar</h2>
+            <p>Intenta endevinar la paraula de cinc lletres en sis intents.</p>
+            <p>Després de cada intent, les lletres canvien de color per mostrar quina és la seva posició correcta:</p>
+            <ul>
+                <li><span class="green">Verd</span> significa que la lletra està en la posició correcta.</li>
+                <li><span class="yellow">Groc</span> significa que la lletra està en la paraula però no en la posició correcta.</li>
+                <li><span class="gray">Gris</span> significa que la lletra no està en la paraula.</li>
+            </ul>
+            <button class="modal__close">Tancar</button>
+        </div>
+    </section> -->
+
+    <section class="modal modal-win">
+        <div class="modal__content">
+            <h2 class="modal__title">Has guanyat!</h2>
+            <p>Has endevinat la paraula del dia!</p>
+            <button id="share">Compartir</button>
+            <button id="modal-close" class="modal__close">Tancar</button>
+        </div>
+    </section>
+</body>
+</html>
