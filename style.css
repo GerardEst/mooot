@@ -3,6 +3,13 @@ html, body{
     font-family: sans-serif;
 }
 
+* {
+  user-select: none; /* Prevents text selection which can trigger zoom */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
 body{
     display: flex;
     flex-direction: column;
@@ -69,6 +76,7 @@ header{
     display: grid;
     grid-template-rows: repeat(4, 1fr);
     gap: var(--spacing);
+    touch-action: manipulation;
     & > .keyboard__row {
         display: flex;
         align-items: center;
