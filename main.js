@@ -4,37 +4,35 @@ let currentWord = ""
 let todayWord
 let wordsSet
 
+import { isMobileDevice, copyToClipboard } from './utils.js';
+
 fetch('/assets/words.json')
     .then(response => response.json())
     .then(data => {
         wordsSet = new Set(data);
-        console.log("Words loaded:", wordsSet);
         
         todayWord = getTodayWord()
 
         // Load saved game data from localStorage
         const savedGameData = localStorage.getItem('moootGameData');
         if (savedGameData) {
-            loadSavedGameData(JSON.parse(savedGameData));
-            currentRow = JSON.parse(savedGameData).at(-1).row + 1;
+            const parsedData = JSON.parse(savedGameData);
+            loadSavedGameData(parsedData);
+            currentRow = parsedData.at(-1).row + 1;
             currentColumn = 1
             currentWord = ""
 
-            console.log(currentRow)
+            if (currentRow > 6 || parsedData.at(-1).word.toUpperCase() === todayWord.toUpperCase()) {
+                editLinkToDictionary(todayWord);
+                showModal();
+            }
         }
     })
 
 function getTodayWord() {
-    console.log("Total words available:", wordsSet.size);
-
     const todayIndex = getTodayWordIndex();
-    console.log("Today's word index:", todayIndex);
-
     const wordsArray = Array.from(wordsSet);
-    console.log("Words array:", wordsArray);
-    
     const todayWord = wordsArray[todayIndex];
-    console.log("Today's word is:", todayWord);
 
     return todayWord;
 }
@@ -58,6 +56,7 @@ function initiateEvents(){
                 showHints(currentWord, todayWord, currentRow);
                 showModal()
                 saveToLocalStorage(currentWord, currentRow);
+                editLinkToDictionary(todayWord);
             } else if (tryStatus === 'invalid') {
                 currentColumn = 1;
                 cleanRow(currentRow);
@@ -76,19 +75,25 @@ function initiateEvents(){
 
     // Modal events
     document.querySelector('#share').addEventListener('click', shareResult)
-    document.querySelector('#modal-close').addEventListener('click', closeModal);
+    // document.querySelector('#modal-close').addEventListener('click', closeModal);
+
+
 }
 
 initiateEvents();
 
+function editLinkToDictionary(word) {
+    const dicLink = document.querySelector('#dicLink');
+    const dicUrl = `https://diccionari.cat/cerca/gran-diccionari-de-la-llengua-catalana?search_api_fulltext_cust=${word}&search_api_fulltext_cust_1=&field_faceta_cerca_1=5065&show=title`;
+    dicLink.setAttribute('href', dicUrl);
+    dicLink.textContent = `${word} a diccionari.cat`;
+}
+
 function letterClick(event) {
-    console.log(currentColumn)
     if (currentColumn > 5) return;
     
     const element = event.target
     const letter = element.dataset.key;
-    
-    console.log(currentRow, currentColumn, letter);
 
     document.querySelector(`#l${currentRow}_${currentColumn}`).textContent = letter;
     
@@ -99,8 +104,6 @@ function letterClick(event) {
 }
 
 function checkWord(word) {
-    console.log("Checking word:", word);
-
     const cleanWord = word.toUpperCase().trim();
     
     if( cleanWord === todayWord.toUpperCase()) {
@@ -128,8 +131,6 @@ function showHints(guess, target, row) {
         
         if (letter === targetLetters[i]) {
             cell.classList.add('correct');
-            console.log(`Letter ${letter} is correct at position ${i + 1}`);
-            console.log(document.querySelector(`.keyboard__key[data-key="${letter}"]`));
             document.querySelector(`.keyboard__key[data-key="${letter}"]`).classList.add('correct');
         } else if (targetLetters.includes(letter)) {
             cell.classList.add('present');
@@ -187,7 +188,7 @@ function closeModal() {
 function shareResult() {
     const resultPattern = buildResultPattern();
     const shareTitle = `#mooot ${getTodayWordIndex()} ${currentRow === 7 ? 'X' : currentRow}/6`;
-    const resultText = `${shareTitle}\n\n${resultPattern}`;
+    const resultText = `${resultPattern}`;
 
     if (isMobileDevice() && navigator.share) {
         const shareData = {
@@ -197,31 +198,16 @@ function shareResult() {
         };
 
         navigator.share(shareData)
-            .then(() => console.log('Share successful'))
             .catch(error => console.error('Error sharing:', error));
     } else {
         copyToClipboard(resultText)
-            .then(() => {
-                console.log('Copied to clipboard successfully');
-            })
             .catch(error => {
                 console.error('Error copying to clipboard:', error);
             });
     }
 }
 
-function isMobileDevice() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-           (navigator.maxTouchPoints && navigator.maxTouchPoints > 2 && /MacIntel/.test(navigator.platform));
-}
 
-async function copyToClipboard(text) {
-    if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(text);
-    } else {
-        throw new Error('Clipboard API not available');
-    }
-}
 
 function buildResultPattern() {
     let result = '';
@@ -275,7 +261,6 @@ function checkCleanLocalStorage(savedDate) {
 }
 
 function loadSavedGameData(savedData) {    
-    console.log("Loading saved game data:", savedData);
     checkCleanLocalStorage(savedData[0].date);
 
     savedData.forEach(row => {

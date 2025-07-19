@@ -51,6 +51,7 @@ button {
     border-radius: 4px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 0.5rem;
     & img{
         width: 15px;
@@ -167,9 +168,6 @@ header{
                 height: 20px;
             }
         }
-        & > .keyboard__key:hover {
-                background-color: #e0e0e0;
-            }
         & > .keyboard__enter, & > .keyboard__back {
             flex: 1.8;
         }
