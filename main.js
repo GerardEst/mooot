@@ -167,10 +167,10 @@ function closeModal() {
 }
 
 function shareResult() {
-    const resultText = `I found today's word in Mooooot! It was "${todayWord}". Can you guess it?`;
+    const resultText = `I found today's word in Mooot! It was "${todayWord}". Can you guess it?`;
     
     const shareData = {
-        title: 'Mooooot',
+        title: 'Mooot',
         text: resultText,
         url: window.location.href
     };
