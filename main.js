@@ -11,13 +11,23 @@ fetch('/assets/words.json')
         console.log("Words loaded:", wordsSet);
         
         todayWord = getTodayWord()
+
+        // Load saved game data from localStorage
+        const savedGameData = localStorage.getItem('moootGameData');
+        if (savedGameData) {
+            loadSavedGameData(JSON.parse(savedGameData));
+            currentRow = JSON.parse(savedGameData).at(-1).row + 1;
+            currentColumn = 1
+            currentWord = ""
+
+            console.log(currentRow)
+        }
     })
 
 function getTodayWord() {
-    const totalWords = wordsSet.size;
-    console.log("Total words available:", totalWords);
+    console.log("Total words available:", wordsSet.size);
 
-    const todayIndex = getTodayWordIndex(totalWords);
+    const todayIndex = getTodayWordIndex();
     console.log("Today's word index:", todayIndex);
 
     const wordsArray = Array.from(wordsSet);
@@ -47,11 +57,13 @@ function initiateEvents(){
             if (tryStatus === 'correct') {
                 showHints(currentWord, todayWord, currentRow);
                 showModal()
+                saveToLocalStorage(currentWord, currentRow);
             } else if (tryStatus === 'invalid') {
                 currentColumn = 1;
                 cleanRow(currentRow);
             } else {
                 showHints(currentWord, todayWord, currentRow);
+                saveToLocalStorage(currentWord, currentRow);
                 currentColumn = 1;
                 currentRow++;
             }
@@ -67,10 +79,13 @@ function initiateEvents(){
 initiateEvents();
 
 function letterClick(event) {
+    console.log(currentColumn)
     if (currentColumn > 5) return;
     
     const element = event.target
     const letter = element.dataset.key;
+    
+    console.log(currentRow, currentColumn, letter);
 
     document.querySelector(`#l${currentRow}_${currentColumn}`).textContent = letter;
     
@@ -123,7 +138,7 @@ function showHints(guess, target, row) {
     }
 }
 
-function getTodayWordIndex(totalWords, startDate = '2025-07-18', currentDate = new Date()) {
+function getTodayWordIndex(startDate = '2025-07-18', currentDate = new Date()) {
     const gameStartDate = new Date(startDate);
     
     // Normalize both dates to midnight UTC to avoid timezone issues
@@ -151,7 +166,7 @@ function getTodayWordIndex(totalWords, startDate = '2025-07-18', currentDate = n
     }
     
     // Return index using modulo to cycle through word list
-    return daysElapsed % totalWords;
+    return daysElapsed % wordsSet.size;
 }
 
 function showModal() {
@@ -171,11 +186,11 @@ function shareResult() {
     const resultPattern = buildResultPattern();
 
     const resultText = `
-    ${resultPattern}
+${resultPattern}
     `;
-    
+
     const shareData = {
-        title: `#Mooot ${getTodayWordIndex()} ${currentRow}/6`,
+        title: `#mooot ${getTodayWordIndex()} ${currentRow}/6`,
         text: resultText,
         url: window.location.href
     };
@@ -203,4 +218,58 @@ function buildResultPattern() {
         result += row.join('') + '\n';
     }
     return result;
+}
+
+function saveToLocalStorage(word, row) {
+    const dataToSave = {
+            word: word,
+            row: row,
+            date: new Date().toISOString()
+    };
+
+    const currentStored = localStorage.getItem('moootGameData');
+    if (currentStored) {
+        const savedData = JSON.parse(currentStored);
+        savedData.push(dataToSave);
+        localStorage.setItem('moootGameData', JSON.stringify(savedData));
+    } else {
+        localStorage.setItem('moootGameData', JSON.stringify([dataToSave]));
+    }
+}
+
+function checkCleanLocalStorage(savedDate) {
+    if(savedDate) {
+        const date = new Date(savedDate);
+        const today = new Date();
+        
+        if (date.toDateString() !== today.toDateString()) {
+            console.warn("Saved data is not from today, clearing.");
+            localStorage.removeItem('moootGameData');
+            return;
+        }
+    }
+}
+
+function loadSavedGameData(savedData) {    
+    console.log("Loading saved game data:", savedData);
+    checkCleanLocalStorage(savedData[0].date);
+
+    savedData.forEach(row => {
+        for (let i = 1; i <= 5; i++) {
+            const cell = document.querySelector(`#l${row.row}_${i}`);
+            cell.textContent = row.word[i - 1];
+            
+            if (row.word[i - 1] === todayWord[i - 1]) {
+                cell.classList.add('correct');
+            } else if (todayWord.includes(row.word[i - 1])) {
+                cell.classList.add('present');
+            } else {
+                cell.classList.add('absent');
+            }
+        }
+        currentRow++;
+
+        showHints(row.word, todayWord, row.row);
+
+    })
 }
