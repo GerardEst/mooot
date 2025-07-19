@@ -75,6 +75,9 @@ function initiateEvents(){
 
     // Modal events
     document.querySelector('#share').addEventListener('click', shareResult)
+    document.querySelector('#shareOpen').addEventListener('click', () => {
+        shareResult(true);
+    });
     // document.querySelector('#modal-close').addEventListener('click', closeModal);
 
 
@@ -185,8 +188,8 @@ function closeModal() {
     modal.forEach(m => m.classList.remove('active'));
 }
 
-function shareResult() {
-    const resultPattern = buildResultPattern();
+function shareResult(open = false) {
+    const resultPattern = buildResultPattern(open);
     const shareTitle = `#mooot ${getTodayWordIndex()} ${currentRow === 7 ? 'X' : currentRow}/6`;
     const resultText = `${resultPattern}`;
 
@@ -209,7 +212,7 @@ function shareResult() {
 
 
 
-function buildResultPattern() {
+function buildResultPattern(open = false) {
     let result = '';
     for (let i = 1; i <= currentRow; i++) {
         const row = [];
@@ -217,12 +220,12 @@ function buildResultPattern() {
             const cell = document.querySelector(`#l${i}_${j}`);
             if(!cell) continue;
             if (cell.classList.contains('correct')) {
-                row.push('🟩');
+                open ? row.push('🟩' + cell.textContent +'  ') : row.push('🟩');
             }
             else if (cell.classList.contains('present')) {
-                row.push('🟨');
+                open ? row.push('🟨' + cell.textContent +'  ') : row.push('🟨');
             } else if (cell.classList.contains('absent')) {
-                row.push('⬜️');
+                open ? row.push('⬛' + cell.textContent +'  ') : row.push('⬛');
             }
         }
         result += row.join('') + '\n';
