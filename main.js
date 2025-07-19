@@ -171,16 +171,11 @@ function shareResult() {
     const resultPattern = buildResultPattern();
 
     const resultText = `
-        Mooot!
-        \n
         ${resultPattern}
-        \n
-        #WordleCAT \n
-        mooot.cat
     `;
     
     const shareData = {
-        title: 'Mooot',
+        title: `Mooot ${currentRow}/6`,
         text: resultText,
         url: window.location.href
     };
