@@ -64,6 +64,9 @@ function initiateEvents(){
             } else {
                 showHints(currentWord, todayWord, currentRow);
                 saveToLocalStorage(currentWord, currentRow);
+                if (currentRow >= 6) {
+                    showModal();
+                }
                 currentColumn = 1;
                 currentRow++;
             }
@@ -182,22 +185,42 @@ function closeModal() {
 }
 
 function shareResult() {
-    
     const resultPattern = buildResultPattern();
+    const shareTitle = `#mooot ${getTodayWordIndex()} ${currentRow === 7 ? 'X' : currentRow}/6`;
+    const resultText = `${shareTitle}\n\n${resultPattern}`;
 
-    const resultText = `
-${resultPattern}
-    `;
+    if (isMobileDevice() && navigator.share) {
+        const shareData = {
+            title: shareTitle,
+            text: resultText,
+            url: window.location.href
+        };
 
-    const shareData = {
-        title: `#mooot ${getTodayWordIndex()} ${currentRow}/6`,
-        text: resultText,
-        url: window.location.href
-    };
+        navigator.share(shareData)
+            .then(() => console.log('Share successful'))
+            .catch(error => console.error('Error sharing:', error));
+    } else {
+        copyToClipboard(resultText)
+            .then(() => {
+                console.log('Copied to clipboard successfully');
+            })
+            .catch(error => {
+                console.error('Error copying to clipboard:', error);
+            });
+    }
+}
 
-    navigator.share(shareData)
-        .then(() => console.log('Share successful'))
-        .catch(error => console.error('Error sharing:', error));
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+           (navigator.maxTouchPoints && navigator.maxTouchPoints > 2 && /MacIntel/.test(navigator.platform));
+}
+
+async function copyToClipboard(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+    } else {
+        throw new Error('Clipboard API not available');
+    }
 }
 
 function buildResultPattern() {
@@ -206,6 +229,7 @@ function buildResultPattern() {
         const row = [];
         for (let j = 1; j <= 5; j++) {
             const cell = document.querySelector(`#l${i}_${j}`);
+            if(!cell) continue;
             if (cell.classList.contains('correct')) {
                 row.push('🟩');
             }
