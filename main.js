@@ -74,7 +74,9 @@ function initiateEvents(){
     );
 
     // Modal events
-    document.querySelector('#share').addEventListener('click', shareResult)
+    document.querySelector('#share').addEventListener('click', () => {
+        shareResult(false);
+    });
     document.querySelector('#shareOpen').addEventListener('click', () => {
         shareResult(true);
     });
@@ -229,7 +231,9 @@ function buildResultPattern(open = false) {
             }
         }
         result += row.join('') + '\n';
+
     }
+    console.log(result)
     return result;
 }
 
