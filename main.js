@@ -171,11 +171,11 @@ function shareResult() {
     const resultPattern = buildResultPattern();
 
     const resultText = `
-        ${resultPattern}
+    ${resultPattern}
     `;
     
     const shareData = {
-        title: `Mooot ${currentRow}/6`,
+        title: `#Mooot ${getTodayWordIndex()} ${currentRow}/6`,
         text: resultText,
         url: window.location.href
     };
