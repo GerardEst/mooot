@@ -167,7 +167,17 @@ function closeModal() {
 }
 
 function shareResult() {
-    const resultText = `I found today's word in Mooot! It was "${todayWord}". Can you guess it?`;
+    
+    const resultPattern = buildResultPattern();
+
+    const resultText = `
+        Mooot!
+        \n
+        ${resultPattern}
+        \n
+        #WordleCAT \n
+        mooot.cat
+    `;
     
     const shareData = {
         title: 'Mooot',
@@ -178,4 +188,24 @@ function shareResult() {
     navigator.share(shareData)
         .then(() => console.log('Share successful'))
         .catch(error => console.error('Error sharing:', error));
+}
+
+function buildResultPattern() {
+    let result = '';
+    for (let i = 1; i <= currentRow; i++) {
+        const row = [];
+        for (let j = 1; j <= 5; j++) {
+            const cell = document.querySelector(`#l${i}_${j}`);
+            if (cell.classList.contains('correct')) {
+                row.push('🟩');
+            }
+            else if (cell.classList.contains('present')) {
+                row.push('🟨');
+            } else if (cell.classList.contains('absent')) {
+                row.push('⬜️');
+            }
+        }
+        result += row.join('') + '\n';
+    }
+    return result;
 }

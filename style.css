@@ -2,8 +2,8 @@
     --cell: #f9f9f9;
     --cell-border: #ccc;
 
-    --correct-color: #38ce2a;
-    --correct-border-color: #b4f1ae;
+    --correct-color: var(--color-green-success);
+    --correct-border-color: var(--color-green-success--border);
     --present-color: #FFE99A;
     --present-border-color: #fdc264;
     --missing-color: #848484;
@@ -11,6 +11,8 @@
     --text-color: #333333;
     --used-text-color: var(--text-color);
 
+    --button-color: var(--color-green-success);
+    --button-border-color: var(--color-green-success--border);
     --color-red-warning: #ffe4e4;
     --color-red-warning--border: #ffb5b5;
     --color-green-success: #dbffd9;
@@ -20,6 +22,10 @@
 html, body{
     height: 100dvh;
     font-family: sans-serif;
+    margin: 0;
+}
+
+h1, h2, h3, p{
     margin: 0;
 }
 
@@ -36,6 +42,21 @@ body{
     align-items: center;
 }
 
+button {
+    border: none;
+    background-color: var(--button-color);
+    color: var(--text-color);
+    border: 1px solid var(--button-border-color);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    & img{
+        width: 15px;
+        height: 15px;
+    }
+}
 header{
     max-width: 500px;
     padding: 1rem;
@@ -152,14 +173,14 @@ header{
         & > .keyboard__enter, & > .keyboard__back {
             flex: 1.8;
         }
-        & > .keyboard__enter {
+        /* & > .keyboard__enter {
             background-color: var(--color-green-success);
             border: 1px solid var(--color-green-success--border);
         }
         & > .keyboard__back {
             background-color: var(--color-red-warning);
             border: 1px solid var(--color-red-warning--border);
-        }
+        } */
     }
 }
 
@@ -175,5 +196,24 @@ header{
     justify-content: center;
     &.active{
         display: flex;
+    }
+    & .modal__content{
+        position: relative;
+        background-color: white;
+        padding: 2rem;
+        border-radius: 8px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        & .modal__content__close{
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            padding: 1rem;
+            top: 0;
+            right: 0;
+            cursor: pointer;
+        }
     }
 }
