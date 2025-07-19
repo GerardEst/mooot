@@ -110,10 +110,15 @@ function showHints(guess, target, row) {
         
         if (letter === targetLetters[i]) {
             cell.classList.add('correct');
+            console.log(`Letter ${letter} is correct at position ${i + 1}`);
+            console.log(document.querySelector(`.keyboard__key[data-key="${letter}"]`));
+            document.querySelector(`.keyboard__key[data-key="${letter}"]`).classList.add('correct');
         } else if (targetLetters.includes(letter)) {
             cell.classList.add('present');
+            document.querySelector(`.keyboard__key[data-key="${letter}"]`).classList.add('present');
         } else {
             cell.classList.add('absent');
+            document.querySelector(`.keyboard__key[data-key="${letter}"]`).classList.add('absent');
         }
     }
 }
