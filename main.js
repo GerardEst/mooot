@@ -94,9 +94,11 @@ function initiateEvents(){
     document.querySelector('#shareOpen').addEventListener('click', () => {
         shareResult(true);
     });
-    // document.querySelector('#modal-close').addEventListener('click', closeModal);
+    document.querySelector('#modal-close').addEventListener('click', closeModal);
 
-
+    // Menu events
+    document.querySelector('#openMenu').addEventListener('click', openMenu)
+    document.querySelector('#closeMenu').addEventListener('click', closeMenu)
 }
 
 initiateEvents();
@@ -105,7 +107,7 @@ function editLinkToDictionary(word) {
     const dicLink = document.querySelector('#dicLink');
     const dicUrl = `https://diccionari.cat/cerca/gran-diccionari-de-la-llengua-catalana?search_api_fulltext_cust=${word}&search_api_fulltext_cust_1=&field_faceta_cerca_1=5065&show=title`;
     dicLink.setAttribute('href', dicUrl);
-    dicLink.textContent = `${word} a diccionari.cat`;
+    // dicLink.textContent = `${word} a diccionari.cat`;
 }
 
 function letterClick(event) {
@@ -210,6 +212,18 @@ function closeModal() {
     const modal = document.querySelectorAll('.modal');
     
     modal.forEach(m => m.classList.remove('active'));
+}
+
+function openMenu() {
+    const modal = document.querySelector('.menu');
+    
+    modal.classList.add('active');
+}
+
+function closeMenu() {
+    const modal = document.querySelector('.menu');
+    
+    modal.classList.remove('active');
 }
 
 function shareResult(open = false) {
@@ -350,7 +364,7 @@ function fillStats(todayWord, todayPoints, stats) {
     const statsStreak = document.querySelector('#stats-streak');
     const statsMaxStreak = document.querySelector('#stats-maxStreak');
 
-    statsTitle.textContent = todayPoints === 6 ? 'ESCANDALÓS!' : todayPoints === 5 ? 'Increíble!' : todayPoints === 4 ? 'Impresionant!' : todayPoints === 3 ? 'Molt bé!' : todayPoints === 2 ? 'Fet!' : todayPoints === 1 ? 'Pels pèls!' : 'Vaja...';
+    statsTitle.textContent = todayPoints === 6 ? '🤨 ESCANDALÓS!' : todayPoints === 5 ? '🏆 Increíble!' : todayPoints === 4 ? '🤯 Impresionant!' : todayPoints === 3 ? '😎 Molt bé!' : todayPoints === 2 ? '😐 Fet!' : todayPoints === 1 ? '😭 Pels pèls!' : '☠️ Vaja...';
     statsWord.textContent = todayWord.toUpperCase();
     statsPoints.textContent = todayPoints;
     statsGames.textContent = stats.games;

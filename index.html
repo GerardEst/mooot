@@ -11,10 +11,15 @@
 </head>
 <body>
     <header>
+        <img class="flag" src="/assets/flag.jpg" alt="Mooot Logo">
         <div class="header__logo">
-            <img src="/assets/senyera.svg" alt="Mooot Logo">
-            <h1>Mooot</h1>
+            <span>M</span>
+            <span>O</span>
+            <span>O</span>
+            <span>O</span>
+            <span>T</span>
         </div>
+        <div id="openMenu" class="openMenuButton"><img width="20" src="/assets/menu.svg"></div>
     </header>
     <section class="feedback">
         <p>...</p>
@@ -116,19 +121,36 @@
         </div>
     </section> -->
 
+    <section class="menu">
+        <div id="closeMenu" class="closeMenu"><img width="25" src="/assets/close.svg"></div>
+        <div class="menu__content">
+            <h4>Estadístiques</h4>
+            <p>Emplenar</p>
+            <div class="divider" style="margin-top: auto;"></div>
+            <div class="menu__section">
+                <a href="">motbot</a>
+                <p>Basat en el joc <a href="https://www.nytimes.com/games/wordle/index.html">Wordle</a> de <a href="https://www.nytco.com/">TNYT</a></p>
+                <p>Llistat de paraules extret del <a href="https://diccionari.totescrable.cat/">DISC</a></p>
+            </div>
+        </div>
+    </section>
+
     <section class="modal modal-win">
         <div class="modal__content">
-            <section class="stats">
+            <div class="header">
                 <h2 id="stats-title" class="modal__title">...</h2>
+                <img id="modal-close" class="modal__content__close" alt="Close icon" src="/assets/close.svg">
+            </div>
+            <section class="stats">
                 <div class="stats__row">
                     <p>Paraula</p>
                     <span></span>
-                    <p id="stats-word"></p>
+                    <a id="dicLink" target="_blank" href="#"><span id="stats-word"></span> <img src="/assets/open-external.svg"></a>
                 </div>
                 <div class="stats__row">
                     <p>Punts</p>
                     <span></span>
-                    <p id="stats-points"></p>
+                    <p>+<span id="stats-points"></span></p>
                 </div>
                 <div class="stats__row">
                     <p>Partides jugades</p>
@@ -156,10 +178,10 @@
                     <p id="stats-maxStreak"></p>
                 </div>
             </section>
-            <!-- <img id="modal-close" class="modal__content__close" alt="Close icon" src="/assets/close.svg"> -->
-            <a id="dicLink" target="_blank" href="#">Definició a diccionari.cat</a>
-            <button id="share">Compartir ocult <img src="/assets/share.svg"></button>
-            <button class="button--danger" id="shareOpen">Compartir obert <img src="/assets/caution.svg"></button>
+            <div class="modal__buttons">
+                <button class="button--danger" id="shareOpen">Compartir intents <img src="/assets/caution.svg"></button>
+                <button id="share">Compartir <img src="/assets/share.svg"></button>
+            </div>
         </div>
     </section>
 </body>
