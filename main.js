@@ -54,10 +54,13 @@ function initiateEvents(){
             const tryStatus = checkWord(currentWord);
             if (tryStatus === 'correct') {
                 showHints(currentWord, todayWord, currentRow);
-                showModal()
                 saveToLocalStorage(currentWord, currentRow);
-                editLinkToDictionary(todayWord);
+                setTimeout(() => {
+                    showModal()
+                    editLinkToDictionary(todayWord);
+                }, 2000);
             } else if (tryStatus === 'invalid') {
+                showFeedback("Aquesta paraula no existeix");
                 currentColumn = 1;
                 cleanRow(currentRow);
             } else {
@@ -138,7 +141,14 @@ function showHints(guess, target, row) {
             cell.classList.add('correct');
             document.querySelector(`.keyboard__key[data-key="${letter}"]`).classList.add('correct');
         } else if (targetLetters.includes(letter)) {
-            cell.classList.add('present');
+            // If the letter is correct in another cell of the same row, dont mark it as present
+            const DOMrow = document.querySelector(`#l${row}`)
+            const presentCellsInRow = DOMrow.querySelectorAll(`.wordgrid__cell.correct`)
+
+            let isLetterAlreadyPresent = Array.from(presentCellsInRow).some(cell => cell.textContent === letter)
+
+            if (!isLetterAlreadyPresent) cell.classList.add('present');
+            
             document.querySelector(`.keyboard__key[data-key="${letter}"]`).classList.add('present');
         } else {
             cell.classList.add('absent');
@@ -192,8 +202,8 @@ function closeModal() {
 
 function shareResult(open = false) {
     const resultPattern = buildResultPattern(open);
-    const shareTitle = `#mooot ${getTodayWordIndex()} ${currentRow === 7 ? 'X' : currentRow}/6`;
-    const resultText = `${resultPattern}`;
+    const shareTitle = `#mooot dia ${getTodayWordIndex()} -  *${currentRow === 7 ? 'X' : currentRow}/6`;
+    const resultText = `\n${resultPattern}`;
 
     if (isMobileDevice() && navigator.share) {
         const shareData = {
@@ -215,7 +225,7 @@ function shareResult(open = false) {
 
 
 function buildResultPattern(open = false) {
-    let result = '';
+    let result = open ? '```' : '';
     for (let i = 1; i <= currentRow; i++) {
         const row = [];
         for (let j = 1; j <= 5; j++) {
@@ -227,14 +237,13 @@ function buildResultPattern(open = false) {
             else if (cell.classList.contains('present')) {
                 open ? row.push('🟨' + cell.textContent +'  ') : row.push('🟨');
             } else if (cell.classList.contains('absent')) {
-                open ? row.push('⬛' + cell.textContent +'  ') : row.push('⬛');
+                open ? row.push('⬜️' + cell.textContent +'  ') : row.push('⬜️');
             }
         }
         result += row.join('') + '\n';
-
     }
     console.log(result)
-    return result;
+    return result + open ? '```' : '';
 }
 
 function saveToLocalStorage(word, row) {
@@ -274,18 +283,18 @@ function loadSavedGameData(savedData) {
         for (let i = 1; i <= 5; i++) {
             const cell = document.querySelector(`#l${row.row}_${i}`);
             cell.textContent = row.word[i - 1];
-            
-            if (row.word[i - 1] === todayWord[i - 1]) {
-                cell.classList.add('correct');
-            } else if (todayWord.includes(row.word[i - 1])) {
-                cell.classList.add('present');
-            } else {
-                cell.classList.add('absent');
-            }
         }
-        currentRow++;
-
         showHints(row.word, todayWord, row.row);
-
+        currentRow++;
     })
+}
+
+function showFeedback(message) {
+    const feedbackElement = document.querySelector('.feedback');
+    feedbackElement.textContent = message;
+    feedbackElement.classList.add('active');
+
+    setTimeout(() => {
+        feedbackElement.classList.remove('active');
+    }, 3000);
 }
