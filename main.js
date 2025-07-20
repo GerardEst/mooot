@@ -202,12 +202,11 @@ function closeModal() {
 
 function shareResult(open = false) {
     const resultPattern = buildResultPattern(open);
-    const shareTitle = `#mooot ${getTodayWordIndex()}  ${currentRow === 7 ? 'X' : currentRow}/6`;
-    const resultText = `\n${resultPattern}`;
+    const shareTitle = `#mooot ${getTodayWordIndex()}  ${currentRow === 7 ? 'X' : currentRow-1}/6`;
+    const resultText = `${shareTitle}\n${resultPattern}`;
 
     if (isMobileDevice() && navigator.share) {
         const shareData = {
-            title: shareTitle,
             text: resultText,
             url: window.location.href
         };
