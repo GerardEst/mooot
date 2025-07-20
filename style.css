@@ -157,14 +157,14 @@ header{
             cursor: pointer;
             transition: background-color 0.3s ease;
             color: var(--text-color);
-            &.correct {
-                background-color: var(--correct-color);
-                border: 1px solid var(--correct-border-color);
-                color: var(--used-text-color);
-            }
             &.present {
                 background-color: var(--present-color);
                 border: 1px solid var(--present-border-color);
+                color: var(--used-text-color);
+            }
+            &.correct {
+                background-color: var(--correct-color);
+                border: 1px solid var(--correct-border-color);
                 color: var(--used-text-color);
             }
             &.absent {

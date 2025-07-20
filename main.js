@@ -139,6 +139,7 @@ function showHints(guess, target, row) {
         
         if (letter === targetLetters[i]) {
             cell.classList.add('correct');
+            
             document.querySelector(`.keyboard__key[data-key="${letter}"]`).classList.add('correct');
         } else if (targetLetters.includes(letter)) {
             // If the letter is correct in another cell of the same row, dont mark it as present
@@ -224,7 +225,7 @@ function shareResult(open = false) {
 
 function buildResultPattern(open = false) {
     let result = '';
-    for (let i = 1; i <= currentRow; i++) {
+    for (let i = 1; i < currentRow; i++) {
         const row = [];
         for (let j = 1; j <= 5; j++) {
             const cell = document.querySelector(`#l${i}_${j}`);
@@ -234,12 +235,14 @@ function buildResultPattern(open = false) {
             }
             else if (cell.classList.contains('present')) {
                 open ? row.push('🟨' + cell.textContent +'  ') : row.push('🟨');
-            } else if (cell.classList.contains('absent')) {
+            } else {
                 open ? row.push('⬜️' + cell.textContent +'  ') : row.push('⬜️');
             }
         }
         result += row.join('') + '\n';
     }
+
+    console.log(result);
     
     return result;
 }
