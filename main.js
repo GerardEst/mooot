@@ -23,6 +23,9 @@ fetch('/assets/words.json')
             currentWord = ""
 
             if (currentRow > 6 || parsedData.at(-1).word.toUpperCase() === todayWord.toUpperCase()) {
+                // Load stats from localStorage
+                const storedStats = getStoredStats()
+                fillStats(todayWord, 7 - currentRow, storedStats)
                 editLinkToDictionary(todayWord);
                 showModal();
             } else {
@@ -57,7 +60,12 @@ function initiateEvents(){
             if (tryStatus === 'correct') {
                 showHints(currentWord, todayWord, currentRow);
                 saveToLocalStorage(currentWord, currentRow);
-                
+
+                const updatedStats = updateStats(7 - currentRow);
+                localStorage.setItem('stats', JSON.stringify(updatedStats))
+
+                fillStats(currentWord, 7 - currentRow, updatedStats)
+
                 setTimeout(() => {
                     showModal()
                     editLinkToDictionary(todayWord);
@@ -300,4 +308,54 @@ function showFeedback(message) {
     setTimeout(() => {
         feedbackElement.classList.remove('active');
     }, 3000);
+}
+
+
+function getStoredStats() {
+    return JSON.parse(localStorage.getItem('stats'))
+}
+
+function updateStats(todayPoints) {
+    const storedStats = JSON.parse(localStorage.getItem('stats'))
+    
+    const currentGames = storedStats?.games || 0
+    const currentTotalPoints = storedStats?.totalPoints || 0
+    const currentStreak = storedStats?.streak || 0
+    const currentMaxStreak = storedStats?.maxStreak || 0
+    
+    const newGames = currentGames + 1
+    const newTotalPoints = currentTotalPoints + todayPoints
+    const newStreak = todayPoints !== 0 ? currentStreak + 1 : 0
+
+    const updatedStats = {
+        games: newGames,
+        totalPoints: newTotalPoints,
+        averagePoints: newTotalPoints / newGames,
+        streak: newStreak,
+        maxStreak: Math.max(newStreak, currentMaxStreak)
+    }
+
+    return updatedStats
+}
+
+function fillStats(todayWord, todayPoints, stats) {
+    console.log(stats)
+
+    const statsTitle = document.querySelector('#stats-title');
+    const statsWord = document.querySelector('#stats-word');
+    const statsPoints = document.querySelector('#stats-points');
+    const statsGames = document.querySelector('#stats-games');
+    const statsTotalPoints = document.querySelector('#stats-totalPoints');
+    const statsAveragePoints = document.querySelector('#stats-averagePoints');
+    const statsStreak = document.querySelector('#stats-streak');
+    const statsMaxStreak = document.querySelector('#stats-maxStreak');
+
+    statsTitle.textContent = todayPoints === 6 ? 'ESCANDALÓS!' : todayPoints === 5 ? 'Increíble!' : todayPoints === 4 ? 'Impresionant!' : todayPoints === 3 ? 'Molt bé!' : todayPoints === 2 ? 'Fet!' : todayPoints === 1 ? 'Pels pèls!' : 'Vaja...';
+    statsWord.textContent = todayWord.toUpperCase();
+    statsPoints.textContent = todayPoints;
+    statsGames.textContent = stats.games;
+    statsTotalPoints.textContent = stats.totalPoints
+    statsAveragePoints.textContent = stats.averagePoints
+    statsStreak.textContent = stats.streak
+    statsMaxStreak.textContent = stats.maxStreak
 }
