@@ -18,13 +18,15 @@ fetch('/assets/words.json')
         if (savedGameData) {
             const parsedData = JSON.parse(savedGameData);
             loadSavedGameData(parsedData);
-            currentRow = parsedData.at(-1).row + 1;
+            currentRow = parsedData.at(-1).row;
             currentColumn = 1
             currentWord = ""
 
             if (currentRow > 6 || parsedData.at(-1).word.toUpperCase() === todayWord.toUpperCase()) {
                 editLinkToDictionary(todayWord);
                 showModal();
+            } else {
+                currentRow++;
             }
         }
     })
@@ -55,6 +57,7 @@ function initiateEvents(){
             if (tryStatus === 'correct') {
                 showHints(currentWord, todayWord, currentRow);
                 saveToLocalStorage(currentWord, currentRow);
+                
                 setTimeout(() => {
                     showModal()
                     editLinkToDictionary(todayWord);
@@ -225,7 +228,7 @@ function shareResult(open = false) {
 
 function buildResultPattern(open = false) {
     let result = '';
-    for (let i = 1; i < currentRow; i++) {
+    for (let i = 1; i <= currentRow; i++) {
         const row = [];
         for (let j = 1; j <= 5; j++) {
             const cell = document.querySelector(`#l${i}_${j}`);
@@ -280,13 +283,12 @@ function checkCleanLocalStorage(savedDate) {
 function loadSavedGameData(savedData) {    
     checkCleanLocalStorage(savedData[0].date);
 
-    savedData.forEach(row => {
+    savedData.forEach((row,index) => {
         for (let i = 1; i <= 5; i++) {
             const cell = document.querySelector(`#l${row.row}_${i}`);
             cell.textContent = row.word[i - 1];
         }
         showHints(row.word, todayWord, row.row);
-        currentRow++;
     })
 }
 
