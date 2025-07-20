@@ -11,12 +11,16 @@
     --text-color: #333333;
     --used-text-color: var(--text-color);
 
-    --button-color: var(--color-green-success);
-    --button-border-color: var(--color-green-success--border);
     --color-red-warning: #ffe4e4;
     --color-red-warning--border: #ffb5b5;
     --color-green-success: #dbffd9;
     --color-green-success--border: #68c563;
+
+    --button-color: var(--color-green-success);
+    --button-border-color: var(--color-green-success--border);
+
+    --button-danger-color: var(--present-color);
+    --button-danger-border-color: var(--present-border-color);
 }
 
 html, body{
@@ -53,6 +57,11 @@ button {
     align-items: center;
     justify-content: space-between;
     gap: 0.5rem;
+    &.button--danger {
+        background-color: var(--button-danger-color);
+        border: 1px solid var(--button-danger-border-color);
+        color: var(--text-color);
+    }
     & img{
         width: 15px;
         height: 15px;
