@@ -58,7 +58,7 @@ function initiateEvents(){
                 setTimeout(() => {
                     showModal()
                     editLinkToDictionary(todayWord);
-                }, 2000);
+                }, 1000);
             } else if (tryStatus === 'invalid') {
                 showFeedback("Aquesta paraula no existeix");
                 currentColumn = 1;
@@ -242,8 +242,8 @@ function buildResultPattern(open = false) {
         }
         result += row.join('') + '\n';
     }
-    console.log(result)
-    return result + open ? '```' : '';
+    
+    return open ? result + '```' : result;
 }
 
 function saveToLocalStorage(word, row) {
