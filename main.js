@@ -202,7 +202,7 @@ function closeModal() {
 
 function shareResult(open = false) {
     const resultPattern = buildResultPattern(open);
-    const shareTitle = `#mooot dia ${getTodayWordIndex()} -  *${currentRow === 7 ? 'X' : currentRow}/6`;
+    const shareTitle = `#mooot ${getTodayWordIndex()}  ${currentRow === 7 ? 'X' : currentRow}/6`;
     const resultText = `\n${resultPattern}`;
 
     if (isMobileDevice() && navigator.share) {
@@ -225,7 +225,7 @@ function shareResult(open = false) {
 
 
 function buildResultPattern(open = false) {
-    let result = open ? '```' : '';
+    let result = '';
     for (let i = 1; i <= currentRow; i++) {
         const row = [];
         for (let j = 1; j <= 5; j++) {
@@ -243,7 +243,7 @@ function buildResultPattern(open = false) {
         result += row.join('') + '\n';
     }
     
-    return open ? result + '```' : result;
+    return result;
 }
 
 function saveToLocalStorage(word, row) {
