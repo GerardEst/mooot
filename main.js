@@ -97,7 +97,7 @@ function initiateEvents(){
     document.querySelector('#modal-close').addEventListener('click', closeModal);
 
     // Menu events
-    document.querySelector('#openMenu').addEventListener('click', openMenu)
+    // document.querySelector('#openMenu').addEventListener('click', openMenu)
     document.querySelector('#closeMenu').addEventListener('click', closeMenu)
 }
 
