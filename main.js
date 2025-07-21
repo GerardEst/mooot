@@ -3,13 +3,14 @@ let currentColumn = 1
 let currentWord = ""
 let todayWord
 let wordsSet
+let dicSet
 
 import { isMobileDevice, copyToClipboard } from './utils.js';
 
 fetch('/assets/words.json')
     .then(response => response.json())
     .then(data => {
-        wordsSet = new Set(data);
+        wordsSet = data
         
         todayWord = getTodayWord()
 
@@ -26,7 +27,7 @@ fetch('/assets/words.json')
                 // Load stats from localStorage
                 const storedStats = getStoredStats()
                 fillStats(todayWord, 7 - currentRow, storedStats)
-                editLinkToDictionary(todayWord);
+                editLinkToDictionary(wordsSet[todayWord]);
                 showModal();
             } else {
                 currentRow++;
@@ -34,9 +35,15 @@ fetch('/assets/words.json')
         }
     })
 
+fetch('/assets/dic.json')
+    .then(response => response.json())
+    .then(data => {
+        dicSet = new Set(data)
+    })
+
 function getTodayWord() {
     const todayIndex = getTodayWordIndex();
-    const wordsArray = Array.from(wordsSet);
+    const wordsArray = Object.keys(wordsSet);
     const todayWord = wordsArray[todayIndex];
 
     return todayWord;
@@ -68,7 +75,7 @@ function initiateEvents(){
 
                 setTimeout(() => {
                     showModal()
-                    editLinkToDictionary(todayWord);
+                    editLinkToDictionary(wordsSet[todayWord]);
                 }, 1000);
             } else if (tryStatus === 'invalid') {
                 showFeedback("Aquesta paraula no existeix");
@@ -131,7 +138,7 @@ function checkWord(word) {
         return 'correct';
     }
 
-    if (wordsSet.has(cleanWord)) return 'next';
+    if (dicSet.has(cleanWord)) return 'next';
 
     return 'invalid';
 }
@@ -199,7 +206,7 @@ function getTodayWordIndex(startDate = '2025-07-18', currentDate = new Date()) {
     }
     
     // Return index using modulo to cycle through word list
-    return daysElapsed % wordsSet.size;
+    return daysElapsed % Object.keys(wordsSet).length;
 }
 
 function showModal() {
@@ -365,7 +372,7 @@ function fillStats(todayWord, todayPoints, stats) {
     const statsMaxStreak = document.querySelector('#stats-maxStreak');
 
     statsTitle.textContent = todayPoints === 6 ? '🤨 ESCANDALÓS!' : todayPoints === 5 ? '🏆 Increíble!' : todayPoints === 4 ? '🤯 Impresionant!' : todayPoints === 3 ? '😎 Molt bé!' : todayPoints === 2 ? '😐 Fet!' : todayPoints === 1 ? '😭 Pels pèls!' : '☠️ Vaja...';
-    statsWord.textContent = todayWord.toUpperCase();
+    statsWord.textContent = wordsSet[todayWord].toUpperCase();
     statsPoints.textContent = todayPoints;
     statsGames.textContent = stats.games;
     statsTotalPoints.textContent = stats.totalPoints
