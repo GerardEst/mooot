@@ -1,1 +1,1 @@
-The simplest Wordle approach
+Un wordle en català
