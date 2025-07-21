@@ -7,6 +7,9 @@ let dicSet
 
 import { isMobileDevice, copyToClipboard } from './utils.js';
 
+const savedGameData = localStorage.getItem('moootGameData');
+checkCleanLocalStorage(savedData[0].date);
+        
 fetch('/assets/words.json')
     .then(response => response.json())
     .then(data => {
@@ -14,8 +17,6 @@ fetch('/assets/words.json')
         
         todayWord = getTodayWord()
 
-        // Load saved game data from localStorage
-        const savedGameData = localStorage.getItem('moootGameData');
         if (savedGameData) {
             const parsedData = JSON.parse(savedGameData);
             loadSavedGameData(parsedData);
@@ -310,8 +311,6 @@ function checkCleanLocalStorage(savedDate) {
 }
 
 function loadSavedGameData(savedData) {    
-    checkCleanLocalStorage(savedData[0].date);
-
     savedData.forEach((row,index) => {
         for (let i = 1; i <= 5; i++) {
             const cell = document.querySelector(`#l${row.row}_${i}`);
