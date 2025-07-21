@@ -236,7 +236,7 @@ function closeMenu() {
 function shareResult(open = false) {
     const resultPattern = buildResultPattern(open);
     const shareTitle = `#mooot  ${getTodayWordIndex()}  ${currentRow === 7 ? 'X' : currentRow}/6`;
-    const resultText = `${shareTitle}\n\n${resultPattern}\n${window.location.href}`;
+    const resultText = `${shareTitle}\n\n${resultPattern}\nhttps://mooot.cat`;
 
     if (isMobileDevice() && navigator.share) {
         const shareData = {
