@@ -22,12 +22,18 @@ fetch('/assets/words.json')
             currentColumn = 1
             currentWord = ""
 
-            if (currentRow > 6 || savedGameData.at(-1).word.toUpperCase() === todayWord.toUpperCase()) {
+            if (currentRow <= 6 && savedGameData.at(-1).word.toUpperCase() === todayWord.toUpperCase()) {
                 // Load stats from localStorage
                 const storedStats = getStoredStats()
                 fillStats(todayWord, 7 - currentRow, storedStats)
                 editLinkToDictionary(wordsSet[todayWord]);
                 showModal();
+            } else if (currentRow===6) {
+                const storedStats = getStoredStats()
+                fillStats(todayWord, 0, storedStats)
+                editLinkToDictionary(wordsSet[todayWord]);
+                showModal();
+                currentRow++;
             } else {
                 currentRow++;
             }
