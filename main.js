@@ -3,6 +3,7 @@ let currentColumn = 1
 let currentWord = ""
 let todayWord
 let wordsSet
+let dicSet
 
 import { isMobileDevice, copyToClipboard } from './utils.js';
 
@@ -38,6 +39,12 @@ fetch('/assets/words.json')
                 currentRow++;
             }
         }
+    })
+
+fetch('/assets/dic.json')
+    .then(response => response.json())
+    .then(data => {
+        dicSet = new Set(data)
     })
 
 function getTodayWord() {
@@ -137,7 +144,7 @@ function checkWord(word) {
         return 'correct';
     }
 
-    if (wordsSet[cleanWord.toLowerCase()]) return 'next';
+    if (dicSet.has(cleanWord)) return 'next';
 
     return 'invalid';
 }
