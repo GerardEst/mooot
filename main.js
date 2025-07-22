@@ -3,7 +3,6 @@ let currentColumn = 1
 let currentWord = ""
 let todayWord
 let wordsSet
-let dicSet
 
 import { isMobileDevice, copyToClipboard } from './utils.js';
 
@@ -34,12 +33,6 @@ fetch('/assets/words.json')
                 currentRow++;
             }
         }
-    })
-
-fetch('/assets/dic.json')
-    .then(response => response.json())
-    .then(data => {
-        dicSet = new Set(data)
     })
 
 function getTodayWord() {
@@ -79,7 +72,7 @@ function initiateEvents(){
                     editLinkToDictionary(wordsSet[todayWord]);
                 }, 1000);
             } else if (tryStatus === 'invalid') {
-                showFeedback("Aquesta paraula no existeix");
+                showFeedback("No és una paraula vàlida");
                 currentColumn = 1;
                 cleanRow(currentRow);
             } else {
@@ -139,7 +132,7 @@ function checkWord(word) {
         return 'correct';
     }
 
-    if (dicSet.has(cleanWord)) return 'next';
+    if (wordsSet[cleanWord]) return 'next';
 
     return 'invalid';
 }
