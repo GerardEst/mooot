@@ -158,21 +158,64 @@ function showHints(guess, target, row) {
         
         if (letter === targetLetters[i]) {
             cell.classList.add('correct');
-            
             document.querySelector(`.keyboard__key[data-key="${letter}"]`).classList.add('correct');
-        } else if (targetLetters.includes(letter)) {
-            // If the letter is correct in another cell of the same row, dont mark it as present
-            const DOMrow = document.querySelector(`#l${row}`)
-            const presentCellsInRow = DOMrow.querySelectorAll(`.wordgrid__cell.correct`)
-
-            let isLetterAlreadyPresent = Array.from(presentCellsInRow).some(cell => cell.textContent === letter)
-
-            if (!isLetterAlreadyPresent) cell.classList.add('present');
-            
-            document.querySelector(`.keyboard__key[data-key="${letter}"]`).classList.add('present');
-        } else {
+        } else if (!targetLetters.includes(letter)) {
             cell.classList.add('absent');
             document.querySelector(`.keyboard__key[data-key="${letter}"]`).classList.add('absent');
+        } else {
+            cell.classList.add('present');
+            document.querySelector(`.keyboard__key[data-key="${letter}"]`).classList.add('present');
+        }
+    }
+    
+    // Second pass: fix incorrect "present" markings for duplicate letters
+    for (let i = 0; i < 5; i++) {
+        const cell = document.querySelector(`#l${row}_${i + 1}`);
+        const guessLetter = guessLetters[i];
+        
+        // Skip if this cell is already correct or absent
+        if (cell.classList.contains('correct') || cell.classList.contains('absent')) {
+            continue;
+        }
+        
+        // Count how many times this letter appears in the target word
+        const targetCount = targetLetters.filter(letter => letter === guessLetter).length;
+        
+        // Count how many of this letter are already marked as correct
+        const correctCount = guessLetters.filter((letter, index) => 
+            letter === guessLetter && guessLetters[index] === targetLetters[index]
+        ).length;
+        
+        // Count how many of this letter should be marked as present (before this position)
+        let presentCount = 0;
+        for (let j = 0; j < i; j++) {
+            if (guessLetters[j] === guessLetter && 
+                guessLetters[j] !== targetLetters[j] && 
+                targetLetters.includes(guessLetters[j])) {
+                presentCount++;
+            }
+        }
+        
+        // If we've already accounted for all instances of this letter in the target,
+        // this one should be marked as absent
+        if (correctCount + presentCount >= targetCount) {
+            cell.classList.remove('present');
+            cell.classList.add('absent');
+            
+            // Update keyboard key if no other instances are correct or present
+            const keyboardKey = document.querySelector(`.keyboard__key[data-key="${guessLetter}"]`);
+            if (!keyboardKey.classList.contains('correct')) {
+                const hasOtherPresent = guessLetters.some((letter, index) => {
+                    if (letter !== guessLetter || index >= i) return false;
+                    const otherCell = document.querySelector(`#l${row}_${index + 1}`);
+                    return otherCell.classList.contains('present');
+                });
+                
+                if (!hasOtherPresent) {
+                    keyboardKey.classList.remove('present');
+                    keyboardKey.classList.add('absent');
+                }
+            }
         }
     }
 }
