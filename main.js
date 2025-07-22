@@ -360,8 +360,9 @@ function fillStats(todayWord, todayPoints, stats) {
     const statsStreak = document.querySelector('#stats-streak');
     const statsMaxStreak = document.querySelector('#stats-maxStreak');
 
+    console.log(todayWord)
     statsTitle.textContent = todayPoints === 6 ? '🤨 ESCANDALÓS!' : todayPoints === 5 ? '🏆 Increíble!' : todayPoints === 4 ? '🤯 Impresionant!' : todayPoints === 3 ? '😎 Molt bé!' : todayPoints === 2 ? '😐 Fet!' : todayPoints === 1 ? '😭 Pels pèls!' : '☠️ Vaja...';
-    statsWord.textContent = wordsSet[todayWord].toUpperCase();
+    statsWord.textContent = wordsSet[todayWord.toLowerCase()].toUpperCase();
     statsPoints.textContent = todayPoints;
     statsGames.textContent = stats.games;
     statsTotalPoints.textContent = stats.totalPoints
