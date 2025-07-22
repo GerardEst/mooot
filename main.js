@@ -6,8 +6,8 @@ let wordsSet
 
 import { isMobileDevice, copyToClipboard } from './utils.js';
 
-const savedGameData = localStorage.getItem('moootGameData');
-checkCleanLocalStorage(savedData[0].date);
+const savedGameData = JSON.parse(localStorage.getItem('moootGameData'));
+if(savedGameData) checkCleanLocalStorage(savedGameData[0]?.date);
         
 fetch('/assets/words.json')
     .then(response => response.json())
@@ -17,13 +17,12 @@ fetch('/assets/words.json')
         todayWord = getTodayWord()
 
         if (savedGameData) {
-            const parsedData = JSON.parse(savedGameData);
-            loadSavedGameData(parsedData);
-            currentRow = parsedData.at(-1).row;
+            loadSavedGameData(savedGameData);
+            currentRow = savedGameData.at(-1).row;
             currentColumn = 1
             currentWord = ""
 
-            if (currentRow > 6 || parsedData.at(-1).word.toUpperCase() === todayWord.toUpperCase()) {
+            if (currentRow > 6 || savedGameData.at(-1).word.toUpperCase() === todayWord.toUpperCase()) {
                 // Load stats from localStorage
                 const storedStats = getStoredStats()
                 fillStats(todayWord, 7 - currentRow, storedStats)
@@ -291,15 +290,13 @@ function saveToLocalStorage(word, row) {
 }
 
 function checkCleanLocalStorage(savedDate) {
-    if(savedDate) {
-        const date = new Date(savedDate);
-        const today = new Date();
-        
-        if (date.toDateString() !== today.toDateString()) {
-            console.warn("Saved data is not from today, clearing.");
-            localStorage.removeItem('moootGameData');
-            return;
-        }
+    const date = new Date(savedDate);
+    const today = new Date();
+    
+    if (date.toDateString() !== today.toDateString()) {
+        console.warn("Saved data is not from today, clearing.");
+        localStorage.removeItem('moootGameData');
+        return;
     }
 }
 
