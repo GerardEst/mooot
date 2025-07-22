@@ -131,7 +131,7 @@ function checkWord(word) {
         return 'correct';
     }
 
-    if (wordsSet[cleanWord]) return 'next';
+    if (wordsSet[cleanWord.toLowerCase()]) return 'next';
 
     return 'invalid';
 }
