@@ -1,10 +1,10 @@
-:root{
+:root {
     --cell: #f9f9f9;
     --cell-border: #ccc;
 
     --correct-color: var(--color-green-success);
     --correct-border-color: var(--color-green-success--border);
-    --present-color: #FFE99A;
+    --present-color: #ffe99a;
     --present-border-color: #fdc264;
     --missing-color: #848484;
     --missing-border-color: #3a3a3a;
@@ -23,24 +23,28 @@
     --button-danger-border-color: var(--present-border-color);
 }
 
-html, body{
+html,
+body {
     height: 100dvh;
     font-family: sans-serif;
     margin: 0;
 }
 
-h1, h2, h3, p{
+h1,
+h2,
+h3,
+p {
     margin: 0;
 }
 
 * {
-  user-select: none; /* Prevents text selection which can trigger zoom */
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
+    user-select: none; /* Prevents text selection which can trigger zoom */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
-body{
+body {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -63,13 +67,13 @@ button {
         border: 1px solid var(--button-danger-border-color);
         color: var(--text-color);
     }
-    & img{
+    & img {
         width: 15px;
         height: 15px;
     }
 }
 
-header{
+header {
     max-width: 500px;
     padding: 1rem;
     display: grid;
@@ -80,7 +84,7 @@ header{
     justify-items: center;
     & > .flag {
         justify-self: flex-start;
-        width: 36px; 
+        width: 36px;
         height: 27px;
         border-radius: 5px;
     }
@@ -99,7 +103,7 @@ header{
             place-content: center;
         }
     }
-    & > .openMenuButton{
+    & > .openMenuButton {
         display: flex;
         cursor: pointer;
         padding: 15px;
@@ -108,7 +112,7 @@ header{
     }
 }
 
-.wordgrid{
+.wordgrid {
     --spacing: 10px;
     flex: 1;
     display: grid;
@@ -130,7 +134,7 @@ header{
             border: 1px solid var(--cell-border);
             background-color: var(--cell);
             transition: background-color 0.3s ease;
-            color: var(--text-color)
+            color: var(--text-color);
         }
         & > .wordgrid__cell.correct {
             background-color: var(--correct-color);
@@ -165,7 +169,9 @@ header{
         align-items: center;
         justify-content: center;
         gap: var(--spacing);
-        & > .keyboard__key, & > .keyboard__enter, & > .keyboard__back {
+        & > .keyboard__key,
+        & > .keyboard__enter,
+        & > .keyboard__back {
             flex: 1;
             min-height: 2.5rem;
             display: flex;
@@ -192,12 +198,13 @@ header{
                 border: 1px solid var(--missing-border-color);
                 color: white;
             }
-            & > img{
+            & > img {
                 width: 20px;
                 height: 20px;
             }
         }
-        & > .keyboard__enter, & > .keyboard__back {
+        & > .keyboard__enter,
+        & > .keyboard__back {
             flex: 1.8;
         }
         /* & > .keyboard__enter {
@@ -211,7 +218,7 @@ header{
     }
 }
 
-.modal{
+.modal {
     position: fixed;
     display: none;
     top: 0;
@@ -222,10 +229,10 @@ header{
     align-items: center;
     justify-content: center;
     gap: 1rem;
-    &.active{
+    &.active {
         display: flex;
     }
-    & .modal__content{
+    & .modal__content {
         min-width: 300px;
         position: relative;
         background-color: white;
@@ -235,13 +242,13 @@ header{
         display: flex;
         flex-direction: column;
         gap: 1.8rem;
-        & .header{
+        & .header {
             display: flex;
             justify-content: space-between;
             position: relative;
         }
-        
-        & .modal__content__close{
+
+        & .modal__content__close {
             position: absolute;
             width: 20px;
             height: 20px;
@@ -250,7 +257,7 @@ header{
             right: -1rem;
             cursor: pointer;
         }
-        & .modal__buttons{
+        & .modal__buttons {
             display: grid;
             gap: 0.5rem;
             grid-template-columns: 1fr 1fr;
@@ -270,7 +277,7 @@ header{
     gap: 1rem;
     background-color: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(7px);
-    &.active{
+    &.active {
         display: flex;
     }
     & .closeMenu {
@@ -287,7 +294,7 @@ header{
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
-        & .menu__section{
+        & .menu__section {
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
@@ -310,11 +317,11 @@ header{
     display: block;
 }
 
-.stats{
+.stats {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    & .stats__row{
+    & .stats__row {
         display: flex;
         gap: 0.2rem;
         & p:first-child {
@@ -325,7 +332,7 @@ header{
             font-weight: 900;
             font-family: monospace;
         }
-        & a{
+        & a {
             font-weight: 900;
             font-family: monospace;
             display: flex;
@@ -334,19 +341,19 @@ header{
             text-decoration: none;
             border-bottom: 1px solid rgb(36, 36, 36);
             border-radius: 0;
-            & img{
+            & img {
                 width: 15px;
                 height: 15px;
             }
         }
-        & > span{
+        & > span {
             flex: 1;
             border-bottom: 1px dotted var(--cell-border);
         }
     }
 }
 
-.divider{
+.divider {
     width: 100%;
     border: 1px dotted var(--cell-border);
     margin: 1rem 0;

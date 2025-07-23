@@ -1,113 +1,136 @@
 <!DOCTYPE html>
 <html lang="ca">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mooot</title>
-    <link rel="stylesheet" href="./style.css">
-    <script src="./main.js" type="module"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9509597642068942"
-     crossorigin="anonymous"></script>
-</head>
-<body>
-    <header>
-        <img class="flag" src="/assets/flag.jpg" alt="Mooot Logo">
-        <div class="header__logo">
-            <span>M</span>
-            <span>O</span>
-            <span>O</span>
-            <span>O</span>
-            <span>T</span>
-        </div>
-        <div id="openMenu" class="openMenuButton"><img width="20" src="/assets/menu.svg"></div>
-    </header>
-    <section class="feedback">
-        <p>...</p>
-    </section>
-    <section class="wordgrid">
-        <div class="wordgrid__row" id="l1">
-            <div id="l1_1" class="wordgrid__cell"></div>
-            <div id="l1_2" class="wordgrid__cell"></div>
-            <div id="l1_3" class="wordgrid__cell"></div>
-            <div id="l1_4" class="wordgrid__cell"></div>
-            <div id="l1_5" class="wordgrid__cell"></div>
-        </div>
-        <div class="wordgrid__row" id="l2">
-            <div id="l2_1" class="wordgrid__cell"></div>
-            <div id="l2_2" class="wordgrid__cell"></div>
-            <div id="l2_3" class="wordgrid__cell"></div>
-            <div id="l2_4" class="wordgrid__cell"></div>
-            <div id="l2_5" class="wordgrid__cell"></div>
-        </div>
-        <div class="wordgrid__row" id="l3">
-            <div id="l3_1" class="wordgrid__cell"></div>
-            <div id="l3_2" class="wordgrid__cell"></div>
-            <div id="l3_3" class="wordgrid__cell"></div>
-            <div id="l3_4" class="wordgrid__cell"></div>
-            <div id="l3_5" class="wordgrid__cell"></div>
-        </div>
-        <div class="wordgrid__row" id="l4">
-            <div id="l4_1" class="wordgrid__cell"></div>
-            <div id="l4_2" class="wordgrid__cell"></div>
-            <div id="l4_3" class="wordgrid__cell"></div>
-            <div id="l4_4" class="wordgrid__cell"></div>
-            <div id="l4_5" class="wordgrid__cell"></div>
-        </div>
-        <div class="wordgrid__row" id="l5">
-            <div id="l5_1" class="wordgrid__cell"></div>
-            <div id="l5_2" class="wordgrid__cell"></div>
-            <div id="l5_3" class="wordgrid__cell"></div>
-            <div id="l5_4" class="wordgrid__cell"></div>
-            <div id="l5_5" class="wordgrid__cell"></div>
-        </div>
-        <div class="wordgrid__row" id="l6">
-            <div id="l6_1" class="wordgrid__cell"></div>
-            <div id="l6_2" class="wordgrid__cell"></div>
-            <div id="l6_3" class="wordgrid__cell"></div>
-            <div id="l6_4" class="wordgrid__cell"></div>
-            <div id="l6_5" class="wordgrid__cell"></div>
-        </div>
-    </section>
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
 
-    <section class="keyboard">
-        <div class="keyboard__row">
-            <div class="keyboard__key" data-key="Q">Q</div>
-            <div class="keyboard__key" data-key="W">W</div>
-            <div class="keyboard__key" data-key="E">E</div>
-            <div class="keyboard__key" data-key="R">R</div>
-            <div class="keyboard__key" data-key="T">T</div>
-            <div class="keyboard__key" data-key="Y">Y</div>
-            <div class="keyboard__key" data-key="U">U</div>
-            <div class="keyboard__key" data-key="I">I</div>
-            <div class="keyboard__key" data-key="O">O</div>
-            <div class="keyboard__key" data-key="P">P</div>
-        </div>
-        <div class="keyboard__row">
-            <div class="keyboard__key" data-key="A">A</div>
-            <div class="keyboard__key" data-key="S">S</div>
-            <div class="keyboard__key" data-key="D">D</div>
-            <div class="keyboard__key" data-key="F">F</div>
-            <div class="keyboard__key" data-key="G">G</div>
-            <div class="keyboard__key" data-key="H">H</div>
-            <div class="keyboard__key" data-key="J">J</div>
-            <div class="keyboard__key" data-key="K">K</div>
-            <div class="keyboard__key" data-key="L">L</div>
-            <div class="keyboard__key" data-key="Ç">Ç</div>
-        </div>
-        <div class="keyboard__row">
-            <div class="keyboard__enter keyboard__key--wide" data-key="enter"><img src="/assets/intro.svg"></div>
-            <div class="keyboard__key" data-key="Z">Z</div>
-            <div class="keyboard__key" data-key="X">X</div>
-            <div class="keyboard__key" data-key="C">C</div>
-            <div class="keyboard__key" data-key="V">V</div>
-            <div class="keyboard__key" data-key="B">B</div>
-            <div class="keyboard__key" data-key="N">N</div>
-            <div class="keyboard__key" data-key="M">M</div>
-            <div class="keyboard__back keyboard__key--wide" data-key="back"><img src="/assets/backspace.svg"></div>
-        </div>
-    </section>
+        <meta
+            http-equiv="Cache-Control"
+            content="no-cache, no-store, must-revalidate"
+        />
+        <meta http-equiv="Pragma" content="no-cache" />
+        <meta http-equiv="Expires" content="0" />
 
-    <!-- <section class="modal modal-instructions">
+        <title>Mooot</title>
+        <link rel="stylesheet" href="./style.css" />
+        <script src="./main.js" type="module"></script>
+        <script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9509597642068942"
+            crossorigin="anonymous"
+        ></script>
+    </head>
+    <body>
+        <header>
+            <img class="flag" src="/assets/flag.jpg" alt="Mooot Logo" />
+            <div class="header__logo">
+                <span>M</span>
+                <span>O</span>
+                <span>O</span>
+                <span>O</span>
+                <span>T</span>
+            </div>
+            <div id="openMenu" class="openMenuButton">
+                <img width="20" src="/assets/menu.svg" />
+            </div>
+        </header>
+        <section class="feedback">
+            <p>...</p>
+        </section>
+        <section class="wordgrid">
+            <div class="wordgrid__row" id="l1">
+                <div id="l1_1" class="wordgrid__cell"></div>
+                <div id="l1_2" class="wordgrid__cell"></div>
+                <div id="l1_3" class="wordgrid__cell"></div>
+                <div id="l1_4" class="wordgrid__cell"></div>
+                <div id="l1_5" class="wordgrid__cell"></div>
+            </div>
+            <div class="wordgrid__row" id="l2">
+                <div id="l2_1" class="wordgrid__cell"></div>
+                <div id="l2_2" class="wordgrid__cell"></div>
+                <div id="l2_3" class="wordgrid__cell"></div>
+                <div id="l2_4" class="wordgrid__cell"></div>
+                <div id="l2_5" class="wordgrid__cell"></div>
+            </div>
+            <div class="wordgrid__row" id="l3">
+                <div id="l3_1" class="wordgrid__cell"></div>
+                <div id="l3_2" class="wordgrid__cell"></div>
+                <div id="l3_3" class="wordgrid__cell"></div>
+                <div id="l3_4" class="wordgrid__cell"></div>
+                <div id="l3_5" class="wordgrid__cell"></div>
+            </div>
+            <div class="wordgrid__row" id="l4">
+                <div id="l4_1" class="wordgrid__cell"></div>
+                <div id="l4_2" class="wordgrid__cell"></div>
+                <div id="l4_3" class="wordgrid__cell"></div>
+                <div id="l4_4" class="wordgrid__cell"></div>
+                <div id="l4_5" class="wordgrid__cell"></div>
+            </div>
+            <div class="wordgrid__row" id="l5">
+                <div id="l5_1" class="wordgrid__cell"></div>
+                <div id="l5_2" class="wordgrid__cell"></div>
+                <div id="l5_3" class="wordgrid__cell"></div>
+                <div id="l5_4" class="wordgrid__cell"></div>
+                <div id="l5_5" class="wordgrid__cell"></div>
+            </div>
+            <div class="wordgrid__row" id="l6">
+                <div id="l6_1" class="wordgrid__cell"></div>
+                <div id="l6_2" class="wordgrid__cell"></div>
+                <div id="l6_3" class="wordgrid__cell"></div>
+                <div id="l6_4" class="wordgrid__cell"></div>
+                <div id="l6_5" class="wordgrid__cell"></div>
+            </div>
+        </section>
+
+        <section class="keyboard">
+            <div class="keyboard__row">
+                <div class="keyboard__key" data-key="Q">Q</div>
+                <div class="keyboard__key" data-key="W">W</div>
+                <div class="keyboard__key" data-key="E">E</div>
+                <div class="keyboard__key" data-key="R">R</div>
+                <div class="keyboard__key" data-key="T">T</div>
+                <div class="keyboard__key" data-key="Y">Y</div>
+                <div class="keyboard__key" data-key="U">U</div>
+                <div class="keyboard__key" data-key="I">I</div>
+                <div class="keyboard__key" data-key="O">O</div>
+                <div class="keyboard__key" data-key="P">P</div>
+            </div>
+            <div class="keyboard__row">
+                <div class="keyboard__key" data-key="A">A</div>
+                <div class="keyboard__key" data-key="S">S</div>
+                <div class="keyboard__key" data-key="D">D</div>
+                <div class="keyboard__key" data-key="F">F</div>
+                <div class="keyboard__key" data-key="G">G</div>
+                <div class="keyboard__key" data-key="H">H</div>
+                <div class="keyboard__key" data-key="J">J</div>
+                <div class="keyboard__key" data-key="K">K</div>
+                <div class="keyboard__key" data-key="L">L</div>
+                <div class="keyboard__key" data-key="Ç">Ç</div>
+            </div>
+            <div class="keyboard__row">
+                <div
+                    class="keyboard__enter keyboard__key--wide"
+                    data-key="enter"
+                >
+                    <img src="/assets/intro.svg" />
+                </div>
+                <div class="keyboard__key" data-key="Z">Z</div>
+                <div class="keyboard__key" data-key="X">X</div>
+                <div class="keyboard__key" data-key="C">C</div>
+                <div class="keyboard__key" data-key="V">V</div>
+                <div class="keyboard__key" data-key="B">B</div>
+                <div class="keyboard__key" data-key="N">N</div>
+                <div class="keyboard__key" data-key="M">M</div>
+                <div class="keyboard__back keyboard__key--wide" data-key="back">
+                    <img src="/assets/backspace.svg" />
+                </div>
+            </div>
+        </section>
+
+        <!-- <section class="modal modal-instructions">
         <div class="modal__content">
             <h2 class="modal__title">Com jugar</h2>
             <p>Intenta endevinar la paraula de cinc lletres en sis intents.</p>
@@ -121,69 +144,93 @@
         </div>
     </section> -->
 
-    <section class="menu">
-        <div id="closeMenu" class="closeMenu"><img width="25" src="/assets/close.svg"></div>
-        <div class="menu__content">
-            <h4>Estadístiques</h4>
-            <p>Emplenar</p>
-            <div class="divider" style="margin-top: auto;"></div>
-            <div class="menu__section">
-                <a href="">motbot</a>
-                <p>Basat en el joc <a href="https://www.nytimes.com/games/wordle/index.html">Wordle</a> de <a href="https://www.nytco.com/">TNYT</a></p>
-                <p>Llistat de paraules extret del <a href="https://diccionari.totescrable.cat/">DISC</a></p>
+        <section class="menu">
+            <div id="closeMenu" class="closeMenu">
+                <img width="25" src="/assets/close.svg" />
             </div>
-        </div>
-    </section>
+            <div class="menu__content">
+                <h4>Estadístiques</h4>
+                <p>Emplenar</p>
+                <div class="divider" style="margin-top: auto"></div>
+                <div class="menu__section">
+                    <a href="">motbot</a>
+                    <p>
+                        Basat en el joc
+                        <a
+                            href="https://www.nytimes.com/games/wordle/index.html"
+                            >Wordle</a
+                        >
+                        de <a href="https://www.nytco.com/">TNYT</a>
+                    </p>
+                    <p>
+                        Llistat de paraules extret del
+                        <a href="https://diccionari.totescrable.cat/">DISC</a>
+                    </p>
+                </div>
+            </div>
+        </section>
 
-    <section class="modal modal-win">
-        <div class="modal__content">
-            <div class="header">
-                <h2 id="stats-title" class="modal__title">...</h2>
-                <img id="modal-close" class="modal__content__close" alt="Close icon" src="/assets/close.svg">
+        <section class="modal modal-win">
+            <div class="modal__content">
+                <div class="header">
+                    <h2 id="stats-title" class="modal__title">...</h2>
+                    <img
+                        id="modal-close"
+                        class="modal__content__close"
+                        alt="Close icon"
+                        src="/assets/close.svg"
+                    />
+                </div>
+                <section class="stats">
+                    <div class="stats__row">
+                        <p>Paraula</p>
+                        <span></span>
+                        <a id="dicLink" target="_blank" href="#"
+                            ><span id="stats-word"></span>
+                            <img src="/assets/open-external.svg"
+                        /></a>
+                    </div>
+                    <div class="stats__row">
+                        <p>Punts</p>
+                        <span></span>
+                        <p>+<span id="stats-points"></span></p>
+                    </div>
+                    <div class="stats__row">
+                        <p>Partides jugades</p>
+                        <span></span>
+                        <p id="stats-games"></p>
+                    </div>
+                    <div class="stats__row">
+                        <p>Punts totals</p>
+                        <span></span>
+                        <p id="stats-totalPoints"></p>
+                    </div>
+                    <div class="stats__row">
+                        <p>Mitjana de punts</p>
+                        <span></span>
+                        <p id="stats-averagePoints"></p>
+                    </div>
+                    <div class="stats__row">
+                        <p>Ratxa actual</p>
+                        <span></span>
+                        <p id="stats-streak"></p>
+                    </div>
+                    <div class="stats__row">
+                        <p>Ratxa màxima</p>
+                        <span></span>
+                        <p id="stats-maxStreak"></p>
+                    </div>
+                </section>
+                <div class="modal__buttons">
+                    <button class="button--danger" id="shareOpen">
+                        Compartir intents <img src="/assets/caution.svg" />
+                    </button>
+                    <button id="share">
+                        Compartir <img src="/assets/share.svg" />
+                    </button>
+                </div>
+                <!-- <p>Afegeix el bot <a href="https://github.com/GerardEst/moootbot#user-content-translations" target="_blank">moootbot</a> a un grup de Telegram i competeix en lligues mensuals amb els teus amics</p> -->
             </div>
-            <section class="stats">
-                <div class="stats__row">
-                    <p>Paraula</p>
-                    <span></span>
-                    <a id="dicLink" target="_blank" href="#"><span id="stats-word"></span> <img src="/assets/open-external.svg"></a>
-                </div>
-                <div class="stats__row">
-                    <p>Punts</p>
-                    <span></span>
-                    <p>+<span id="stats-points"></span></p>
-                </div>
-                <div class="stats__row">
-                    <p>Partides jugades</p>
-                    <span></span>
-                    <p id="stats-games"></p>
-                </div>
-                <div class="stats__row">
-                    <p>Punts totals</p>
-                    <span></span>
-                    <p id="stats-totalPoints"></p>
-                </div>
-                <div class="stats__row">
-                    <p>Mitjana de punts</p>
-                    <span></span>
-                    <p id="stats-averagePoints"></p>
-                </div>
-                <div class="stats__row">
-                    <p>Ratxa actual</p>
-                    <span></span>
-                    <p id="stats-streak"></p>
-                </div>
-                <div class="stats__row">
-                    <p>Ratxa màxima</p>
-                    <span></span>
-                    <p id="stats-maxStreak"></p>
-                </div>
-            </section>
-            <div class="modal__buttons">
-                <button class="button--danger" id="shareOpen">Compartir intents <img src="/assets/caution.svg"></button>
-                <button id="share">Compartir <img src="/assets/share.svg"></button>
-            </div>
-            <!-- <p>Afegeix el bot <a href="https://github.com/GerardEst/moootbot#user-content-translations" target="_blank">moootbot</a> a un grup de Telegram i competeix en lligues mensuals amb els teus amics</p> -->
-        </div>
-    </section>
-</body>
+        </section>
+    </body>
 </html>
