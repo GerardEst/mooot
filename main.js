@@ -6,6 +6,7 @@ let wordsSet
 let dicSet
 
 import { isMobileDevice, copyToClipboard } from './utils.js'
+import { checkCleanLocalStorage } from './main-functions.js'
 
 const savedGameData = JSON.parse(localStorage.getItem('moootGameData'))
 if (savedGameData) checkCleanLocalStorage(savedGameData[0]?.date)
@@ -389,21 +390,8 @@ function saveToLocalStorage(word, row) {
     }
 }
 
-function checkCleanLocalStorage(savedDate) {
-    const date = new Date(savedDate)
-    const today = new Date()
-
-    if (date.toDateString() !== today.toDateString()) {
-        console.warn('Saved data is not from today, clearing.')
-        localStorage.removeItem('moootGameData')
-
-        // TODO - Clean everything
-        return
-    }
-}
-
 function loadSavedGameData(savedData) {
-    savedData.forEach((row, index) => {
+    savedData.forEach((row) => {
         for (let i = 1; i <= 5; i++) {
             const cell = document.querySelector(`#l${row.row}_${i}`)
             cell.textContent = row.word[i - 1]
@@ -500,3 +488,4 @@ function fillStats(todayWord, todayPoints, stats) {
     statsStreak.textContent = stats.streak
     statsMaxStreak.textContent = stats.maxStreak
 }
+
