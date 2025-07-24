@@ -396,6 +396,8 @@ function checkCleanLocalStorage(savedDate) {
     if (date.toDateString() !== today.toDateString()) {
         console.warn('Saved data is not from today, clearing.')
         localStorage.removeItem('moootGameData')
+
+        // TODO - Clean everything
         return
     }
 }
