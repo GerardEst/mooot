@@ -28,8 +28,7 @@
         <link rel="stylesheet" href="./style.css" />
 
         <!-- Favicon -->
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <!-- <link rel="icon" href="/favicon.ico" /> -->
 
         <script src="./main.js" type="module"></script>
 
@@ -161,13 +160,50 @@
     </section> -->
 
         <section class="menu">
-            <div id="closeMenu" class="closeMenu">
-                <img width="25" src="/assets/close.svg" />
-            </div>
             <div class="menu__content">
-                <h4>Estadístiques</h4>
-                <p>Emplenar</p>
-                <div class="divider" style="margin-top: auto"></div>
+                <header class="menu__content__header">
+                    <img class="flag" src="/assets/flag.jpg" alt="Mooot Logo" />
+                    <div class="header__logo">
+                        <span>D</span>
+                        <span>A</span>
+                        <span>D</span>
+                        <span>E</span>
+                        <span>S</span>
+                    </div>
+                    <div id="closeMenu" class="closeMenu">
+                        <img width="20" src="/assets/close.svg" />
+                    </div>
+                </header>
+                <div class="menu__stats">
+                    <section class="stats">
+                        <div class="stats__row">
+                            <p>Partides jugades</p>
+                            <span></span>
+                            <p id="menustats-games"></p>
+                        </div>
+                        <div class="stats__row">
+                            <p>Punts totals</p>
+                            <span></span>
+                            <p id="menustats-totalPoints"></p>
+                        </div>
+                        <div class="stats__row">
+                            <p>Mitjana de punts</p>
+                            <span></span>
+                            <p id="menustats-averagePoints"></p>
+                        </div>
+                        <div class="stats__row">
+                            <p>Ratxa actual</p>
+                            <span></span>
+                            <p id="menustats-streak"></p>
+                        </div>
+                        <div class="stats__row">
+                            <p>Ratxa màxima</p>
+                            <span></span>
+                            <p id="menustats-maxStreak"></p>
+                        </div>
+                    </section>
+                </div>
+                <div class="divider"></div>
                 <div class="menu__section">
                     <a href="">motbot</a>
                     <p>

@@ -33,6 +33,7 @@ body {
 h1,
 h2,
 h3,
+h4,
 p {
     margin: 0;
 }
@@ -280,24 +281,39 @@ header {
     &.active {
         display: flex;
     }
-    & .closeMenu {
-        position: absolute;
-        top: 0px;
-        right: 0px;
-        padding: 2rem;
-        cursor: pointer;
-    }
     & .menu__content {
+        position: relative;
+        max-width: 500px;
         width: 100%;
         height: 100%;
-        padding: 2rem;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
+        & .menu__content__header {
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            box-sizing: border-box;
+            justify-items: center;
+            & .closeMenu {
+                display: flex;
+                cursor: pointer;
+                padding: 15px;
+                margin-right: -15px;
+                justify-self: flex-end;
+            }
+        }
+        & .menu__stats {
+            flex: 1;
+            padding: 2rem 0;
+        }
         & .menu__section {
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
+            padding-bottom: 1rem;
         }
     }
 }

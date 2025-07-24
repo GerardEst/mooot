@@ -10,6 +10,16 @@ import { isMobileDevice, copyToClipboard } from './utils.js'
 const savedGameData = JSON.parse(localStorage.getItem('moootGameData'))
 if (savedGameData) checkCleanLocalStorage(savedGameData[0]?.date)
 
+window.addEventListener('focus', () => {
+    checkCleanLocalStorage(savedGameData[0]?.date)
+})
+window.addEventListener('pageshow', () =>
+    checkCleanLocalStorage(savedGameData[0]?.date)
+)
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) checkCleanLocalStorage(savedGameData[0]?.date)
+})
+
 fetch('/assets/words.json')
     .then((response) => response.json())
     .then((data) => {
@@ -116,6 +126,10 @@ function initiateEvents() {
     // Menu events
     // document.querySelector('#openMenu').addEventListener('click', openMenu)
     document.querySelector('#closeMenu').addEventListener('click', closeMenu)
+
+    // Fill menu data
+    const storedStats = getStoredStats()
+    fillMenuData(storedStats)
 }
 
 initiateEvents()
@@ -313,7 +327,7 @@ function closeMenu() {
 
 function shareResult(open = false) {
     const resultPattern = buildResultPattern(open)
-    const shareTitle = `#mooot  ${getTodayWordIndex()}  ${
+    const shareTitle = `#mooot ${getTodayWordIndex()} ${
         currentRow === 7 ? 'X' : currentRow
     }/6`
     const resultText = `${shareTitle}\n\n${resultPattern}\nhttps://mooot.cat`
@@ -431,6 +445,22 @@ function updateStats(todayPoints) {
     }
 
     return updatedStats
+}
+
+function fillMenuData(stats) {
+    const statsGames = document.querySelector('#menustats-games')
+    const statsTotalPoints = document.querySelector('#menustats-totalPoints')
+    const statsAveragePoints = document.querySelector(
+        '#menustats-averagePoints'
+    )
+    const statsStreak = document.querySelector('#menustats-streak')
+    const statsMaxStreak = document.querySelector('#menustats-maxStreak')
+
+    statsGames.textContent = stats?.games || 0
+    statsTotalPoints.textContent = stats?.totalPoints || 0
+    statsAveragePoints.textContent = stats?.averagePoints || 0
+    statsStreak.textContent = stats?.streak || 0
+    statsMaxStreak.textContent = stats?.maxStreak || 0
 }
 
 function fillStats(todayWord, todayPoints, stats) {
