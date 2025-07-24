@@ -27,7 +27,7 @@ fetch('/assets/words.json')
         const storedGame = localStorage.getItem('moootGameData')
 
         if (storedGame) {
-            loadSavedGameData(storedGame)
+            loadSavedGameData(JSON.parse(storedGame))
             currentRow = storedGame.at(-1).row
             currentColumn = 1
             currentWord = ''
