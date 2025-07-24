@@ -1,3 +1,6 @@
+import { isMobileDevice, copyToClipboard } from './utils.js'
+import { runStorageCheck } from './src/localStorage.js'
+
 let currentRow = 1
 let currentColumn = 1
 let currentWord = ''
@@ -5,20 +8,13 @@ let todayWord
 let wordsSet
 let dicSet
 
-import { isMobileDevice, copyToClipboard } from './utils.js'
-import { checkCleanLocalStorage } from './main-functions.js'
-
-const savedGameData = JSON.parse(localStorage.getItem('moootGameData'))
-if (savedGameData) checkCleanLocalStorage(savedGameData[0]?.date)
-
-window.addEventListener('focus', () => {
-    checkCleanLocalStorage(savedGameData[0]?.date)
-})
-window.addEventListener('pageshow', () =>
-    checkCleanLocalStorage(savedGameData[0]?.date)
-)
+// We run storage checks at web loading and when visibilitychange
+// to ensure even with cached content and not closing pages, it refreshes every day
+runStorageCheck()
 document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) checkCleanLocalStorage(savedGameData[0]?.date)
+    if (!document.hidden) {
+        runStorageCheck()
+    }
 })
 
 fetch('/assets/words.json')
@@ -488,4 +484,3 @@ function fillStats(todayWord, todayPoints, stats) {
     statsStreak.textContent = stats.streak
     statsMaxStreak.textContent = stats.maxStreak
 }
-
