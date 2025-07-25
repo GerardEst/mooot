@@ -27,14 +27,20 @@ fetch('/assets/words.json')
         const storedGame = localStorage.getItem('moootGameData')
 
         if (storedGame) {
-            loadSavedGameData(JSON.parse(storedGame))
-            currentRow = storedGame.at(-1).row
+            console.log(storedGame)
+
+            const game = JSON.parse(storedGame)
+            loadSavedGameData(game)
+            currentRow = game.at(-1).row
             currentColumn = 1
             currentWord = ''
 
+            console.log(currentRow)
+            console.log(currentColumn)
+
             if (
                 currentRow <= 6 &&
-                storedGame.at(-1).word.toUpperCase() === todayWord.toUpperCase()
+                game.at(-1).word.toUpperCase() === todayWord.toUpperCase()
             ) {
                 // Load stats from localStorage
                 const storedStats = getStoredStats()
