@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { runStorageCheck, cleanGameboard } from '../../src/localStorage'
+import { runStorageCheck, cleanGameboard } from '../../src/local-storage'
 import fs from 'fs'
 import path from 'path'
 
