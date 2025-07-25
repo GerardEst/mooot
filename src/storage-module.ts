@@ -1,4 +1,4 @@
-import { showModal, updateCell } from './dom-utils.ts'
+import { showModal } from './dom-utils.ts'
 import * as gameboard from './gameboard-module.ts'
 import { editLinkToDictionary, fillModalStats } from './stats-module.ts'
 import { getTodayNiceWord, getTodayWord } from './words-module.ts'
