@@ -5,7 +5,7 @@ export function updateCell(
     status?: 'correct' | 'present' | 'absent'
 ) {
     const cell = document.querySelector(`#l${row}_${col}`)
-    if (cell && text) cell.textContent = text
+    if (cell && text !== undefined) cell.textContent = text
     if (cell && status) cell.classList.add(status)
 }
 
