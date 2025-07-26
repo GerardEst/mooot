@@ -43,7 +43,10 @@ export function checkWord(word: string) {
 
 export function letterClick(letter: string) {
     if (currentColumn > 5) return
-    if (currentColumn === 3) words.loadDiccData()
+    if (currentColumn === 3) {
+        words.loadWordsData()
+        words.loadDiccData()
+    }
 
     updateCell(currentRow, currentColumn, letter)
 

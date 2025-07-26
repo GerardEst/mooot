@@ -1,7 +1,11 @@
 import { showModal } from './dom-utils.ts'
 import * as gameboard from './gameboard-module.ts'
 import { editLinkToDictionary, fillModalStats } from './stats-module.ts'
-import { getTodayNiceWord, getTodayWord } from './words-module.ts'
+import {
+    getTodayNiceWord,
+    getTodayWord,
+    loadWordsData,
+} from './words-module.ts'
 
 export interface storedRow {
     row: number
@@ -9,10 +13,11 @@ export interface storedRow {
     date: string
 }
 
-export function loadStoredGame() {
+export async function loadStoredGame() {
     const storedData = localStorage.getItem('moootGameData')
     if (storedData) {
         const storedGame = JSON.parse(storedData)
+        await loadWordsData()
 
         storedGame.forEach((row: storedRow) => gameboard.fillRow(row))
 

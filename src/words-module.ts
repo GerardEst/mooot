@@ -1,6 +1,7 @@
 let dicc: any
 let diccPromise: Promise<Set<string>> | null = null
 let allWords: { key: string; value: string }
+let wordsPromise: Promise<{ [key: string]: string }> | null = null
 let todayWord: string
 let todayWordIndex: number
 
@@ -35,6 +36,20 @@ export async function fetchDictionary() {
 }
 
 export async function loadWordsData() {
+    if (allWords) {
+        console.log('Words already loaded')
+        return
+    }
+
+    // Prevent multiple simultaneous requests
+    if (!wordsPromise) {
+        wordsPromise = fetchWords()
+    }
+
+    return await wordsPromise
+}
+
+export async function fetchWords() {
     console.log('Fetching all the possible words')
 
     const wordsFetch = await fetch('/assets/words.json')

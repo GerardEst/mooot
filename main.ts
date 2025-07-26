@@ -16,14 +16,7 @@ document.addEventListener('visibilitychange', () => {
 
 async function init() {
     initDOMEvents()
-
-    // We need to load the words from the very begining
-    await words.loadWordsData()
-
-    // Then, we need to load stored game if exists
     loadStoredGame()
-
-    // Less urgent tasks
     updateMenuData()
 }
 
