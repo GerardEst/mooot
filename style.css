@@ -38,6 +38,12 @@ p {
     margin: 0;
 }
 
+.smallText {
+    font-size: 0.8rem;
+    color: var(--text-color);
+    font-style: italic;
+}
+
 * {
     user-select: none; /* Prevents text selection which can trigger zoom */
     -webkit-user-select: none;
@@ -51,7 +57,8 @@ body {
     align-items: center;
 }
 
-button {
+button,
+.button {
     border: none;
     background-color: var(--button-color);
     color: var(--text-color);
@@ -276,7 +283,7 @@ header {
     align-items: center;
     justify-content: center;
     gap: 1rem;
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(7px);
     &.active {
         display: flex;
@@ -289,8 +296,9 @@ header {
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
+        padding: 0 1rem;
         & .menu__content__header {
-            padding: 1rem;
+            padding: 1rem 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -313,7 +321,38 @@ header {
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
-            padding-bottom: 1rem;
+            padding-bottom: 2rem;
+        }
+        & .menu__motbot {
+            flex: 1;
+            border: 1px solid var(--cell-border);
+            background-color: var(--cell);
+            border-radius: 10px;
+            padding: 1rem;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            & .moootbot_badge {
+                position: absolute;
+                top: -20px;
+                right: -20px;
+                transform: rotate(14deg);
+                /* background-color: var(--button-danger-color); */
+                border-radius: 100%;
+                padding: 0.3rem;
+            }
+            & .menu__motbot__header {
+                display: flex;
+            }
+            & .menu__motbot__row {
+                display: flex;
+                gap: 1rem;
+            }
+            & .moootbotCallout {
+                margin-top: auto;
+                border-left: 5px solid var(--color-red-warning--border);
+                padding-left: 0.8rem;
+            }
         }
     }
 }
@@ -371,6 +410,6 @@ header {
 
 .divider {
     width: 100%;
-    border: 1px dotted var(--cell-border);
+    border-bottom: 1px solid var(--cell-border);
     margin: 1rem 0;
 }

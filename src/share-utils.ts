@@ -1,3 +1,5 @@
+import { showFeedback } from './dom-utils'
+
 function buildResultPattern(open = false, tries: number) {
     let result = ''
     for (let i = 1; i <= tries; i++) {
@@ -30,18 +32,20 @@ export function shareResult(open = false, wordIndex: number, tries: number) {
     const shareTitle = `#mooot ${wordIndex} ${tries === 7 ? 'X' : tries}/6`
     const resultText = `${shareTitle}\n\n${resultPattern}\nhttps://mooot.cat`
 
+    const noLinkPreview = resultText.replace(/https?:\/\//g, '$&\u200B')
     if (isMobileDevice() && navigator.share) {
         const shareData = {
-            text: resultText,
+            text: noLinkPreview,
         }
 
         navigator
             .share(shareData)
             .catch((error) => console.error('Error sharing:', error))
     } else {
-        copyToClipboard(resultText).catch((error) => {
+        copyToClipboard(noLinkPreview).catch((error) => {
             console.error('Error copying to clipboard:', error)
         })
+        showFeedback('Resultat copiat')
     }
 }
 

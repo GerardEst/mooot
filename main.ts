@@ -3,7 +3,7 @@ import { runStorageCheck, loadStoredGame } from './src/storage-module.js'
 import * as gameboard from './src/gameboard-module.ts'
 import { updateMenuData } from './src/stats-module.js'
 import { shareResult } from './src/share-utils.ts'
-import { closeMenu, closeModal } from './src/dom-utils.ts'
+import { closeMenu, closeModal, openMenu } from './src/dom-utils.ts'
 
 // We run storage checks at web loading and when visibilitychange
 // to ensure even with cached content and not closing pages, it refreshes every day
@@ -24,10 +24,8 @@ async function init() {
     loadStoredGame()
 
     // Less urgent tasks
-    await words.loadDiccData()
-
-    // TODO - update menu data also when updating stored stats
     updateMenuData()
+    await words.loadDiccData()
 }
 
 init()
@@ -40,7 +38,7 @@ function initDOMEvents() {
     const shareOpenButton = document.querySelector('#shareOpen')
     const modalCloseButton = document.querySelector('#modal-close')
     const menuCloseButton = document.querySelector('#closeMenu')
-    // const menuOpenButton = document.querySelector('#openMenu')
+    const menuOpenButton = document.querySelector('#openMenu')
 
     keys!.forEach((key) => {
         key.addEventListener('click', (event) =>
@@ -68,6 +66,6 @@ function initDOMEvents() {
     modalCloseButton!.addEventListener('click', closeModal)
 
     // Menu events
-    // menuOpenButton.addEventListener('click', openMenu)
+    menuOpenButton!.addEventListener('click', openMenu)
     menuCloseButton!.addEventListener('click', closeMenu)
 }

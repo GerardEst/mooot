@@ -91,7 +91,7 @@ export function openMenu() {
         return
     }
 
-    menu.classList.remove('active')
+    menu.classList.add('active')
 }
 
 export function closeMenu() {
