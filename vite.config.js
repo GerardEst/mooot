@@ -6,5 +6,14 @@ export default defineConfig({
         environment: 'jsdom',
         setupFiles: ['./test-setup.js'],
         globals: true, // Allows using describe, it, expect without imports
+        coverage: {
+            reporter: ['text', 'html'],
+            exclude: [
+                'scripts/**',
+                'dist/**',
+                'vite.config.js',
+                'test-setup.js',
+            ],
+        },
     },
 })
