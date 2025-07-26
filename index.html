@@ -162,27 +162,27 @@
                 </header>
                 <div class="menu__stats">
                     <section class="stats">
-                        <div class="stats__row">
+                        <div class="pointedRow">
                             <p>Partides jugades</p>
                             <span></span>
                             <p id="menustats-games"></p>
                         </div>
-                        <div class="stats__row">
+                        <div class="pointedRow">
                             <p>Punts totals</p>
                             <span></span>
                             <p id="menustats-totalPoints"></p>
                         </div>
-                        <div class="stats__row">
+                        <div class="pointedRow">
                             <p>Mitjana de punts</p>
                             <span></span>
                             <p id="menustats-averagePoints"></p>
                         </div>
-                        <div class="stats__row">
+                        <div class="pointedRow">
                             <p>Ratxa actual</p>
                             <span></span>
                             <p id="menustats-streak"></p>
                         </div>
-                        <div class="stats__row">
+                        <div class="pointedRow">
                             <p>Ratxa màxima</p>
                             <span></span>
                             <p id="menustats-maxStreak"></p>
@@ -196,21 +196,33 @@
                         src="public/assets/moootbot_M.png"
                     />
                     <div class="menu__motbot__header">
-                        <h3>Lligues Moootbot</h3>
+                        <h3>Lligua activa de <i>Moootbot</i></h3>
                     </div>
                     <div class="menu__motbot__row">
                         <div>
-                            <h4>Lliga activa</h4>
-                            <p>💨 Lliga Seca</p>
+                            <h4>💨 Lliga Seca</h4>
                             <p class="smallText">1 - 31 de Juliol</p>
+                        </div>
+                        <!-- <div class="motbot_nextleague">
                             <h4>Propera lliga</h4>
                             <p>💃🏻 Lliga Major</p>
                             <p class="smallText">1 - 30 d'Agost</p>
-                        </div>
-                        <div>
-                            <h4>Trofeus en joc</h4>
+                        </div> -->
+                    </div>
+                    <div class="motbot_trophies">
+                        <div class="pointedRow">
+                            <p>Primer premi</p>
+                            <span></span>
                             <p>🥇🐫 Camell d'or</p>
+                        </div>
+                        <div class="pointedRow">
+                            <p>Segon premi</p>
+                            <span></span>
                             <p>🥈🌵 Cactus de plata</p>
+                        </div>
+                        <div class="pointedRow">
+                            <p>Tercer premi</p>
+                            <span></span>
                             <p>🥉🦗 Grill de bronze</p>
                         </div>
                     </div>
@@ -221,20 +233,23 @@
                         <p>Rosa Maria - 56 punts</p>
                     </div> -->
                     <div class="moootbotCallout">
-                        <p>
+                        <p style="line-height: 1.5">
                             Crea una lliga privada en un grup de Telegram, sense
-                            registres, amb Moootbot
+                            registres, amb <strong>Moootbot</strong>
+                        </p>
+                        <div class="callout_buttons">
                             <a
                                 class="button"
                                 href="https://t.me/mooot_cat_bot?startgroup=true"
-                                >Crea una lliga ara</a
+                                >Crea una lliga</a
                             >
                             <a
                                 class="button"
                                 href="https://github.com/GerardEst/mooot_cat_bot#user-content-translations"
-                                >Més informació</a
-                            >
-                        </p>
+                                >Més informació<img
+                                    src="/public/assets/open-external.svg"
+                            /></a>
+                        </div>
                     </div>
                 </div>
                 <div class="divider"></div>
@@ -267,7 +282,7 @@
                     />
                 </div>
                 <section class="stats">
-                    <div class="stats__row">
+                    <div class="pointedRow">
                         <p>Paraula</p>
                         <span></span>
                         <a id="dicLink" target="_blank" href="#"
@@ -275,32 +290,32 @@
                             <img src="/assets/open-external.svg"
                         /></a>
                     </div>
-                    <div class="stats__row">
+                    <div class="pointedRow">
                         <p>Punts</p>
                         <span></span>
                         <p>+<span id="stats-points"></span></p>
                     </div>
-                    <div class="stats__row">
+                    <div class="pointedRow">
                         <p>Partides jugades</p>
                         <span></span>
                         <p id="stats-games"></p>
                     </div>
-                    <div class="stats__row">
+                    <div class="pointedRow">
                         <p>Punts totals</p>
                         <span></span>
                         <p id="stats-totalPoints"></p>
                     </div>
-                    <div class="stats__row">
+                    <div class="pointedRow">
                         <p>Mitjana de punts</p>
                         <span></span>
                         <p id="stats-averagePoints"></p>
                     </div>
-                    <div class="stats__row">
+                    <div class="pointedRow">
                         <p>Ratxa actual</p>
                         <span></span>
                         <p id="stats-streak"></p>
                     </div>
-                    <div class="stats__row">
+                    <div class="pointedRow">
                         <p>Ratxa màxima</p>
                         <span></span>
                         <p id="stats-maxStreak"></p>
