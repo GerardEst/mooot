@@ -1,13 +1,34 @@
 let dicc: any
+let diccPromise: Promise<Set<string>> | null = null
 let allWords: { key: string; value: string }
 let todayWord: string
 let todayWordIndex: number
 
 export async function loadDiccData() {
+    if (dicc) {
+        console.log('Dictionary already loaded')
+        return
+    }
+
+    // Prevent multiple simultaneous requests
+    if (!diccPromise) {
+        diccPromise = fetchDictionary()
+    }
+
+    return await diccPromise
+}
+
+export async function fetchDictionary() {
+    if (dicc) {
+        console.log('Dictionary already loaded')
+        return dicc
+    }
+
     const diccFetch = await fetch('/assets/dicc.json', {
         cache: 'force-cache',
     })
     const diccJson = await diccFetch.json()
+
     dicc = new Set(diccJson)
 
     return dicc

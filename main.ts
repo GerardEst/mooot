@@ -25,7 +25,6 @@ async function init() {
 
     // Less urgent tasks
     updateMenuData()
-    words.loadDiccData()
 }
 
 init()
@@ -41,9 +40,9 @@ function initDOMEvents() {
     const menuOpenButton = document.querySelector('#openMenu')
 
     keys!.forEach((key) => {
-        key.addEventListener('click', (event) =>
+        key.addEventListener('click', (event) => {
             gameboard.letterClick(event.target.dataset.key)
-        )
+        })
     })
 
     backspace!.addEventListener('click', () => {
