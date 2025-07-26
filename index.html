@@ -30,7 +30,7 @@
         <!-- Favicon -->
         <!-- <link rel="icon" href="/favicon.ico" /> -->
 
-        <script src="./main.js" type="module"></script>
+        <script src="./main.ts" type="module"></script>
 
         <script
             async
@@ -162,37 +162,99 @@
                 </header>
                 <div class="menu__stats">
                     <section class="stats">
-                        <div class="stats__row">
+                        <div class="pointedRow">
                             <p>Partides jugades</p>
                             <span></span>
                             <p id="menustats-games"></p>
                         </div>
-                        <div class="stats__row">
+                        <div class="pointedRow">
                             <p>Punts totals</p>
                             <span></span>
                             <p id="menustats-totalPoints"></p>
                         </div>
-                        <div class="stats__row">
+                        <div class="pointedRow">
                             <p>Mitjana de punts</p>
                             <span></span>
                             <p id="menustats-averagePoints"></p>
                         </div>
-                        <div class="stats__row">
+                        <div class="pointedRow">
                             <p>Ratxa actual</p>
                             <span></span>
                             <p id="menustats-streak"></p>
                         </div>
-                        <div class="stats__row">
+                        <div class="pointedRow">
                             <p>Ratxa màxima</p>
                             <span></span>
                             <p id="menustats-maxStreak"></p>
                         </div>
                     </section>
                 </div>
+                <div class="menu__motbot">
+                    <img
+                        class="moootbot_badge"
+                        width="60"
+                        src="public/assets/moootbot_M.png"
+                    />
+                    <div class="menu__motbot__header">
+                        <h3>Lligua activa de <i>Moootbot</i></h3>
+                    </div>
+                    <div class="menu__motbot__row">
+                        <div>
+                            <h4>💨 Lliga Seca</h4>
+                            <p class="smallText">1 - 31 de Juliol</p>
+                        </div>
+                        <!-- <div class="motbot_nextleague">
+                            <h4>Propera lliga</h4>
+                            <p>💃🏻 Lliga Major</p>
+                            <p class="smallText">1 - 30 d'Agost</p>
+                        </div> -->
+                    </div>
+                    <div class="motbot_trophies">
+                        <div class="pointedRow">
+                            <p>Primer premi</p>
+                            <span></span>
+                            <p>🥇🐫 Camell d'or</p>
+                        </div>
+                        <div class="pointedRow">
+                            <p>Segon premi</p>
+                            <span></span>
+                            <p>🥈🌵 Cactus de plata</p>
+                        </div>
+                        <div class="pointedRow">
+                            <p>Tercer premi</p>
+                            <span></span>
+                            <p>🥉🦗 Grill de bronze</p>
+                        </div>
+                    </div>
+                    <!-- <div>
+                        <p>Top mundial</p>
+                        <p>Saroa - 72 punts</p>
+                        <p>Gerard - 65 punts</p>
+                        <p>Rosa Maria - 56 punts</p>
+                    </div> -->
+                    <div class="moootbotCallout">
+                        <p style="line-height: 1.5">
+                            Crea una lliga privada en un grup de Telegram, sense
+                            registres, amb <strong>Moootbot</strong>
+                        </p>
+                        <div class="callout_buttons">
+                            <a
+                                class="button"
+                                href="https://t.me/mooot_cat_bot?startgroup=true"
+                                >Crea una lliga</a
+                            >
+                            <a
+                                class="button"
+                                href="https://github.com/GerardEst/moootbot#user-content-translations"
+                                >Més informació<img
+                                    src="/public/assets/open-external.svg"
+                            /></a>
+                        </div>
+                    </div>
+                </div>
                 <div class="divider"></div>
                 <div class="menu__section">
-                    <a href="">motbot</a>
-                    <p>
+                    <p class="smallText">
                         Basat en el joc
                         <a
                             href="https://www.nytimes.com/games/wordle/index.html"
@@ -200,7 +262,7 @@
                         >
                         de <a href="https://www.nytco.com/">TNYT</a>
                     </p>
-                    <p>
+                    <p class="smallText">
                         Llistat de paraules extret del
                         <a href="https://diccionari.totescrable.cat/">DISC</a>
                     </p>
@@ -220,7 +282,7 @@
                     />
                 </div>
                 <section class="stats">
-                    <div class="stats__row">
+                    <div class="pointedRow">
                         <p>Paraula</p>
                         <span></span>
                         <a id="dicLink" target="_blank" href="#"
@@ -228,32 +290,32 @@
                             <img src="/assets/open-external.svg"
                         /></a>
                     </div>
-                    <div class="stats__row">
+                    <div class="pointedRow">
                         <p>Punts</p>
                         <span></span>
                         <p>+<span id="stats-points"></span></p>
                     </div>
-                    <div class="stats__row">
+                    <div class="pointedRow">
                         <p>Partides jugades</p>
                         <span></span>
                         <p id="stats-games"></p>
                     </div>
-                    <div class="stats__row">
+                    <div class="pointedRow">
                         <p>Punts totals</p>
                         <span></span>
                         <p id="stats-totalPoints"></p>
                     </div>
-                    <div class="stats__row">
+                    <div class="pointedRow">
                         <p>Mitjana de punts</p>
                         <span></span>
                         <p id="stats-averagePoints"></p>
                     </div>
-                    <div class="stats__row">
+                    <div class="pointedRow">
                         <p>Ratxa actual</p>
                         <span></span>
                         <p id="stats-streak"></p>
                     </div>
-                    <div class="stats__row">
+                    <div class="pointedRow">
                         <p>Ratxa màxima</p>
                         <span></span>
                         <p id="stats-maxStreak"></p>
@@ -267,7 +329,7 @@
                         Compartir <img src="/assets/share.svg" />
                     </button>
                 </div>
-                <!-- <p>Afegeix el bot <a href="https://github.com/GerardEst/moootbot#user-content-translations" target="_blank">moootbot</a> a un grup de Telegram i competeix en lligues mensuals amb els teus amics</p> -->
+                <!-- <p>Afegeix el bot <a href="https://github.com/GerardEst/mooot_cat_bot#user-content-translations" target="_blank">moootbot</a> a un grup de Telegram i competeix en lligues mensuals amb els teus amics</p> -->
             </div>
         </section>
     </body>
