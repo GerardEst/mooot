@@ -29,15 +29,15 @@ export function loadStoredGame() {
         if (playerWon) {
             fillModalStats(7 - gameboard.currentRow)
             editLinkToDictionary(getTodayNiceWord())
+            gameboard.setCurrentRow(0)
 
             showModal()
         } else if (playerLost) {
             fillModalStats(0)
             editLinkToDictionary(getTodayNiceWord())
+            gameboard.setCurrentRow(0)
 
             showModal()
-
-            gameboard.moveToNextRow()
         } else {
             gameboard.moveToNextRow()
         }

@@ -452,6 +452,63 @@ describe('endgame', () => {
         expect(modal?.querySelector('#stats-word')).toHaveTextContent('TESTS')
     })
 
+    it('should not be able to modify board after win', () => {
+        // Setup: Fill first row with the correct word 'TESTS'
+        setCurrentRow(1)
+        setCurrentColumn(1)
+        setCurrentWord('')
+
+        letterClick('T')
+        letterClick('E')
+        letterClick('S')
+        letterClick('T')
+        letterClick('S')
+
+        // Action: Validate the correct word
+        validateLastRow()
+
+        // Verification: Modal should show and game should be in won state
+        vi.advanceTimersByTime(1500)
+        expect(document.querySelector('.modal')).toHaveClass('active')
+
+        // Try to click a letter after winning
+        letterClick('A')
+        expect(document.querySelector('#l1_1')).not.toHaveTextContent('A')
+
+        // Try to delete a letter after winning
+        deleteLastLetter()
+        expect(document.querySelector('#l1_5')).not.toHaveTextContent('')
+    })
+
+    it('should not be able to modify board after loose', () => {
+        // Setup: Fill all 6 rows with valid but incorrect words
+        const words = ['HOUSE', 'MOUSE', 'LOUSE', 'DOUSE', 'ROUSE', 'SOUSE']
+        for (let i = 0; i < 6; i++) {
+            setCurrentRow(i + 1)
+            setCurrentColumn(1)
+            setCurrentWord('')
+
+            const word = words[i]
+            for (const letter of word) {
+                letterClick(letter)
+            }
+
+            validateLastRow()
+        }
+
+        // Verification: After 6th row validation, modal should show
+        vi.advanceTimersByTime(1500)
+        expect(document.querySelector('.modal')).toHaveClass('active')
+
+        // Try to click a letter after losing
+        letterClick('A')
+        expect(document.querySelector('#l6_1')).not.toHaveTextContent('A')
+
+        // Try to delete a letter after losing
+        deleteLastLetter()
+        expect(document.querySelector('#l6_5')).not.toHaveTextContent('')
+    })
+
     it('should show end modal if user loose the game', () => {
         // Setup: Fill all 6 rows with valid but incorrect words
         const words = ['HOUSE', 'MOUSE', 'LOUSE', 'DOUSE', 'ROUSE', 'SOUSE']

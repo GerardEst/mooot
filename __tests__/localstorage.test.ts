@@ -6,6 +6,13 @@ import {
 } from '../src/storage-module'
 import fs from 'fs'
 import path from 'path'
+import {
+    deleteLastLetter,
+    letterClick,
+    setCurrentColumn,
+    setCurrentRow,
+    setCurrentWord,
+} from '../src/gameboard-module'
 
 // Mock only the word functions to return predictable values
 vi.mock('../src/words-module.ts', () => ({
@@ -471,5 +478,58 @@ describe('loadStoredGame', () => {
 
         // This currently reveals a bug - empty arrays should be handled gracefully
         expect(() => loadStoredGame()).toThrow()
+    })
+
+    it('should not be able to modify board loading a loose state', () => {
+        // Setup: Create losing game data (6 attempts, last word doesn't match)
+        const savedGameData = [
+            { word: 'HOUSE', row: 1, date: new Date().toISOString() },
+            { word: 'MOUSE', row: 2, date: new Date().toISOString() },
+            { word: 'LOUSE', row: 3, date: new Date().toISOString() },
+            { word: 'DOUSE', row: 4, date: new Date().toISOString() },
+            { word: 'ROUSE', row: 5, date: new Date().toISOString() },
+            { word: 'SOUSE', row: 6, date: new Date().toISOString() }, // Wrong answer on 6th try
+        ]
+
+        localStorage.setItem('moootGameData', JSON.stringify(savedGameData))
+
+        // Call the function
+        loadStoredGame()
+
+        expect(document.querySelector('.modal')).toHaveClass('active')
+
+        // Try to click a letter after losing
+        letterClick('A')
+        expect(document.querySelector('#l6_1')).not.toHaveTextContent('A')
+
+        // Try to delete a letter after losing
+        deleteLastLetter()
+        expect(document.querySelector('#l6_5')).not.toHaveTextContent('')
+    })
+
+    it('should not be able to modify board loading a win state', () => {
+        // Setup: Game with a stored word
+        const savedGameData = [
+            {
+                word: 'TESTS',
+                row: 1,
+                date: new Date().toISOString(),
+            },
+        ]
+
+        localStorage.setItem('moootGameData', JSON.stringify(savedGameData))
+
+        // Call the function
+        loadStoredGame()
+
+        expect(document.querySelector('.modal')).toHaveClass('active')
+
+        // Try to click a letter after losing
+        letterClick('A')
+        expect(document.querySelector('#l1_1')).not.toHaveTextContent('A')
+
+        // Try to delete a letter after losing
+        deleteLastLetter()
+        expect(document.querySelector('#l1_5')).not.toHaveTextContent('')
     })
 })

@@ -72,6 +72,7 @@ export function validateLastRow() {
         updateStoredStats(points)
         fillModalStats(points)
         updateMenuData()
+        currentRow = 0
 
         setTimeout(() => {
             showModal()
@@ -88,7 +89,10 @@ export function validateLastRow() {
         fillModalStats(0)
         updateMenuData()
         if (currentRow >= 6) {
-            showModal()
+            setTimeout(() => {
+                showModal()
+                editLinkToDictionary(words.getTodayNiceWord())
+            }, 1000)
         }
         currentColumn = 1
         currentRow++
