@@ -25,7 +25,7 @@ async function init() {
 
     // Less urgent tasks
     updateMenuData()
-    await words.loadDiccData()
+    words.loadDiccData()
 }
 
 init()

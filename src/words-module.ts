@@ -4,7 +4,9 @@ let todayWord: string
 let todayWordIndex: number
 
 export async function loadDiccData() {
-    const diccFetch = await fetch('/assets/dicc.json')
+    const diccFetch = await fetch('/assets/dicc.json', {
+        cache: 'force-cache',
+    })
     const diccJson = await diccFetch.json()
     dicc = new Set(diccJson)
 
