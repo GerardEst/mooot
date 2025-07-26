@@ -84,6 +84,9 @@ export function validateLastRow() {
     } else {
         showHints(currentWord, words.getTodayWord(), currentRow)
         saveToLocalStorage(currentWord, currentRow)
+        updateStoredStats(0)
+        fillModalStats(0)
+        updateMenuData()
         if (currentRow >= 6) {
             showModal()
         }

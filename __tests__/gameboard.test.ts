@@ -238,65 +238,6 @@ describe('user can play', () => {
 
         expect(document.querySelector('#l1_1')).toHaveTextContent('A')
     })
-    it('should show end modal if user validates a correct row', () => {
-        // Setup: Fill first row with the correct word 'TESTS'
-        setCurrentRow(1)
-        setCurrentColumn(1)
-        setCurrentWord('')
-
-        letterClick('T')
-        letterClick('E')
-        letterClick('S')
-        letterClick('T')
-        letterClick('S')
-
-        // Verify modal is not active before validation
-        expect(document.querySelector('.modal')).not.toHaveClass('active')
-
-        // Action: Validate the correct word (using setTimeout in the actual function)
-        validateLastRow()
-
-        // Verification: Modal should be activated after setTimeout
-        // Since we can't wait for setTimeout in tests, we need to test the immediate state
-        // The modal activation happens in setTimeout, so we verify other immediate effects
-        expect(currentWord).toBe('') // Word should be cleared immediately
-        expect(document.querySelector('#l1_1')).toHaveClass('correct')
-
-        // For a real test of the modal, we'd need to mock setTimeout or use fake timers
-        // The modal will show after 1000ms delay in the actual code
-    })
-    it('should show end modal if user loose the game', () => {
-        // Setup: Fill all 6 rows with valid but incorrect words
-        const words = ['HOUSE', 'MOUSE', 'LOUSE', 'DOUSE', 'ROUSE', 'SOUSE']
-
-        for (let i = 0; i < 6; i++) {
-            setCurrentRow(i + 1)
-            setCurrentColumn(1)
-            setCurrentWord('')
-
-            const word = words[i]
-            for (const letter of word) {
-                letterClick(letter)
-            }
-
-            validateLastRow()
-        }
-
-        // Verification: After 6th row validation, modal should show
-        // The modal activation happens immediately for loss condition (no setTimeout)
-        expect(document.querySelector('.modal')).toHaveClass('active')
-
-        // All 6 rows should have words
-        expect(document.querySelector('#l1_1')).toHaveTextContent('H')
-        expect(document.querySelector('#l2_1')).toHaveTextContent('M')
-        expect(document.querySelector('#l3_1')).toHaveTextContent('L')
-        expect(document.querySelector('#l4_1')).toHaveTextContent('D')
-        expect(document.querySelector('#l5_1')).toHaveTextContent('R')
-        expect(document.querySelector('#l6_1')).toHaveTextContent('S')
-
-        // Game should be in lost state
-        expect(currentWord).toBe('')
-    })
     it('should alter the status of the cells and keyboard when user validates a row with appropiated stats', () => {
         // Setup: Use a word that will give us different hint states compared to 'TESTS'
         // HEART vs TESTS: H(absent), E(correct), A(absent), R(absent), T(present)
@@ -426,5 +367,121 @@ describe('user can play', () => {
         expect(document.querySelector('#l1_1')).not.toHaveClass('correct')
         expect(document.querySelector('#l1_1')).not.toHaveClass('present')
         expect(document.querySelector('#l1_1')).not.toHaveClass('absent')
+    })
+})
+describe('endgame', () => {
+    beforeEach(() => {
+        // Set up the actual DOM structure from index.html
+        document.body.innerHTML = html
+        localStorage.clear()
+        vi.clearAllMocks()
+        vi.useFakeTimers()
+    })
+    it('should show end modal if user validates a correct row', () => {
+        // Setup: Fill first row with the correct word 'TESTS'
+        setCurrentRow(1)
+        setCurrentColumn(1)
+        setCurrentWord('')
+
+        letterClick('T')
+        letterClick('E')
+        letterClick('S')
+        letterClick('T')
+        letterClick('S')
+
+        // Verify modal is not active before validation
+        expect(document.querySelector('.modal')).not.toHaveClass('active')
+
+        // Action: Validate the correct word (using setTimeout in the actual function)
+        validateLastRow()
+
+        // Verification: Modal should be activated after setTimeout
+        vi.advanceTimersByTime(1500)
+        expect(document.querySelector('.modal')).toHaveClass('active')
+        expect(currentWord).toBe('')
+        expect(document.querySelector('#l1_1')).toHaveClass('correct')
+    })
+    it('should fill the modal stats correctly when win', () => {
+        // Setup: Fill first row with the correct word 'TESTS'
+        setCurrentRow(1)
+        setCurrentColumn(1)
+        setCurrentWord('')
+
+        letterClick('T')
+        letterClick('E')
+        letterClick('S')
+        letterClick('T')
+        letterClick('S')
+
+        // Action: Validate the correct word
+        validateLastRow()
+
+        // Verification: Modal should show stats correctly
+        const modal = document.querySelector('.modal')
+
+        vi.advanceTimersByTime(1500)
+        expect(modal).toHaveClass('active')
+
+        // Check if stats are filled correctly
+        expect(modal?.querySelector('#stats-points')).toHaveTextContent('6')
+        expect(modal?.querySelector('#stats-word')).toHaveTextContent('TESTS')
+    })
+    it('should fill the modal stats correctly when loose', () => {
+        // Setup: Fill all 6 rows with valid but incorrect words
+        const words = ['HOUSE', 'MOUSE', 'LOUSE', 'DOUSE', 'ROUSE', 'SOUSE']
+        for (let i = 0; i < 6; i++) {
+            setCurrentRow(i + 1)
+            setCurrentColumn(1)
+            setCurrentWord('')
+
+            const word = words[i]
+            for (const letter of word) {
+                letterClick(letter)
+            }
+
+            validateLastRow()
+        }
+        // Verification: After 6th row validation, modal should show
+        vi.advanceTimersByTime(1500)
+
+        const modal = document.querySelector('.modal')
+        expect(modal).toHaveClass('active')
+
+        // Check if stats are filled correctly
+        expect(modal?.querySelector('#stats-points')).toHaveTextContent('0')
+        expect(modal?.querySelector('#stats-word')).toHaveTextContent('TESTS')
+    })
+
+    it('should show end modal if user loose the game', () => {
+        // Setup: Fill all 6 rows with valid but incorrect words
+        const words = ['HOUSE', 'MOUSE', 'LOUSE', 'DOUSE', 'ROUSE', 'SOUSE']
+
+        for (let i = 0; i < 6; i++) {
+            setCurrentRow(i + 1)
+            setCurrentColumn(1)
+            setCurrentWord('')
+
+            const word = words[i]
+            for (const letter of word) {
+                letterClick(letter)
+            }
+
+            validateLastRow()
+        }
+
+        // Verification: After 6th row validation, modal should show
+        vi.advanceTimersByTime(1500)
+        expect(document.querySelector('.modal')).toHaveClass('active')
+
+        // All 6 rows should have words
+        expect(document.querySelector('#l1_1')).toHaveTextContent('H')
+        expect(document.querySelector('#l2_1')).toHaveTextContent('M')
+        expect(document.querySelector('#l3_1')).toHaveTextContent('L')
+        expect(document.querySelector('#l4_1')).toHaveTextContent('D')
+        expect(document.querySelector('#l5_1')).toHaveTextContent('R')
+        expect(document.querySelector('#l6_1')).toHaveTextContent('S')
+
+        // Game should be in lost state
+        expect(currentWord).toBe('')
     })
 })

@@ -19,12 +19,11 @@ export function getStoredStats() {
 }
 
 export function updateStoredStats(todayPoints: number) {
-    const storedStats = localStorage.getItem('stats')
-    if (!storedStats) {
-        console.error('There are not stored stats')
-        return
-    }
-    const stats = JSON.parse(storedStats)
+    console.log('Updating stored stats')
+
+    const stats = JSON.parse(
+        localStorage.getItem('stats') || '{}'
+    ) as storedStats
 
     const currentGames = stats?.games || 0
     const currentTotalPoints = stats?.totalPoints || 0
@@ -52,6 +51,8 @@ export function fillModalStats(todayPoints: number) {
     const storedStats = getStoredStats()
 
     if (!storedStats) return
+
+    console.log('Stored stats:', storedStats)
 
     updateStat(
         'title',
