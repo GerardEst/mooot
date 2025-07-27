@@ -47,6 +47,21 @@ describe('user can play', () => {
         document.body.innerHTML = html
         localStorage.clear()
         vi.clearAllMocks()
+        
+        // Mock fetch for loadWordsData to work
+        global.fetch = vi.fn((url) => {
+            if (url.includes('/assets/words.json')) {
+                return Promise.resolve({
+                    json: () => Promise.resolve({ tests: 'TESTS', house: 'HOUSE' })
+                })
+            }
+            if (url.includes('/assets/dicc.json')) {
+                return Promise.resolve({
+                    json: () => Promise.resolve(['TESTS', 'HOUSE', 'MOUSE'])
+                })
+            }
+            return Promise.reject(new Error('Unknown URL'))
+        })
     })
 
     it('should let user click on letters when there is space', () => {
