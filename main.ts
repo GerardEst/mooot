@@ -48,10 +48,10 @@ function initDOMEvents() {
 
     // Share events
     shareButton!.addEventListener('click', () => {
-        shareResult(false, words.getTodayWordIndex(), gameboard.currentRow)
+        shareResult(false, words.getTodayWordIndex(), gameboard.currentTry)
     })
     shareOpenButton!.addEventListener('click', () => {
-        shareResult(true, words.getTodayWordIndex(), gameboard.currentRow)
+        shareResult(true, words.getTodayWordIndex(), gameboard.currentTry)
     })
 
     // Modal events

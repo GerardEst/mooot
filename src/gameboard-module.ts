@@ -11,6 +11,7 @@ import {
 
 export let currentRow = 1
 export let currentColumn = 1
+export let currentTry = 1
 export let currentWord = ''
 
 export function setCurrentRow(to: number) {
@@ -23,6 +24,10 @@ export function setCurrentColumn(to: number) {
 
 export function setCurrentWord(to: string) {
     currentWord = to
+}
+
+export function setCurrentTry(to: number) {
+    currentTry = to
 }
 
 export function moveToNextRow() {
@@ -70,11 +75,9 @@ export function validateLastRow() {
         showHints(currentWord, words.getTodayWord(), currentRow)
         saveToLocalStorage(currentWord, currentRow)
 
-        const points = 7 - currentRow
-        updateStoredStats(points)
-        fillModalStats(points)
+        updateStoredStats(7 - currentTry)
+        fillModalStats(7 - currentTry)
         updateMenuData()
-        currentRow = 0
 
         setTimeout(() => {
             showModal()
@@ -98,6 +101,7 @@ export function validateLastRow() {
         }
         currentColumn = 1
         currentRow++
+        currentTry++
     }
     currentWord = ''
 }
@@ -109,6 +113,7 @@ export function fillRow(row: storedRow) {
     showHints(row.word, words.getTodayWord(), row.row)
 
     setCurrentRow(row.row)
+    setCurrentTry(row.row)
     setCurrentColumn(1)
     setCurrentWord('')
 }

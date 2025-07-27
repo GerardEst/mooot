@@ -22,17 +22,17 @@ export async function loadStoredGame() {
         storedGame.forEach((row: storedRow) => gameboard.fillRow(row))
 
         const playerWon =
-            gameboard.currentRow <= 6 &&
+            gameboard.currentTry <= 6 &&
             storedGame.at(-1).word.toUpperCase() ===
                 getTodayWord().toUpperCase()
 
         const playerLost =
-            gameboard.currentRow === 6 &&
+            gameboard.currentTry === 6 &&
             storedGame.at(-1).word.toUpperCase() !==
                 getTodayWord().toUpperCase()
 
         if (playerWon) {
-            fillModalStats(7 - gameboard.currentRow)
+            fillModalStats(7 - gameboard.currentTry)
             editLinkToDictionary(getTodayNiceWord())
             gameboard.setCurrentRow(0)
 
