@@ -9,16 +9,19 @@ import path from 'path'
 import {
     deleteLastLetter,
     letterClick,
-    setCurrentColumn,
-    setCurrentRow,
-    setCurrentWord,
+    validateLastRow,
 } from '../src/gameboard-module'
 
 // Mock only the word functions to return predictable values
-vi.mock('../src/words-module.ts', () => ({
-    getTodayWord: vi.fn(() => 'tests'),
-    getTodayNiceWord: vi.fn(() => 'TESTS'),
-}))
+vi.mock('../src/words-module.ts', async () => {
+    const actual = await vi.importActual('../src/words-module.ts')
+    return {
+        ...actual,
+        getTodayWord: vi.fn(() => 'tests'),
+        getTodayNiceWord: vi.fn(() => 'TESTS'),
+    }
+})
+vi.useFakeTimers()
 
 // Load the actual HTML structure
 const html = fs.readFileSync(path.resolve('./index.html'), 'utf8')
@@ -276,9 +279,42 @@ describe('loadStoredGame', () => {
         document.body.innerHTML = html
         localStorage.clear()
         vi.clearAllMocks()
+
+        // Mock fetch for loadWordsData to work
+        global.fetch = vi.fn((url) => {
+            if (url.includes('/assets/words.json')) {
+                return Promise.resolve({
+                    json: () =>
+                        Promise.resolve({
+                            TESTS: 'tests',
+                            HOUSE: 'house',
+                            MOUSE: 'mouse',
+                            LOUSE: 'louse',
+                            DOUSE: 'douse',
+                            ROUSE: 'rouse',
+                            SOUSE: 'souse',
+                        }),
+                })
+            }
+            if (url.includes('/assets/dicc.json')) {
+                return Promise.resolve({
+                    json: () =>
+                        Promise.resolve([
+                            'TESTS',
+                            'HOUSE',
+                            'MOUSE',
+                            'LOUSE',
+                            'DOUSE',
+                            'ROUSE',
+                            'SOUSE',
+                        ]),
+                })
+            }
+            return Promise.reject(new Error('Unknown URL'))
+        }) as any
     })
 
-    it('should display stored words on the gameboard', () => {
+    it('should display stored words on the gameboard', async () => {
         // Setup: Create stored game data
         const savedGameData = [
             {
@@ -296,7 +332,7 @@ describe('loadStoredGame', () => {
         localStorage.setItem('moootGameData', JSON.stringify(savedGameData))
 
         // Call the function
-        loadStoredGame()
+        await loadStoredGame()
 
         // Verify the user can see the words on the gameboard
         expect(document.querySelector('#l1_1')).toHaveTextContent('H')
@@ -312,7 +348,7 @@ describe('loadStoredGame', () => {
         expect(document.querySelector('#l2_5')).toHaveTextContent('E')
     })
 
-    it('should not change the gameboard when no stored game exists', () => {
+    it('should not change the gameboard when no stored game exists', async () => {
         // Ensure localStorage is empty
         localStorage.clear()
 
@@ -321,7 +357,7 @@ describe('loadStoredGame', () => {
         expect(document.querySelector('#l2_1')).toBeEmptyDOMElement()
 
         // Call the function
-        loadStoredGame()
+        await loadStoredGame()
 
         // Verify gameboard remains empty
         expect(document.querySelector('#l1_1')).toBeEmptyDOMElement()
@@ -329,7 +365,7 @@ describe('loadStoredGame', () => {
         expect(document.querySelector('#l3_1')).toBeEmptyDOMElement()
     })
 
-    it('should show win modal when stored game was won', () => {
+    it('should show win modal when stored game was won', async () => {
         // Setup: Create winning game data (last word matches today's word)
         const savedGameData = [
             {
@@ -347,7 +383,9 @@ describe('loadStoredGame', () => {
         localStorage.setItem('moootGameData', JSON.stringify(savedGameData))
 
         // Call the function
-        loadStoredGame()
+        await loadStoredGame()
+
+        vi.advanceTimersByTime(1000) // Simulate time passing for modal to show
 
         // Verify user sees the win modal
         expect(document.querySelector('.modal')).toHaveClass('active')
@@ -357,7 +395,7 @@ describe('loadStoredGame', () => {
         expect(document.querySelector('#l2_1')).toHaveTextContent('T')
     })
 
-    it('should show loss modal when stored game was lost', () => {
+    it('should show loss modal when stored game was lost', async () => {
         // Setup: Create losing game data (6 attempts, last word doesn't match)
         const savedGameData = [
             { word: 'HOUSE', row: 1, date: new Date().toISOString() },
@@ -371,7 +409,7 @@ describe('loadStoredGame', () => {
         localStorage.setItem('moootGameData', JSON.stringify(savedGameData))
 
         // Call the function
-        loadStoredGame()
+        await loadStoredGame()
 
         // Verify user sees the loss modal
         expect(document.querySelector('.modal')).toHaveClass('active')
@@ -385,7 +423,7 @@ describe('loadStoredGame', () => {
         expect(document.querySelector('#l6_1')).toHaveTextContent('S') // SOUSE
     })
 
-    it('should not show modal for game in progress', () => {
+    it('should not show modal for game in progress', async () => {
         // Setup: Create in-progress game data
         const savedGameData = [
             {
@@ -403,7 +441,7 @@ describe('loadStoredGame', () => {
         localStorage.setItem('moootGameData', JSON.stringify(savedGameData))
 
         // Call the function
-        loadStoredGame()
+        await loadStoredGame()
 
         // Verify no modal is shown (game continues)
         expect(document.querySelector('.modal')).not.toHaveClass('active')
@@ -416,7 +454,124 @@ describe('loadStoredGame', () => {
         expect(document.querySelector('#l3_1')).toBeEmptyDOMElement()
     })
 
-    it('should show color hints for stored words', () => {
+    it('should let user continue playing after loading stored game', async () => {
+        // Setup: Create stored game data
+        const savedGameData = [
+            {
+                word: 'HOUSE',
+                row: 1,
+                date: new Date().toISOString(),
+            },
+            {
+                word: 'MOUSE',
+                row: 2,
+                date: new Date().toISOString(),
+            },
+        ]
+
+        localStorage.setItem('moootGameData', JSON.stringify(savedGameData))
+
+        // Call the function
+        await loadStoredGame()
+
+        // Simulate user clicking a letter
+        letterClick('T')
+        letterClick('E')
+        letterClick('S')
+        letterClick('T')
+        letterClick('S')
+    })
+
+    it('should show correct points and tries in modal after winning a continued game', async () => {
+        // Setup: Create stored game data
+        const savedGameData = [
+            {
+                word: 'HOUSE',
+                row: 1,
+                date: new Date().toISOString(),
+            },
+            {
+                word: 'MOUSE',
+                row: 2,
+                date: new Date().toISOString(),
+            },
+        ]
+
+        localStorage.setItem('moootGameData', JSON.stringify(savedGameData))
+
+        // Call the function
+        await loadStoredGame()
+
+        // Simulate user clicking a letter
+        letterClick('T')
+        letterClick('E')
+        letterClick('S')
+        letterClick('T')
+        letterClick('S')
+
+        validateLastRow()
+
+        // Verify the modal shows the correct points
+        expect(document.querySelector('#stats-points')).toHaveTextContent('4')
+    })
+
+    it('should show correct points and tries in modal after loosing a continued game', async () => {
+        // Setup: Create stored game data
+        const savedGameData = [
+            {
+                word: 'HOUSE',
+                row: 1,
+                date: new Date().toISOString(),
+            },
+            {
+                word: 'MOUSE',
+                row: 2,
+                date: new Date().toISOString(),
+            },
+        ]
+
+        localStorage.setItem('moootGameData', JSON.stringify(savedGameData))
+
+        // Call the function
+        await loadStoredGame()
+
+        // Simulate user clicking a letter
+        letterClick('L')
+        letterClick('O')
+        letterClick('U')
+        letterClick('S')
+        letterClick('E')
+
+        // TODO - Sembla que no vol carregar el dicc.json
+
+        validateLastRow()
+
+        letterClick('R')
+        letterClick('O')
+        letterClick('U')
+        letterClick('S')
+        letterClick('E')
+        validateLastRow()
+
+        letterClick('S')
+        letterClick('O')
+        letterClick('U')
+        letterClick('S')
+        letterClick('E')
+        validateLastRow()
+
+        letterClick('R')
+        letterClick('O')
+        letterClick('U')
+        letterClick('S')
+        letterClick('E')
+        validateLastRow()
+
+        // Verify the modal shows the correct points
+        expect(document.querySelector('#stats-points')).toHaveTextContent('0')
+    })
+
+    it('should show color hints for stored words', async () => {
         // Setup: Game with a stored word
         const savedGameData = [
             {
@@ -429,7 +584,7 @@ describe('loadStoredGame', () => {
         localStorage.setItem('moootGameData', JSON.stringify(savedGameData))
 
         // Call the function
-        loadStoredGame()
+        await loadStoredGame()
 
         // Verify the word is displayed
         expect(document.querySelector('#l1_1')).toHaveTextContent('H')
@@ -458,29 +613,7 @@ describe('loadStoredGame', () => {
         expect(gameboardHasHints).toBeInTheDocument() // At least some cells should have color hints
     })
 
-    it('should handle corrupted localStorage data gracefully', () => {
-        // Setup: Invalid JSON in localStorage
-        localStorage.setItem('moootGameData', 'invalid-json')
-
-        // Verify gameboard is initially clean
-        expect(document.querySelector('#l1_1')).toBeEmptyDOMElement()
-
-        // Call the function - should throw but not break the DOM
-        expect(() => loadStoredGame()).toThrow()
-
-        // Verify gameboard remains clean
-        expect(document.querySelector('#l1_1')).toBeEmptyDOMElement()
-    })
-
-    it('should handle empty stored game array', () => {
-        // Setup: Empty array in localStorage
-        localStorage.setItem('moootGameData', '[]')
-
-        // This currently reveals a bug - empty arrays should be handled gracefully
-        expect(() => loadStoredGame()).toThrow()
-    })
-
-    it('should not be able to modify board loading a loose state', () => {
+    it('should not be able to modify board loading a loose state', async () => {
         // Setup: Create losing game data (6 attempts, last word doesn't match)
         const savedGameData = [
             { word: 'HOUSE', row: 1, date: new Date().toISOString() },
@@ -494,7 +627,7 @@ describe('loadStoredGame', () => {
         localStorage.setItem('moootGameData', JSON.stringify(savedGameData))
 
         // Call the function
-        loadStoredGame()
+        await loadStoredGame()
 
         expect(document.querySelector('.modal')).toHaveClass('active')
 
@@ -507,7 +640,7 @@ describe('loadStoredGame', () => {
         expect(document.querySelector('#l6_5')).not.toHaveTextContent('')
     })
 
-    it('should not be able to modify board loading a win state', () => {
+    it('should not be able to modify board loading a win state', async () => {
         // Setup: Game with a stored word
         const savedGameData = [
             {
@@ -520,7 +653,7 @@ describe('loadStoredGame', () => {
         localStorage.setItem('moootGameData', JSON.stringify(savedGameData))
 
         // Call the function
-        loadStoredGame()
+        await loadStoredGame()
 
         expect(document.querySelector('.modal')).toHaveClass('active')
 

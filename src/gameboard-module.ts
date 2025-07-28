@@ -32,6 +32,7 @@ export function setCurrentTry(to: number) {
 
 export function moveToNextRow() {
     currentRow++
+    currentTry++
 }
 
 export function checkWord(word: string) {
@@ -79,6 +80,7 @@ export function validateLastRow() {
         fillModalStats(7 - currentTry)
         updateMenuData()
 
+        currentRow = 0
         setTimeout(() => {
             showModal()
             editLinkToDictionary(words.getTodayNiceWord())

@@ -66,7 +66,6 @@ export function showModal() {
         console.error('Cant find modal element')
         return
     }
-
     modal.classList.add('active')
 }
 

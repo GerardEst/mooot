@@ -1,16 +1,12 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import {
-    runStorageCheck,
-    cleanGameboard,
-    loadStoredGame,
-} from '../src/storage-module'
-import {
     letterClick,
     deleteLastLetter,
     validateLastRow,
     setCurrentRow,
     setCurrentColumn,
     setCurrentWord,
+    setCurrentTry,
     currentRow,
     currentColumn,
     currentWord,
@@ -19,24 +15,28 @@ import fs from 'fs'
 import path from 'path'
 
 // Mock only the word functions to return predictable values
-vi.mock('../src/words-module.ts', () => ({
-    getTodayWord: vi.fn(() => 'tests'),
-    getTodayNiceWord: vi.fn(() => 'TESTS'),
-    wordExists: vi.fn((word) => {
-        // Return true for common valid words, false for invalid ones like QXZZZ
-        const validWords = [
-            'HOUSE',
-            'MOUSE',
-            'LOUSE',
-            'DOUSE',
-            'ROUSE',
-            'SOUSE',
-            'HEART',
-            'TESTS',
-        ]
-        return validWords.includes(word.toUpperCase())
-    }),
-}))
+vi.mock('../src/words-module.ts', async () => {
+    const actual = await vi.importActual('../src/words-module.ts')
+    return {
+        ...actual,
+        getTodayWord: vi.fn(() => 'tests'),
+        getTodayNiceWord: vi.fn(() => 'TESTS'),
+        wordExists: vi.fn((word) => {
+            // Return true for common valid words, false for invalid ones like QXZZZ
+            const validWords = [
+                'HOUSE',
+                'MOUSE',
+                'LOUSE',
+                'DOUSE',
+                'ROUSE',
+                'SOUSE',
+                'HEART',
+                'TESTS',
+            ]
+            return validWords.includes(word.toUpperCase())
+        }),
+    }
+})
 
 // Load the actual HTML structure
 const html = fs.readFileSync(path.resolve('./index.html'), 'utf8')
@@ -47,21 +47,22 @@ describe('user can play', () => {
         document.body.innerHTML = html
         localStorage.clear()
         vi.clearAllMocks()
-        
+
         // Mock fetch for loadWordsData to work
         global.fetch = vi.fn((url) => {
             if (url.includes('/assets/words.json')) {
                 return Promise.resolve({
-                    json: () => Promise.resolve({ tests: 'TESTS', house: 'HOUSE' })
+                    json: () =>
+                        Promise.resolve({ tests: 'TESTS', house: 'HOUSE' }),
                 })
             }
             if (url.includes('/assets/dicc.json')) {
                 return Promise.resolve({
-                    json: () => Promise.resolve(['TESTS', 'HOUSE', 'MOUSE'])
+                    json: () => Promise.resolve(['TESTS', 'HOUSE', 'MOUSE']),
                 })
             }
             return Promise.reject(new Error('Unknown URL'))
-        })
+        }) as any
     })
 
     it('should let user click on letters when there is space', () => {
@@ -391,6 +392,12 @@ describe('endgame', () => {
         localStorage.clear()
         vi.clearAllMocks()
         vi.useFakeTimers()
+
+        // Reset game state to initial values
+        setCurrentRow(1)
+        setCurrentColumn(1)
+        setCurrentTry(1)
+        setCurrentWord('')
     })
     it('should show end modal if user validates a correct row', () => {
         // Setup: Fill first row with the correct word 'TESTS'
