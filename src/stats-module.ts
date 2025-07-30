@@ -7,6 +7,7 @@ interface storedStats {
     averagePoints: number
     streak: number
     maxStreak: number
+    averageTime?: string // Format: hh:mm:ss
 }
 
 export function getStoredStats() {
@@ -18,7 +19,10 @@ export function getStoredStats() {
     return JSON.parse(storedStats) as storedStats
 }
 
-export function updateStoredStats(todayPoints: number) {
+export function updateStoredStats(
+    todayPoints: number,
+    todayTime: string | null
+) {
     console.log('Updating stored stats')
 
     const stats = JSON.parse(
@@ -29,6 +33,7 @@ export function updateStoredStats(todayPoints: number) {
     const currentTotalPoints = stats?.totalPoints || 0
     const currentStreak = stats?.streak || 0
     const currentMaxStreak = stats?.maxStreak || 0
+    const currentAverageTime = stats?.averageTime || '00:00:00'
 
     const newGames = currentGames + 1
     const newTotalPoints = currentTotalPoints + todayPoints
@@ -38,6 +43,11 @@ export function updateStoredStats(todayPoints: number) {
         games: newGames,
         totalPoints: newTotalPoints,
         averagePoints: newTotalPoints / newGames,
+        averageTime: calculateAverageTime(
+            currentAverageTime,
+            todayTime,
+            newGames
+        ),
         streak: newStreak,
         maxStreak: Math.max(newStreak, currentMaxStreak),
     }
@@ -47,13 +57,7 @@ export function updateStoredStats(todayPoints: number) {
     return updatedStats
 }
 
-export function fillModalStats(todayPoints: number) {
-    const storedStats = getStoredStats()
-
-    if (!storedStats) return
-
-    console.log('Stored stats:', storedStats)
-
+export function fillModalStats(todayPoints: number, todayTime: string | null) {
     updateStat(
         'title',
         todayPoints === 6
@@ -72,9 +76,18 @@ export function fillModalStats(todayPoints: number) {
     )
     updateStat('word', getTodayNiceWord())
     updateStat('points', todayPoints.toString())
+    updateStat('time', todayTime || '-')
+
+    const storedStats = getStoredStats()
+
+    if (!storedStats) return
+
+    console.log('Stored stats:', storedStats)
+
     updateStat('games', storedStats.games.toString())
     updateStat('totalPoints', storedStats.totalPoints.toString())
     updateStat('averagePoints', storedStats.averagePoints.toFixed(2))
+    updateStat('averageTime', storedStats.averageTime || '00:00:00')
     updateStat('streak', storedStats.streak.toString())
     updateStat('maxStreak', storedStats.maxStreak.toString())
 }
@@ -102,4 +115,38 @@ export function editLinkToDictionary(word: string) {
     }
 
     dicLink.setAttribute('href', dicUrl)
+}
+
+export function calculateAverageTime(
+    currentAverageTime: string,
+    todayTime: string | null,
+    gamesPlayed: number
+): string | undefined {
+    // Time is stored in this format: hh:mm:ss and should be returned in the same format
+
+    console.log(todayTime, currentAverageTime, gamesPlayed)
+
+    if (!todayTime) return currentAverageTime
+
+    const todayTimeParts = todayTime.split(':').map(Number)
+    const todayTimeInSeconds =
+        todayTimeParts[0] * 3600 + todayTimeParts[1] * 60 + todayTimeParts[2]
+
+    if (gamesPlayed <= 1) return todayTime // If it's the first game, return today's time
+
+    const currentAverageParts = currentAverageTime.split(':').map(Number)
+    const currentAverageInSeconds =
+        currentAverageParts[0] * 3600 +
+        currentAverageParts[1] * 60 +
+        currentAverageParts[2]
+    const newAverageInSeconds =
+        (currentAverageInSeconds * (gamesPlayed - 1) + todayTimeInSeconds) /
+        gamesPlayed
+    const hours = Math.floor(newAverageInSeconds / 3600)
+    const minutes = Math.floor((newAverageInSeconds % 3600) / 60)
+    const seconds = Math.floor(newAverageInSeconds % 60)
+    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(
+        2,
+        '0'
+    )}:${String(seconds).padStart(2, '0')}`
 }

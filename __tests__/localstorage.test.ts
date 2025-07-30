@@ -9,6 +9,10 @@ import path from 'path'
 import {
     deleteLastLetter,
     letterClick,
+    setCurrentColumn,
+    setCurrentRow,
+    setCurrentTry,
+    setCurrentWord,
     validateLastRow,
 } from '../src/gameboard-module'
 
@@ -19,6 +23,7 @@ vi.mock('../src/words-module.ts', async () => {
         ...actual,
         getTodayWord: vi.fn(() => 'tests'),
         getTodayNiceWord: vi.fn(() => 'TESTS'),
+        wordExists: vi.fn(() => true), // Always return true for tests
     }
 })
 vi.useFakeTimers()
@@ -280,6 +285,14 @@ describe('loadStoredGame', () => {
         localStorage.clear()
         vi.clearAllMocks()
 
+        setCurrentColumn(1)
+        setCurrentRow(1)
+        setCurrentTry(1)
+        setCurrentWord('')
+
+        // Instead of using /assets/words.json, we tell the test to use
+        // /public/assets/words.json
+
         // Mock fetch for loadWordsData to work
         global.fetch = vi.fn((url) => {
             if (url.includes('/assets/words.json')) {
@@ -297,6 +310,7 @@ describe('loadStoredGame', () => {
                 })
             }
             if (url.includes('/assets/dicc.json')) {
+                console.log('Mocking fetch for dicc.json')
                 return Promise.resolve({
                     json: () =>
                         Promise.resolve([
@@ -363,6 +377,27 @@ describe('loadStoredGame', () => {
         expect(document.querySelector('#l1_1')).toBeEmptyDOMElement()
         expect(document.querySelector('#l2_1')).toBeEmptyDOMElement()
         expect(document.querySelector('#l3_1')).toBeEmptyDOMElement()
+    })
+
+    it('should save every word to localStorage', () => {
+        letterClick('H')
+        letterClick('O')
+        letterClick('U')
+        letterClick('S')
+        letterClick('E')
+
+        validateLastRow()
+
+        expect(localStorage.getItem('moootGameData')).not.toBeNull()
+        expect(
+            JSON.parse(localStorage.getItem('moootGameData') || '[]')
+        ).toEqual([
+            {
+                word: 'HOUSE',
+                row: 1,
+                date: expect.any(String), // Should be an ISO string
+            },
+        ])
     })
 
     it('should show win modal when stored game was won', async () => {
@@ -541,9 +576,6 @@ describe('loadStoredGame', () => {
         letterClick('U')
         letterClick('S')
         letterClick('E')
-
-        // TODO - Sembla que no vol carregar el dicc.json
-
         validateLastRow()
 
         letterClick('R')

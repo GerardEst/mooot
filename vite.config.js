@@ -4,7 +4,7 @@ import { defineConfig } from 'vite'
 export default defineConfig({
     test: {
         environment: 'jsdom',
-        setupFiles: ['./test-setup.js'],
+        setupFiles: ['./test-setup.ts'],
         globals: true, // Allows using describe, it, expect without imports
         coverage: {
             reporter: ['text', 'html'],
@@ -13,6 +13,7 @@ export default defineConfig({
                 'dist/**',
                 'vite.config.js',
                 'test-setup.js',
+                'main.ts',
             ],
         },
     },

@@ -20,6 +20,8 @@ export async function loadDiccData() {
 }
 
 export async function fetchDictionary() {
+    console.log('Fetching the complete dictionary')
+
     if (dicc) {
         console.log('Dictionary already loaded')
         return dicc
@@ -59,6 +61,13 @@ export async function fetchWords() {
 }
 
 export function wordExists(word: string) {
+    if (!dicc) {
+        console.warn(
+            'Dictionary not loaded yet, returning false for word:',
+            word
+        )
+        return false
+    }
     return dicc.has(word)
 }
 

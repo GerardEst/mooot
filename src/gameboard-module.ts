@@ -48,10 +48,17 @@ export function checkWord(word: string) {
 }
 
 export function letterClick(letter: string) {
+    if (
+        currentColumn === 1 &&
+        currentRow === 1 &&
+        !localStorage.getItem('timetrial-start')
+    ) {
+        localStorage.setItem('timetrial-start', new Date().toISOString())
+    }
     if (currentColumn > 5) return
     if (currentColumn === 3) {
-        words.loadWordsData()
         words.loadDiccData()
+        words.loadWordsData()
     }
 
     updateCell(currentRow, currentColumn, letter)
@@ -76,8 +83,14 @@ export function validateLastRow() {
         showHints(currentWord, words.getTodayWord(), currentRow)
         saveToLocalStorage(currentWord, currentRow)
 
-        updateStoredStats(7 - currentTry)
-        fillModalStats(7 - currentTry)
+        const time = calculateTime()
+
+        localStorage.removeItem('timetrial-start')
+        localStorage.setItem('todayTime', time)
+
+        console.log('Game finished in', time)
+        updateStoredStats(7 - currentTry, time)
+        fillModalStats(7 - currentTry, time)
         updateMenuData()
 
         currentRow = 0
@@ -92,10 +105,13 @@ export function validateLastRow() {
     } else {
         showHints(currentWord, words.getTodayWord(), currentRow)
         saveToLocalStorage(currentWord, currentRow)
-        updateStoredStats(0)
-        fillModalStats(0)
-        updateMenuData()
+
         if (currentRow >= 6) {
+            updateStoredStats(0, null)
+            fillModalStats(0, null)
+            updateMenuData()
+            localStorage.removeItem('timetrial-start')
+            localStorage.setItem('todayTime', '-')
             setTimeout(() => {
                 showModal()
                 editLinkToDictionary(words.getTodayNiceWord())
@@ -211,4 +227,22 @@ export function showHints(guess: string, target: string, row: number) {
             }
         }
     }
+}
+
+function calculateTime(): string {
+    const startTime = localStorage.getItem('timetrial-start')
+    if (!startTime) return '00:00:00'
+
+    const startDate = new Date(startTime)
+    const endDate = new Date()
+
+    const diff = endDate.getTime() - startDate.getTime()
+    const seconds = Math.floor((diff / 1000) % 60)
+    const minutes = Math.floor((diff / (1000 * 60)) % 60)
+    const hours = Math.floor(diff / (1000 * 60 * 60))
+
+    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(
+        2,
+        '0'
+    )}:${String(seconds).padStart(2, '0')}`
 }

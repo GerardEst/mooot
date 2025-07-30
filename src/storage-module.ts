@@ -31,14 +31,16 @@ export async function loadStoredGame() {
             storedGame.at(-1).word.toUpperCase() !==
                 getTodayWord().toUpperCase()
 
+        const time = localStorage.getItem('todayTime') || null
+
         if (playerWon) {
-            fillModalStats(7 - gameboard.currentTry)
+            fillModalStats(7 - gameboard.currentTry, time)
             editLinkToDictionary(getTodayNiceWord())
             gameboard.setCurrentRow(0)
 
             showModal()
         } else if (playerLost) {
-            fillModalStats(0)
+            fillModalStats(0, time)
             editLinkToDictionary(getTodayNiceWord())
             gameboard.setCurrentRow(0)
 
@@ -87,6 +89,8 @@ export function checkCleanLocalStorage(localDate: string) {
     if (date.toDateString() !== today.toDateString()) {
         console.warn('Saved data is not from today, clearing')
         localStorage.removeItem('moootGameData')
+        localStorage.removeItem('timetrial-start')
+        localStorage.removeItem('todayTime')
 
         return true
     }
