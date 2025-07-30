@@ -76,9 +76,6 @@ export function runStorageCheck() {
         const storedGameTime = storedGameData[0]?.date
         const cleanedLocalStorage = checkCleanLocalStorage(storedGameTime)
         if (cleanedLocalStorage) cleanGameboard()
-    } else {
-        // Preventive cleaning if there is nothing stored
-        cleanGameboard()
     }
 }
 

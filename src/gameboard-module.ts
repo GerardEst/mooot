@@ -163,14 +163,12 @@ export function showHints(guess: string, target: string, row: number) {
     for (let i = 0; i < 5; i++) {
         const cell = document.querySelector(`#l${row}_${i + 1}`)
 
-        if (!cell) return
-
         const guessLetter = guessLetters[i]
 
         // Skip if this cell is already correct or absent
         if (
-            cell.classList.contains('correct') ||
-            cell.classList.contains('absent')
+            cell!.classList.contains('correct') ||
+            cell!.classList.contains('absent')
         ) {
             continue
         }
@@ -202,29 +200,8 @@ export function showHints(guess: string, target: string, row: number) {
         // If we've already accounted for all instances of this letter in the target,
         // this one should be marked as absent
         if (correctCount + presentCount >= targetCount) {
-            cell.classList.remove('present')
-            cell.classList.add('absent')
-
-            // Update keyboard key if no other instances are correct or present
-            const keyboardKey = document.querySelector(
-                `.keyboard__key[data-key="${guessLetter}"]`
-            )
-
-            if (!keyboardKey?.classList.contains('correct')) {
-                const hasOtherPresent = guessLetters.some((letter, index) => {
-                    if (letter !== guessLetter || index >= i) return false
-                    const otherCell = document.querySelector(
-                        `#l${row}_${index + 1}`
-                    )
-
-                    return otherCell?.classList.contains('present')
-                })
-
-                if (!hasOtherPresent) {
-                    keyboardKey?.classList.remove('present')
-                    keyboardKey?.classList.add('absent')
-                }
-            }
+            cell!.classList.remove('present')
+            cell!.classList.add('absent')
         }
     }
 }

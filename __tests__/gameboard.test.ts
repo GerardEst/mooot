@@ -32,6 +32,11 @@ vi.mock('../src/words-module.ts', async () => {
                 'SOUSE',
                 'HEART',
                 'TESTS',
+                'TOAST',
+                'OTTOO',
+                'OOTTO',
+                'STEEL',
+                'STEEE',
             ]
             return validWords.includes(word.toUpperCase())
         }),
@@ -43,6 +48,11 @@ const html = fs.readFileSync(path.resolve('./index.html'), 'utf8')
 
 describe('user can play', () => {
     beforeEach(() => {
+        setCurrentRow(1)
+        setCurrentColumn(1)
+        setCurrentWord('')
+        setCurrentTry(1)
+
         // Set up the actual DOM structure from index.html
         document.body.innerHTML = html
         localStorage.clear()
@@ -66,11 +76,6 @@ describe('user can play', () => {
     })
 
     it('should let user click on letters when there is space', () => {
-        // Setup: Reset game state
-        setCurrentRow(1)
-        setCurrentColumn(1)
-        setCurrentWord('')
-
         // Action: Click a letter
         letterClick('A')
 
@@ -86,11 +91,6 @@ describe('user can play', () => {
         expect(currentWord).toBe('AB')
     })
     it('should not add the letter if the row is full', () => {
-        // Setup: Fill the first row completely
-        setCurrentRow(1)
-        setCurrentColumn(1)
-        setCurrentWord('')
-
         letterClick('A')
         letterClick('B')
         letterClick('C')
@@ -110,11 +110,6 @@ describe('user can play', () => {
         expect(document.querySelector('#l1_5')).toHaveTextContent('E') // Last cell should still have E
     })
     it('should validate a correct word if user clicks enter and the row is full', () => {
-        // Setup: Fill the first row with a valid word (not the correct word)
-        setCurrentRow(1)
-        setCurrentColumn(1)
-        setCurrentWord('')
-
         // Use a word that exists in dictionary but is not the target word 'TESTS'
         letterClick('H')
         letterClick('O')
@@ -143,11 +138,6 @@ describe('user can play', () => {
         expect(hasHintClass).toBe(true)
     })
     it('should not validate a word if user clicks enter but the row is not full', () => {
-        // Setup: Fill only 3 letters in the first row
-        setCurrentRow(1)
-        setCurrentColumn(1)
-        setCurrentWord('')
-
         letterClick('A')
         letterClick('B')
         letterClick('C')
@@ -171,11 +161,6 @@ describe('user can play', () => {
         expect(cell1).not.toHaveClass('absent')
     })
     it('should write letters on the next row after user validates correctly a row', () => {
-        // Setup: Fill first row with the correct word 'TESTS'
-        setCurrentRow(1)
-        setCurrentColumn(1)
-        setCurrentWord('')
-
         letterClick('T')
         letterClick('E')
         letterClick('S')
@@ -207,10 +192,6 @@ describe('user can play', () => {
         expect(document.querySelector('#l1_5')).toHaveClass('correct')
     })
     it('should clean the row after user incorrectly validates a row', () => {
-        setCurrentRow(1)
-        setCurrentColumn(1)
-        setCurrentWord('')
-
         letterClick('Q')
         letterClick('X')
         letterClick('Z')
@@ -226,11 +207,6 @@ describe('user can play', () => {
         expect(document.querySelector('#l1_5')).toHaveTextContent('')
     })
     it('should write letters on the same row after user validates incorrectly a row', () => {
-        // Setup: Fill first row with an invalid word (not in dictionary)
-        setCurrentRow(1)
-        setCurrentColumn(1)
-        setCurrentWord('')
-
         letterClick('Q')
         letterClick('X')
         letterClick('Z')
@@ -257,9 +233,6 @@ describe('user can play', () => {
     it('should alter the status of the cells and keyboard when user validates a row with appropiated stats', () => {
         // Setup: Use a word that will give us different hint states compared to 'TESTS'
         // HEART vs TESTS: H(absent), E(correct), A(absent), R(absent), T(present)
-        setCurrentRow(1)
-        setCurrentColumn(1)
-        setCurrentWord('')
 
         letterClick('H')
         letterClick('E')
@@ -296,11 +269,6 @@ describe('user can play', () => {
         expect(keyT).toHaveClass('present')
     })
     it('should allow users to delete a letter in the active row', () => {
-        // Setup: Add some letters to the first row
-        setCurrentRow(1)
-        setCurrentColumn(1)
-        setCurrentWord('')
-
         letterClick('A')
         letterClick('B')
         letterClick('C')
@@ -327,11 +295,6 @@ describe('user can play', () => {
         expect(document.querySelector('#l1_1')).toHaveTextContent('A') // First letter should remain
     })
     it('should not delete anything if the row is empty', () => {
-        // Setup: Start with an empty row
-        setCurrentRow(1)
-        setCurrentColumn(1)
-        setCurrentWord('')
-
         // Verify initial empty state
         expect(currentWord).toBe('')
         expect(currentColumn).toBe(1)
@@ -355,12 +318,6 @@ describe('user can play', () => {
         expect(document.querySelector('#l1_1')).toBeEmptyDOMElement()
     })
     it('should not allow to validate if the row is not filled', () => {
-        // This test is similar to test #4 but focuses on the validation aspect
-        // Setup: Fill only part of the first row
-        setCurrentRow(1)
-        setCurrentColumn(1)
-        setCurrentWord('')
-
         letterClick('A')
         letterClick('B')
 
@@ -384,6 +341,146 @@ describe('user can play', () => {
         expect(document.querySelector('#l1_1')).not.toHaveClass('present')
         expect(document.querySelector('#l1_1')).not.toHaveClass('absent')
     })
+
+    describe('should validate correctly words with two equal letters', () => {
+        it('first letter is correct, second is present', () => {
+            letterClick('T')
+            letterClick('O')
+            letterClick('A')
+            letterClick('S')
+            letterClick('T')
+
+            // Verify setup
+            expect(currentWord).toBe('TOAST')
+            expect(currentColumn).toBe(6)
+
+            // Action: Validate the word
+            validateLastRow()
+
+            // Verification: Should proceed to next row, letters should be marked correctly
+            expect(currentRow).toBe(2)
+            expect(currentColumn).toBe(1)
+            expect(currentWord).toBe('')
+
+            // Check cell classes for correct hints
+            expect(document.querySelector('#l1_1')).toHaveClass('correct')
+            expect(document.querySelector('#l1_2')).toHaveClass('absent')
+            expect(document.querySelector('#l1_3')).toHaveClass('absent')
+            expect(document.querySelector('#l1_4')).toHaveClass('present')
+            expect(document.querySelector('#l1_5')).toHaveClass('present')
+
+            expect(
+                document.querySelector('.keyboard__key[data-key="T"]')
+            ).toHaveClass('correct')
+            expect(
+                document.querySelector('.keyboard__key[data-key="O"]')
+            ).toHaveClass('absent')
+            expect(
+                document.querySelector('.keyboard__key[data-key="A"]')
+            ).toHaveClass('absent')
+            expect(
+                document.querySelector('.keyboard__key[data-key="S"]')
+            ).toHaveClass('present')
+        })
+        it('both letters are present', () => {
+            letterClick('O')
+            letterClick('T')
+            letterClick('T')
+            letterClick('O')
+            letterClick('O')
+
+            validateLastRow()
+
+            expect(document.querySelector('#l1_1')).toHaveClass('absent')
+            expect(document.querySelector('#l1_2')).toHaveClass('present')
+            expect(document.querySelector('#l1_3')).toHaveClass('present')
+            expect(document.querySelector('#l1_4')).toHaveClass('absent')
+            expect(document.querySelector('#l1_5')).toHaveClass('absent')
+
+            expect(
+                document.querySelector('.keyboard__key[data-key="O"]')
+            ).toHaveClass('absent')
+            expect(
+                document.querySelector('.keyboard__key[data-key="T"]')
+            ).toHaveClass('present')
+        })
+
+        it('first letter is present, second is correct', () => {
+            letterClick('O')
+            letterClick('O')
+            letterClick('T')
+            letterClick('T')
+            letterClick('O')
+
+            validateLastRow()
+
+            expect(document.querySelector('#l1_1')).toHaveClass('absent')
+            expect(document.querySelector('#l1_2')).toHaveClass('absent')
+            expect(document.querySelector('#l1_3')).toHaveClass('present')
+            expect(document.querySelector('#l1_4')).toHaveClass('correct')
+            expect(document.querySelector('#l1_5')).toHaveClass('absent')
+
+            expect(
+                document.querySelector('.keyboard__key[data-key="O"]')
+            ).toHaveClass('absent')
+            expect(
+                document.querySelector('.keyboard__key[data-key="T"]')
+            ).toHaveClass('correct')
+        })
+
+        it('should mark excess duplicate letters as absent', () => {
+            letterClick('S')
+            letterClick('T')
+            letterClick('E')
+            letterClick('E')
+            letterClick('L')
+
+            validateLastRow()
+
+            expect(document.querySelector('#l1_1')).toHaveClass('present')
+            expect(document.querySelector('#l1_2')).toHaveClass('present')
+            expect(document.querySelector('#l1_3')).toHaveClass('present')
+            expect(document.querySelector('#l1_4')).toHaveClass('absent')
+            expect(document.querySelector('#l1_5')).toHaveClass('absent')
+            expect(
+                document.querySelector('.keyboard__key[data-key="S"]')
+            ).toHaveClass('present')
+            expect(
+                document.querySelector('.keyboard__key[data-key="T"]')
+            ).toHaveClass('present')
+            expect(
+                document.querySelector('.keyboard__key[data-key="E"]')
+            ).toHaveClass('present')
+            expect(
+                document.querySelector('.keyboard__key[data-key="L"]')
+            ).toHaveClass('absent')
+        })
+
+        it('test with multiple duplicate letters', () => {
+            letterClick('S')
+            letterClick('T')
+            letterClick('E')
+            letterClick('E')
+            letterClick('E')
+
+            validateLastRow()
+
+            expect(document.querySelector('#l1_1')).toHaveClass('present')
+            expect(document.querySelector('#l1_2')).toHaveClass('present')
+            expect(document.querySelector('#l1_3')).toHaveClass('present')
+            expect(document.querySelector('#l1_4')).toHaveClass('absent')
+            expect(document.querySelector('#l1_5')).toHaveClass('absent')
+            expect(
+                document.querySelector('.keyboard__key[data-key="S"]')
+            ).toHaveClass('present')
+            expect(
+                document.querySelector('.keyboard__key[data-key="T"]')
+            ).toHaveClass('present')
+            expect(
+                document.querySelector('.keyboard__key[data-key="E"]')
+            ).toHaveClass('present')
+        })
+    })
 })
 describe('endgame', () => {
     beforeEach(() => {
@@ -400,11 +497,6 @@ describe('endgame', () => {
         setCurrentWord('')
     })
     it('should show end modal if user validates a correct row', () => {
-        // Setup: Fill first row with the correct word 'TESTS'
-        setCurrentRow(1)
-        setCurrentColumn(1)
-        setCurrentWord('')
-
         letterClick('T')
         letterClick('E')
         letterClick('S')
@@ -424,11 +516,6 @@ describe('endgame', () => {
         expect(document.querySelector('#l1_1')).toHaveClass('correct')
     })
     it('should fill the modal stats correctly when win', () => {
-        // Setup: Fill first row with the correct word 'TESTS'
-        setCurrentRow(1)
-        setCurrentColumn(1)
-        setCurrentWord('')
-
         letterClick('T')
         letterClick('E')
         letterClick('S')
@@ -475,11 +562,6 @@ describe('endgame', () => {
     })
 
     it('should not be able to modify board after win', () => {
-        // Setup: Fill first row with the correct word 'TESTS'
-        setCurrentRow(1)
-        setCurrentColumn(1)
-        setCurrentWord('')
-
         letterClick('T')
         letterClick('E')
         letterClick('S')
