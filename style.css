@@ -23,16 +23,10 @@
     --button-danger-border-color: var(--present-border-color);
 }
 
-@font-face {
-    font-family: 'Montserrat';
-    src: url('/assets/fonts/Montserrat-VariableFont_wght.ttf')
-        format('truetype');
-}
-
 html,
 body {
     height: 100dvh;
-    font-family: 'Montserrat';
+    font-family: sans-serif;
     margin: 0;
 }
 
