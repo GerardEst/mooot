@@ -87,7 +87,7 @@ h3 {
 .lead {
     font-size: 1.25rem;
     color: #6c757d;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     font-weight: 300;
 }
 
@@ -141,10 +141,11 @@ p {
     padding: 2rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     transition: box-shadow 0.3s;
-}
-
-.option-card:hover {
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    & h1,
+    h2,
+    h3 {
+        margin: 0 0 1rem 0;
+    }
 }
 
 .cta-button {
@@ -214,7 +215,6 @@ p {
     border-radius: 6px;
     margin-top: 1rem;
     font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-    border-left: 3px solid #007bff;
 }
 
 .command-ref code {
@@ -233,12 +233,12 @@ p {
 
 .command-item {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     gap: 1rem;
     padding: 1rem;
     background: #f8f9fa;
     border-radius: 8px;
-    border-left: 4px solid #007bff;
 }
 
 .command-item code {
@@ -247,8 +247,6 @@ p {
     padding: 0.5rem 0.75rem;
     border-radius: 4px;
     font-weight: 600;
-    min-width: 140px;
-    text-align: center;
 }
 
 .command-item span {
@@ -259,6 +257,12 @@ p {
 /* Privacy Section */
 .privacy-box {
     margin: 2rem 0;
+    & h3 {
+        margin: 0 0 1rem 0;
+    }
+    & p {
+        margin: 0;
+    }
 }
 
 /* Code Styling */
@@ -273,12 +277,21 @@ code {
 
 /* Header Adjustments */
 header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     border-bottom: 1px solid #e9ecef;
     margin-bottom: 0;
-}
-
-header h1 {
-    margin: 0;
+    & .button {
+        background-color: var(--color-red-warning);
+        border: 1px solid var(--color-red-warning--border);
+    }
+    & a {
+        text-align: right;
+    }
+    & h1 {
+        margin: 0;
+    }
 }
 
 /* Responsive Design */
