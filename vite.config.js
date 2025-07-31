@@ -21,7 +21,7 @@ export default defineConfig({
         rollupOptions: {
             input: {
                 main: './index.html',
-                bot: './bot.html',
+                bot: './pages/bot/index.html',
             },
         },
     },
