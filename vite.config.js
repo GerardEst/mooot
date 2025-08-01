@@ -1,5 +1,6 @@
 /// <reference types="vitest/config" />
 import { defineConfig } from 'vite'
+import { resolve } from 'path'
 
 export default defineConfig({
     test: {
@@ -20,8 +21,8 @@ export default defineConfig({
     build: {
         rollupOptions: {
             input: {
-                main: './index.html',
-                bot: './bot/index.html',
+                main: resolve(__dirname, 'index.html'),
+                bot: resolve(__dirname, 'bot/index.html'),
             },
         },
     },
