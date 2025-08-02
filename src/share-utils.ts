@@ -36,19 +36,19 @@ export function shareResult(
     const resultPattern = buildResultPattern(open, tries)
     const shareTitle = `#mooot ${wordIndex}`
     const shareTries = tries === 7 ? 'X' : tries + '/6'
-    const resultText = `${shareTitle}\n🎯 ${shareTries}\n⏳ ${time}\n\n${resultPattern}\nhttps://mooot.cat`
+    const resultText = `${shareTitle}\n🎯 ${shareTries}\n⏳ ${time}\n\n${resultPattern}\nmooot.cat`
 
-    const noLinkPreview = resultText.replace(/https?:\/\//g, '$&\u200B')
+    //const noLinkPreview = resultText.replace(/https?:\/\//g, '$&\u200B')
     if (isMobileDevice() && navigator.share) {
         const shareData = {
-            text: noLinkPreview,
+            text: resultText,
         }
 
         navigator
             .share(shareData)
             .catch((error) => console.error('Error sharing:', error))
     } else {
-        copyToClipboard(noLinkPreview).catch((error) => {
+        copyToClipboard(resultText).catch((error) => {
             console.error('Error copying to clipboard:', error)
         })
         showFeedback('Resultat copiat')
