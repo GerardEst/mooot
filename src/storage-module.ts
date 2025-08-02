@@ -113,3 +113,12 @@ export function cleanGameboard() {
         key.classList.remove('correct', 'present', 'absent')
     })
 }
+
+export function getTodayTime() {
+    const time = localStorage.getItem('todayTime')
+    if (time) {
+        return time
+    } else {
+        return '00:00:00'
+    }
+}

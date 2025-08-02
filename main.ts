@@ -1,5 +1,9 @@
 import * as words from './src/words-module.js'
-import { runStorageCheck, loadStoredGame } from './src/storage-module.js'
+import {
+    runStorageCheck,
+    loadStoredGame,
+    getTodayTime,
+} from './src/storage-module.js'
 import * as gameboard from './src/gameboard-module.ts'
 import { updateMenuData } from './src/stats-module.js'
 import { shareResult } from './src/share-utils.ts'
@@ -48,10 +52,20 @@ function initDOMEvents() {
 
     // Share events
     shareButton!.addEventListener('click', () => {
-        shareResult(false, words.getTodayWordIndex(), gameboard.currentTry)
+        shareResult(
+            false,
+            words.getTodayWordIndex(),
+            gameboard.currentTry,
+            getTodayTime()
+        )
     })
     shareOpenButton!.addEventListener('click', () => {
-        shareResult(true, words.getTodayWordIndex(), gameboard.currentTry)
+        shareResult(
+            true,
+            words.getTodayWordIndex(),
+            gameboard.currentTry,
+            getTodayTime()
+        )
     })
 
     // Modal events

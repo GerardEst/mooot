@@ -27,10 +27,15 @@ function buildResultPattern(open = false, tries: number) {
     return result
 }
 
-export function shareResult(open = false, wordIndex: number, tries: number) {
+export function shareResult(
+    open = false,
+    wordIndex: number,
+    tries: number,
+    time: string
+) {
     const resultPattern = buildResultPattern(open, tries)
     const shareTitle = `#mooot ${wordIndex} ${tries === 7 ? 'X' : tries}/6`
-    const resultText = `${shareTitle}\n\n${resultPattern}\nhttps://mooot.cat`
+    const resultText = `${shareTitle}\n${time}\n\n${resultPattern}\nhttps://mooot.cat`
 
     const noLinkPreview = resultText.replace(/https?:\/\//g, '$&\u200B')
     if (isMobileDevice() && navigator.share) {
