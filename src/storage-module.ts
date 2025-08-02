@@ -116,9 +116,9 @@ export function cleanGameboard() {
 
 export function getTodayTime() {
     const time = localStorage.getItem('todayTime')
-    if (time) {
+    if (time !== '-') {
         return time
-    } else {
-        return '00:00:00'
     }
+
+    return '00:00:00'
 }
