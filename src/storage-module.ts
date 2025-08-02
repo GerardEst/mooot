@@ -116,7 +116,7 @@ export function cleanGameboard() {
 
 export function getTodayTime() {
     const time = localStorage.getItem('todayTime')
-    if (time !== '-') {
+    if (time && time !== '-') {
         return time
     }
 
