@@ -107,7 +107,7 @@ export function updateMenuData() {
 
 export function editLinkToDictionary(word: string) {
     const dicLink = document.querySelector('#dicLink')
-    const dicUrl = `https://diccionari.cat/cerca/gran-diccionari-de-la-llengua-catalana?search_api_fulltext_cust=${word}&search_api_fulltext_cust_1=&field_faceta_cerca_1=5065&show=title`
+    const dicUrl = `https://dlc.iec.cat/Results?DecEntradaText=${word}&AllInfoMorf=False&OperEntrada=0&OperDef=0&OperEx=0&OperSubEntrada=0&OperAreaTematica=0&InfoMorfType=0&OperCatGram=False&AccentSen=False&CurrentPage=0&refineSearch=0&Actualitzacions=False`
 
     if (!dicLink) {
         console.warn('Cant find dicLink')
