@@ -55,7 +55,7 @@ export function letterClick(letter: string) {
     ) {
         localStorage.setItem('timetrial-start', new Date().toISOString())
     }
-    if (currentColumn > 5) return
+    if (currentColumn > 6) return
     if (currentColumn === 3) {
         words.loadDiccData()
         words.loadWordsData()
@@ -76,7 +76,7 @@ export function deleteLastLetter() {
 }
 
 export function validateLastRow() {
-    if (currentWord.length !== 5) return
+    if (currentWord.length !== 6) return
 
     const rowStatus = checkWord(currentWord)
     if (rowStatus === 'correct') {
@@ -137,14 +137,14 @@ export function fillRow(row: storedRow) {
 }
 
 export function cleanRow(row: number) {
-    for (let i = 1; i <= 5; i++) updateCell(row, i, '')
+    for (let i = 1; i <= 6; i++) updateCell(row, i, '')
 }
 
 export function showHints(guess: string, target: string, row: number) {
     const guessLetters = guess.toUpperCase().split('')
     const targetLetters = target.toUpperCase().split('')
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 6; i++) {
         const letter = guessLetters[i]
 
         if (letter === targetLetters[i]) {
@@ -160,7 +160,7 @@ export function showHints(guess: string, target: string, row: number) {
     }
 
     // Second pass: fix incorrect "present" markings for duplicate letters
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 6; i++) {
         const cell = document.querySelector(`#l${row}_${i + 1}`)
 
         const guessLetter = guessLetters[i]

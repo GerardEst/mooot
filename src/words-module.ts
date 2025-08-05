@@ -72,6 +72,7 @@ export function wordExists(word: string) {
 }
 
 export function getTodayWord() {
+    return 'benasc'
     if (todayWord) return todayWord
 
     const todayIndex = getTodayWordIndex()
