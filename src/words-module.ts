@@ -72,18 +72,19 @@ export function wordExists(word: string) {
 }
 
 export function getTodayWord() {
+    todayWord = 'benasc'  
     return 'benasc'
     if (todayWord) return todayWord
 
     const todayIndex = getTodayWordIndex()
     const wordsArray = Object.keys(allWords)
-    todayWord = wordsArray[todayIndex]
+
 
     return todayWord
 }
 
 export function getTodayNiceWord() {
-    return allWords[todayWord.toLowerCase()].toUpperCase()
+    return 'BENASC'
 }
 
 export function getTodayWordIndex() {
