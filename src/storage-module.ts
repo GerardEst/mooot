@@ -52,7 +52,7 @@ export async function loadStoredGame() {
 }
 
 export function saveToLocalStorage(word: string, row: number) {
-    const dataToSave: storedRow = {
+    /*const dataToSave: storedRow = {
         word: word,
         row: row,
         date: new Date().toISOString(),
@@ -66,7 +66,7 @@ export function saveToLocalStorage(word: string, row: number) {
         localStorage.setItem('moootGameData', JSON.stringify(savedData))
     } else {
         localStorage.setItem('moootGameData', JSON.stringify([dataToSave]))
-    }
+    }*/
 }
 
 export function runStorageCheck() {
