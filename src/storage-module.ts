@@ -43,6 +43,7 @@ export async function loadStoredGame() {
             fillModalStats(0, time)
             editLinkToDictionary(getTodayNiceWord())
             gameboard.setCurrentRow(0)
+            gameboard.setCurrentTry(7)
 
             showModal()
         } else {

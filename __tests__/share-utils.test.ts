@@ -7,6 +7,7 @@ import {
 import * as domUtils from '../src/dom-utils'
 import fs from 'fs'
 import path from 'path'
+import { loadStoredGame } from '../src/storage-module'
 
 // Mock the dom-utils module
 vi.mock('../src/dom-utils', () => ({
@@ -218,5 +219,23 @@ describe('share-utils', () => {
                 )
             expect(patternLines).toHaveLength(3)
         })
+
+        // it('should show X/6 when loading from localStorage a failed game', async () => {
+        //     // Setup: Create losing game data (6 attempts, last word doesn't match)
+        //     const savedGameData = [
+        //         { word: 'HOUSE', row: 1, date: new Date().toISOString() },
+        //         { word: 'MOUSE', row: 2, date: new Date().toISOString() },
+        //         { word: 'LOUSE', row: 3, date: new Date().toISOString() },
+        //         { word: 'DOUSE', row: 4, date: new Date().toISOString() },
+        //         { word: 'ROUSE', row: 5, date: new Date().toISOString() },
+        //         { word: 'SOUSE', row: 6, date: new Date().toISOString() }, // Wrong answer on 6th try
+        //     ]
+        //     localStorage.setItem('moootGameData', JSON.stringify(savedGameData))
+
+        //     // Call the function
+        //     await loadStoredGame()
+
+        //     // TODO - Acabar aquet test d'una manera fiable
+        // })
     })
 })
