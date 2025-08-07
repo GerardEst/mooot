@@ -84,11 +84,9 @@ export function validateLastRow() {
         saveToLocalStorage(currentWord, currentRow)
 
         const time = calculateTime()
-
         localStorage.removeItem('timetrial-start')
         localStorage.setItem('todayTime', time)
 
-        console.log('Game finished in', time)
         updateStoredStats(7 - currentTry, time)
         fillModalStats(7 - currentTry, time)
         updateMenuData()
@@ -107,11 +105,14 @@ export function validateLastRow() {
         saveToLocalStorage(currentWord, currentRow)
 
         if (currentRow >= 6) {
-            updateStoredStats(0, null)
-            fillModalStats(0, null)
-            updateMenuData()
+            const time = calculateTime()
             localStorage.removeItem('timetrial-start')
-            localStorage.setItem('todayTime', '-')
+            localStorage.setItem('todayTime', time)
+
+            updateStoredStats(0, time)
+            fillModalStats(0, time)
+            updateMenuData()
+
             setTimeout(() => {
                 showModal()
                 editLinkToDictionary(words.getTodayNiceWord())

@@ -22,6 +22,11 @@ vi.mock('../src/words-module.ts', async () => {
         ...actual,
         getTodayWord: vi.fn(() => 'TESTS'),
         getTodayNiceWord: vi.fn(() => 'tests'),
+        wordExists: vi.fn((word) => {
+            // Return true for common valid words, false for invalid ones like QXZZZ
+            const validWords = ['HOUSE', 'TESTS']
+            return validWords.includes(word.toUpperCase())
+        }),
     }
 })
 vi.useFakeTimers()
@@ -159,6 +164,65 @@ describe('timetrial', () => {
 
         const timeElement = document.querySelector('#stats-time')
         expect(timeElement!.textContent).toBe('00:00:10')
+    })
+
+    it('should have a todayTime also when user loose', () => {
+        // Setup: Reset game state
+        setCurrentRow(1)
+        setCurrentColumn(1)
+        setCurrentWord('')
+
+        letterClick('H')
+        letterClick('O')
+        letterClick('U')
+        letterClick('S')
+        letterClick('E')
+        vi.advanceTimersByTime(1000)
+        validateLastRow()
+
+        letterClick('H')
+        letterClick('O')
+        letterClick('U')
+        letterClick('S')
+        letterClick('E')
+        vi.advanceTimersByTime(1000)
+        validateLastRow()
+
+        letterClick('H')
+        letterClick('O')
+        letterClick('U')
+        letterClick('S')
+        letterClick('E')
+        vi.advanceTimersByTime(1000)
+        validateLastRow()
+
+        letterClick('H')
+        letterClick('O')
+        letterClick('U')
+        letterClick('S')
+        letterClick('E')
+        vi.advanceTimersByTime(1000)
+        validateLastRow()
+
+        letterClick('H')
+        letterClick('O')
+        letterClick('U')
+        letterClick('S')
+        letterClick('E')
+        vi.advanceTimersByTime(1000)
+        validateLastRow()
+
+        letterClick('H')
+        letterClick('O')
+        letterClick('U')
+        letterClick('S')
+        letterClick('E')
+        vi.advanceTimersByTime(1000)
+        validateLastRow()
+
+        const todayTime = localStorage.getItem('todayTime')
+        expect(todayTime).toBeDefined()
+        expect(todayTime).toBe('00:00:06')
     })
 
     it('should show the correct average time', async () => {
