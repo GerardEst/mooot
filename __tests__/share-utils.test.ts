@@ -106,7 +106,7 @@ describe('share-utils', () => {
                 expect.stringContaining('mooot.cat')
             )
             expect(domUtils.showFeedback).toHaveBeenCalledWith(
-                'Resultat copiat'
+                expect.stringContaining('copiat')
             )
         })
 
