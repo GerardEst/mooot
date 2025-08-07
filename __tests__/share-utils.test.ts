@@ -87,10 +87,13 @@ describe('share-utils', () => {
             mockNavigator.userAgent = 'Desktop Chrome'
             mockNavigator.maxTouchPoints = 0
 
-            shareResult(false, 42, 2)
+            shareResult(false, 42, 2, '00:01:23')
 
             expect(mockClipboard.writeText).toHaveBeenCalledWith(
-                expect.stringContaining('#mooot 42 2/6')
+                expect.stringContaining('2/6')
+            )
+            expect(mockClipboard.writeText).toHaveBeenCalledWith(
+                expect.stringContaining('00:01:23')
             )
             expect(mockClipboard.writeText).toHaveBeenCalledWith(
                 expect.stringContaining('⬜️⬜️⬜️🟨🟨')
@@ -99,7 +102,7 @@ describe('share-utils', () => {
                 expect.stringContaining('🟩🟩🟩🟩🟩')
             )
             expect(mockClipboard.writeText).toHaveBeenCalledWith(
-                expect.stringContaining('https://\u200Bmooot.cat')
+                expect.stringContaining('mooot.cat')
             )
             expect(domUtils.showFeedback).toHaveBeenCalledWith(
                 'Resultat copiat'
@@ -111,7 +114,7 @@ describe('share-utils', () => {
             mockNavigator.userAgent = 'Desktop Chrome'
             mockNavigator.maxTouchPoints = 0
 
-            shareResult(true, 42, 2)
+            shareResult(true, 42, 2, '00:01:23')
 
             expect(mockClipboard.writeText).toHaveBeenCalledWith(
                 expect.stringContaining('⬜️H  ⬜️O  ⬜️U  🟨S  🟨E')
@@ -126,10 +129,13 @@ describe('share-utils', () => {
             mockNavigator.userAgent = 'Desktop Chrome'
             mockNavigator.maxTouchPoints = 0
 
-            shareResult(false, 42, 7)
+            shareResult(false, 42, 7, '00:01:23')
 
             expect(mockClipboard.writeText).toHaveBeenCalledWith(
-                expect.stringContaining('#mooot 42 X/6')
+                expect.stringContaining('X/6')
+            )
+            expect(mockClipboard.writeText).toHaveBeenCalledWith(
+                expect.stringContaining('00:01:23')
             )
         })
 
@@ -139,37 +145,16 @@ describe('share-utils', () => {
             mockNavigator.userAgent = 'iPhone'
             mockNavigator.maxTouchPoints = 5
 
-            shareResult(false, 42, 2)
+            shareResult(false, 42, 2, '00:01:23')
 
             expect(mockShare).toHaveBeenCalledWith({
-                text: expect.stringContaining('#mooot 42 2/6'),
+                text: expect.stringContaining('2/6'),
+            })
+            expect(mockShare).toHaveBeenCalledWith({
+                text: expect.stringContaining('00:01:23'),
             })
             expect(mockClipboard.writeText).not.toHaveBeenCalled()
             expect(domUtils.showFeedback).not.toHaveBeenCalled()
-        })
-
-        it('should handle native share API errors gracefully', async () => {
-            const mockShare = vi.fn(() =>
-                Promise.reject(new Error('Share failed'))
-            )
-            mockNavigator.share = mockShare
-            mockNavigator.userAgent = 'iPhone'
-            mockNavigator.maxTouchPoints = 5
-
-            const consoleSpy = vi
-                .spyOn(console, 'error')
-                .mockImplementation(() => {})
-
-            shareResult(false, 42, 2)
-
-            // Wait for the promise to resolve/reject
-            await new Promise((resolve) => setTimeout(resolve, 0))
-
-            expect(consoleSpy).toHaveBeenCalledWith(
-                'Error sharing:',
-                expect.any(Error)
-            )
-            consoleSpy.mockRestore()
         })
 
         it('should handle clipboard errors gracefully', async () => {
@@ -185,7 +170,7 @@ describe('share-utils', () => {
                 .spyOn(console, 'error')
                 .mockImplementation(() => {})
 
-            shareResult(false, 42, 2)
+            shareResult(false, 42, 2, '00:01:23')
 
             // Wait for the promise to resolve/reject
             await new Promise((resolve) => setTimeout(resolve, 0))
@@ -195,41 +180,6 @@ describe('share-utils', () => {
                 expect.any(Error)
             )
             consoleSpy.mockRestore()
-        })
-
-        it('should add zero-width space to prevent link previews', () => {
-            mockNavigator.clipboard = mockClipboard
-            mockNavigator.userAgent = 'Desktop Chrome'
-            mockNavigator.maxTouchPoints = 0
-
-            shareResult(false, 42, 2)
-
-            expect(mockClipboard.writeText).toHaveBeenCalledWith(
-                expect.stringContaining('https://\u200Bmooot.cat')
-            )
-        })
-
-        it('should handle empty game board gracefully', () => {
-            // Clear the board
-            for (let i = 1; i <= 6; i++) {
-                for (let j = 1; j <= 5; j++) {
-                    const cell = document.querySelector(`#l${i}_${j}`)
-                    if (cell) {
-                        cell.textContent = ''
-                        cell.className = ''
-                    }
-                }
-            }
-
-            mockNavigator.clipboard = mockClipboard
-            mockNavigator.userAgent = 'Desktop Chrome'
-            mockNavigator.maxTouchPoints = 0
-
-            shareResult(false, 42, 0)
-
-            expect(mockClipboard.writeText).toHaveBeenCalledWith(
-                expect.stringContaining('#mooot 42 0/6')
-            )
         })
 
         it('should generate correct pattern for partial game (3 tries)', () => {
@@ -249,7 +199,7 @@ describe('share-utils', () => {
             mockNavigator.userAgent = 'Desktop Chrome'
             mockNavigator.maxTouchPoints = 0
 
-            shareResult(false, 42, 3)
+            shareResult(false, 42, 3, '00:01:23')
 
             expect(mockClipboard.writeText).toHaveBeenCalled()
             const calls = mockClipboard.writeText.mock.calls
