@@ -72,7 +72,7 @@ export function fillModalStats(todayPoints: number, todayTime: string | null) {
             ? '😐 Fet!'
             : todayPoints === 1
             ? '😭 Pels pèls!'
-            : '☠️ Vaja...'
+            : '💩 Vaja...'
     )
     updateStat('word', getTodayNiceWord())
     updateStat('points', todayPoints.toString())
