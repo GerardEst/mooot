@@ -51,7 +51,7 @@ export function shareResult(
         copyToClipboard(resultText).catch((error) => {
             console.error('Error copying to clipboard:', error)
         })
-        showFeedback('Resultat copiat')
+        showFeedback("Resultat copiat, enganxa'l on vulguis compartir-lo")
     }
 }
 

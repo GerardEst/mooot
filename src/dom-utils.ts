@@ -54,7 +54,7 @@ export function showFeedback(message) {
 
     setTimeout(() => {
         feedbackElement.classList.remove('active')
-    }, 3000)
+    }, 4000)
 }
 
 // Modal
