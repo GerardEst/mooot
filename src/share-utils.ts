@@ -35,7 +35,7 @@ export function shareResult(
 ) {
     const resultPattern = buildResultPattern(open, tries)
     const shareTitle = `#mooot ${wordIndex}`
-    const shareTries = tries === 7 ? 'X' : tries + '/6'
+    const shareTries = tries === 7 ? 'X/6' : tries + '/6'
     const resultText = `${shareTitle}\n🎯 ${shareTries}\n⏳ ${time}\n\n${resultPattern}\nmooot.cat`
 
     //const noLinkPreview = resultText.replace(/https?:\/\//g, '$&\u200B')
