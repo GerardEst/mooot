@@ -31,7 +31,7 @@ function initDOMEvents() {
     const backspace = document.querySelector('.keyboard__back')
     const enter = document.querySelector('.keyboard__enter')
     const shareButton = document.querySelector('#share')
-    const shareOpenButton = document.querySelector('#shareOpen')
+    const shareHiddenButton = document.querySelector('#shareHidden')
     const modalCloseButton = document.querySelector('#modal-close')
     const menuCloseButton = document.querySelector('#closeMenu')
     const menuOpenButton = document.querySelector('#openMenu')
@@ -53,18 +53,17 @@ function initDOMEvents() {
     // Share events
     shareButton!.addEventListener('click', () => {
         shareResult(
-            false,
             words.getTodayWordIndex(),
             gameboard.currentTry,
             getTodayTime()
         )
     })
-    shareOpenButton!.addEventListener('click', () => {
+    shareHiddenButton!.addEventListener('click', () => {
         shareResult(
-            true,
             words.getTodayWordIndex(),
             gameboard.currentTry,
-            getTodayTime()
+            getTodayTime(),
+            true
         )
     })
 

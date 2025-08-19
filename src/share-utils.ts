@@ -1,6 +1,6 @@
 import { showFeedback } from './dom-utils'
 
-function buildResultPattern(open = false, tries: number) {
+function buildResultPattern(tries: number) {
     let result = ''
     for (let i = 1; i <= tries; i++) {
         const row: string[] = []
@@ -10,13 +10,11 @@ function buildResultPattern(open = false, tries: number) {
             if (!cell) continue
 
             if (cell.classList.contains('correct')) {
-                open ? row.push('🟩' + cell.textContent + '  ') : row.push('🟩')
+                row.push('🟩')
             } else if (cell.classList.contains('present')) {
-                open ? row.push('🟨' + cell.textContent + '  ') : row.push('🟨')
+                row.push('🟨')
             } else {
-                open
-                    ? row.push('⬜️' + cell.textContent + '  ')
-                    : row.push('⬜️')
+                row.push('⬜️')
             }
         }
         result += row.join('') + '\n'
@@ -28,15 +26,17 @@ function buildResultPattern(open = false, tries: number) {
 }
 
 export function shareResult(
-    open = false,
     wordIndex: number,
     tries: number,
-    time: string
+    time: string,
+    hidden = false
 ) {
-    const resultPattern = buildResultPattern(open, tries)
     const shareTitle = `#mooot ${wordIndex}`
     const shareTries = tries === 7 ? 'X/6' : tries + '/6'
-    const resultText = `${shareTitle}\n🎯 ${shareTries}\n⏳ ${time}\n\n${resultPattern}\nmooot.cat`
+    const resultPattern = `${buildResultPattern(tries)} \n`
+    const resultText = `${shareTitle}\n🎯 ${shareTries}\n⏳ ${time}\n\n${
+        hidden ? '__Quadrícula oculta 🫥__ \n' : resultPattern
+    }mooot.cat`
 
     //const noLinkPreview = resultText.replace(/https?:\/\//g, '$&\u200B')
     if (isMobileDevice() && navigator.share) {
