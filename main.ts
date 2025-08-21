@@ -10,18 +10,18 @@ import { shareResult } from './src/share-utils.ts'
 import { closeMenu, closeModal, openMenu } from './src/dom-utils.ts'
 
 // Add this at the top of your game initialization
-function checkTelegramContext() {
-    if (!window.Telegram?.WebApp) {
-        document.body.innerHTML = `
-      <div style="text-align: center; margin-top: 50px;">
-        <h2>🤖 Telegram Only</h2>
-        <p>This game only works inside Telegram!</p>
-        <p>Open it through your Telegram bot.</p>
-      </div>
-    `
-    }
-}
-checkTelegramContext()
+// function checkTelegramContext() {
+//     if (!window.Telegram?.WebApp) {
+//         document.body.innerHTML = `
+//       <div style="text-align: center; margin-top: 50px;">
+//         <h2>🤖 Telegram Only</h2>
+//         <p>This game only works inside Telegram!</p>
+//         <p>Open it through your Telegram bot.</p>
+//       </div>
+//     `
+//     }
+// }
+// checkTelegramContext()
 
 // We run storage checks at web loading and when visibilitychange
 // to ensure even with cached content and not closing pages, it refreshes every day
