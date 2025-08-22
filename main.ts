@@ -29,7 +29,7 @@ function checkTelegramContext() {
         `
     }
 }
-checkTelegramContext()
+// checkTelegramContext()
 
 // We run storage checks at web loading and when visibilitychange
 // to ensure even with cached content and not closing pages, it refreshes every day
