@@ -11,7 +11,14 @@ import { closeMenu, closeModal, openMenu } from './src/dom-utils.ts'
 
 // Add this at the top of your game itialization
 function checkTelegramContext() {
-    if (!window.Telegram?.WebApp) {
+    const initData = window.Telegram.WebApp.initDataUnsafe
+    const hasUserData = initData && (initData.user || initData.chat_type)
+
+    console.log('Telegram WebApp object exists:', !!window.Telegram.WebApp)
+    console.log('Has actual Telegram data:', hasUserData)
+    console.log('Init data:', initData)
+
+    if (!hasUserData) {
         console.log('Not from app')
         document.body.innerHTML = `
           <div style="text-align: center; margin-top: 50px;">
