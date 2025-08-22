@@ -13,13 +13,13 @@ import { closeMenu, closeModal, openMenu } from './src/dom-utils.ts'
 function checkTelegramContext() {
     if (!window.Telegram?.WebApp) {
         console.log('Not from app')
-        //     document.body.innerHTML = `
-        //   <div style="text-align: center; margin-top: 50px;">
-        //     <h2>🤖 Telegram Only</h2>
-        //     <p>This game only works inside Telegram!</p>
-        //     <p>Open it through your Telegram bot.</p>
-        //   </div>
-        // `
+        document.body.innerHTML = `
+          <div style="text-align: center; margin-top: 50px;">
+            <h2>🤖 Telegram Only</h2>
+            <p>This game only works inside Telegram!</p>
+            <p>Open it through your Telegram bot.</p>
+          </div>
+        `
     }
 }
 checkTelegramContext()
