@@ -35,7 +35,7 @@ export function shareResult(
     const shareTries = tries === 7 ? 'X/6' : tries + '/6'
     const resultPattern = `${buildResultPattern(tries)} \n`
     const resultText = `${shareTitle}\n🎯 ${shareTries}\n⏳ ${time}\n\n${
-        hidden ? '__Quadrícula oculta 🫥__ \n' : resultPattern
+        hidden ? 'Quadrícula oculta 🫥 \n' : resultPattern
     }mooot.cat`
 
     //const noLinkPreview = resultText.replace(/https?:\/\//g, '$&\u200B')
