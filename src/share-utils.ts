@@ -36,7 +36,7 @@ export function shareResult(
     const resultPattern = `${buildResultPattern(tries)} \n`
     const resultText = `${shareTitle}\n🎯 ${shareTries}\n⏳ ${time}\n\n${
         hidden ? 'Quadrícula oculta 🫥 \n' : resultPattern
-    }mooot.cat`
+    }t.me/mooot_cat_bot/mooot`
 
     //const noLinkPreview = resultText.replace(/https?:\/\//g, '$&\u200B')
     if (isMobileDevice() && navigator.share) {
