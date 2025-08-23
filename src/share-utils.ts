@@ -39,7 +39,7 @@ export function shareResult(
         hidden ? 'Quadrícula oculta 🫥 \n' : resultPattern
     }t.me/mooot_cat_bot/mooot`
 
-    window.Telegram.WebApp.switchInlineQuery('Test', ['groups'])
+    window.Telegram.WebApp.switchInlineQuery(resultText, ['groups'])
     //const noLinkPreview = resultText.replace(/https?:\/\//g, '$&\u200B')
     //if (isMobileDevice() && navigator.share) {
     // const shareData = {
@@ -50,10 +50,10 @@ export function shareResult(
     //     .share(shareData)
     //     .catch((error) => console.error('Error sharing:', error))
     // } else {
-    copyToClipboard(resultText).catch((error) => {
-        console.error('Error copying to clipboard:', error)
-    })
-    showFeedback("Resultat copiat, enganxa'l on vulguis compartir-lo")
+    // copyToClipboard(resultText).catch((error) => {
+    //     console.error('Error copying to clipboard:', error)
+    // })
+    // showFeedback("Resultat copiat, enganxa'l on vulguis compartir-lo")
     // }
 }
 
@@ -68,10 +68,10 @@ export function shareResult(
 //     )
 // }
 
-export async function copyToClipboard(text) {
-    if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(text)
-    } else {
-        throw new Error('Clipboard API not available')
-    }
-}
+// export async function copyToClipboard(text) {
+//     if (navigator.clipboard && window.isSecureContext) {
+//         await navigator.clipboard.writeText(text)
+//     } else {
+//         throw new Error('Clipboard API not available')
+//     }
+// }
