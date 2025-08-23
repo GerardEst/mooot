@@ -67,7 +67,7 @@ export async function shareResult(
         }
 
         // Call your backend
-        const response = await fetch('motbot.deno.dev/prepare-share', {
+        const response = await fetch('https://motbot.deno.dev/prepare-share', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
