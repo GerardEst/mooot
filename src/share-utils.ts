@@ -25,6 +25,7 @@ function buildResultPattern(tries: number) {
     return result
 }
 
+// TODO - Tot això ha de cambiar molt
 export function shareResult(
     wordIndex: number,
     tries: number,
@@ -38,21 +39,22 @@ export function shareResult(
         hidden ? 'Quadrícula oculta 🫥 \n' : resultPattern
     }t.me/mooot_cat_bot/mooot`
 
+    window.Telegram.WebApp.switchInlineQuery(['groups'])
     //const noLinkPreview = resultText.replace(/https?:\/\//g, '$&\u200B')
-    if (isMobileDevice() && navigator.share) {
-        const shareData = {
-            text: resultText,
-        }
-
-        navigator
-            .share(shareData)
-            .catch((error) => console.error('Error sharing:', error))
-    } else {
-        copyToClipboard(resultText).catch((error) => {
-            console.error('Error copying to clipboard:', error)
-        })
-        showFeedback("Resultat copiat, enganxa'l on vulguis compartir-lo")
+    //if (isMobileDevice() && navigator.share) {
+    const shareData = {
+        text: resultText,
     }
+
+    navigator
+        .share(shareData)
+        .catch((error) => console.error('Error sharing:', error))
+    // } else {
+    //     copyToClipboard(resultText).catch((error) => {
+    //         console.error('Error copying to clipboard:', error)
+    //     })
+    //     showFeedback("Resultat copiat, enganxa'l on vulguis compartir-lo")
+    // }
 }
 
 export function isMobileDevice() {
