@@ -39,16 +39,16 @@ export function shareResult(
         hidden ? 'Quadrícula oculta 🫥 \n' : resultPattern
     }t.me/mooot_cat_bot/mooot`
 
-    //window.Telegram.WebApp.switchInlineQuery(['groups'])
+    window.Telegram.WebApp.switchInlineQuery('Test', ['groups'])
     //const noLinkPreview = resultText.replace(/https?:\/\//g, '$&\u200B')
     //if (isMobileDevice() && navigator.share) {
-    const shareData = {
-        text: resultText,
-    }
+    // const shareData = {
+    //     text: resultText,
+    // }
 
-    navigator
-        .share(shareData)
-        .catch((error) => console.error('Error sharing:', error))
+    // navigator
+    //     .share(shareData)
+    //     .catch((error) => console.error('Error sharing:', error))
     // } else {
     //     copyToClipboard(resultText).catch((error) => {
     //         console.error('Error copying to clipboard:', error)
