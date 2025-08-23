@@ -78,20 +78,30 @@ function initDOMEvents() {
     })
 
     // Share events
-    shareButton!.addEventListener('click', () => {
-        shareResult(
+    shareButton!.addEventListener('click', async () => {
+        const buttonImg = shareButton?.querySelector('img')
+        buttonImg?.setAttribute('src', '/assets/loading.gif')
+
+        await shareResult(
             words.getTodayWordIndex(),
             gameboard.currentTry,
             getTodayTime()
         )
+
+        buttonImg?.setAttribute('src', '/assets/share.svg')
     })
-    shareHiddenButton!.addEventListener('click', () => {
-        shareResult(
+    shareHiddenButton!.addEventListener('click', async () => {
+        const buttonImg = shareHiddenButton?.querySelector('img')
+        buttonImg?.setAttribute('src', '/assets/loading.gif')
+
+        await shareResult(
             words.getTodayWordIndex(),
             gameboard.currentTry,
             getTodayTime(),
             true
         )
+
+        buttonImg?.setAttribute('src', '/assets/hidden_eye.svg')
     })
 
     // Modal events

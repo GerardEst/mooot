@@ -41,10 +41,9 @@ export async function shareResult(
             return
         }
 
-        const shareTitle = `#mooot ${wordIndex}`
         const shareTries = tries === 7 ? 'X/6' : tries + '/6'
         const resultPattern = `${buildResultPattern(tries)} \n`
-        const resultText = `${shareTitle}\n🎯 ${shareTries}\n⏳ ${time}\n\n${
+        const resultText = `🎯 ${shareTries}\n⏳ ${time}\n\n${
             hidden ? 'Quadrícula oculta 🫥 \n' : resultPattern
         }t.me/mooot_cat_bot/mooot`
 
@@ -57,13 +56,9 @@ export async function shareResult(
                 title: `Mooot`,
                 input_message_content: {
                     message_text: resultText,
-                    parse_mode: 'Markdown',
+                    parse_mode: 'HTML',
                 },
             },
-            allow_user_chats: false,
-            allow_bot_chats: false,
-            allow_group_chats: true,
-            allow_channel_chats: true,
         }
 
         // Call your backend
@@ -87,51 +82,10 @@ export async function shareResult(
         } else {
             alert('Share feature not available. Please update Telegram.')
         }
+        return true
     } catch (error) {
         console.error('Error sharing:', error)
         alert('Failed to share result')
+        return false
     }
-
-    // const shareTitle = `#mooot ${wordIndex}`
-    // const shareTries = tries === 7 ? 'X/6' : tries + '/6'
-    // const resultPattern = `${buildResultPattern(tries)} \n`
-    // const resultText = `${shareTitle}\n🎯 ${shareTries}\n⏳ ${time}\n\n${
-    //     hidden ? 'Quadrícula oculta 🫥 \n' : resultPattern
-    // }t.me/mooot_cat_bot/mooot`
-
-    // window.Telegram.WebApp.switchInlineQuery(resultText, ['groups'])
-    //const noLinkPreview = resultText.replace(/https?:\/\//g, '$&\u200B')
-    //if (isMobileDevice() && navigator.share) {
-    // const shareData = {
-    //     text: resultText,
-    // }
-
-    // navigator
-    //     .share(shareData)
-    //     .catch((error) => console.error('Error sharing:', error))
-    // } else {
-    // copyToClipboard(resultText).catch((error) => {
-    //     console.error('Error copying to clipboard:', error)
-    // })
-    // showFeedback("Resultat copiat, enganxa'l on vulguis compartir-lo")
-    // }
 }
-
-// export function isMobileDevice() {
-//     return (
-//         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-//             navigator.userAgent
-//         ) ||
-//         (navigator.maxTouchPoints &&
-//             navigator.maxTouchPoints > 2 &&
-//             /MacIntel/.test(navigator.platform))
-//     )
-// }
-
-// export async function copyToClipboard(text) {
-//     if (navigator.clipboard && window.isSecureContext) {
-//         await navigator.clipboard.writeText(text)
-//     } else {
-//         throw new Error('Clipboard API not available')
-//     }
-// }
