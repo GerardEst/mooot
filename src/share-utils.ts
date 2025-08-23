@@ -58,6 +58,7 @@ export async function shareResult(
                     message_text: resultText,
                     parse_mode: 'HTML',
                 },
+                disable_web_page_preview: true,
             },
         }
 
