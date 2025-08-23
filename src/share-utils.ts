@@ -26,20 +26,80 @@ function buildResultPattern(tries: number) {
 }
 
 // TODO - Tot això ha de cambiar molt
-export function shareResult(
+export async function shareResult(
     wordIndex: number,
     tries: number,
     time: string,
     hidden = false
 ) {
-    const shareTitle = `#mooot ${wordIndex}`
-    const shareTries = tries === 7 ? 'X/6' : tries + '/6'
-    const resultPattern = `${buildResultPattern(tries)} \n`
-    const resultText = `${shareTitle}\n🎯 ${shareTries}\n⏳ ${time}\n\n${
-        hidden ? 'Quadrícula oculta 🫥 \n' : resultPattern
-    }t.me/mooot_cat_bot/mooot`
+    try {
+        // Get the current user ID from Telegram
+        const userId = window.Telegram.WebApp.initDataUnsafe?.user?.id
 
-    window.Telegram.WebApp.switchInlineQuery(resultText, ['groups'])
+        if (!userId) {
+            alert('User ID not found')
+            return
+        }
+
+        const shareTitle = `#mooot ${wordIndex}`
+        const shareTries = tries === 7 ? 'X/6' : tries + '/6'
+        const resultPattern = `${buildResultPattern(tries)} \n`
+        const resultText = `${shareTitle}\n🎯 ${shareTries}\n⏳ ${time}\n\n${
+            hidden ? 'Quadrícula oculta 🫥 \n' : resultPattern
+        }t.me/mooot_cat_bot/mooot`
+
+        // Prepare the request body
+        const requestBody = {
+            user_id: userId,
+            result: {
+                type: 'article',
+                id: Date.now().toString(),
+                title: `Mooot`,
+                input_message_content: {
+                    message_text: resultText,
+                    parse_mode: 'Markdown',
+                },
+            },
+            allow_user_chats: false,
+            allow_bot_chats: false,
+            allow_group_chats: true,
+            allow_channel_chats: true,
+        }
+
+        // Call your backend
+        const response = await fetch('motbot.deno.dev/prepare-share', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestBody),
+        })
+
+        if (!response.ok) {
+            throw new Error('Failed to prepare message')
+        }
+
+        const data = await response.json()
+
+        // Now share the message using Telegram
+        if (window.Telegram.WebApp.shareMessage) {
+            window.Telegram.WebApp.shareMessage(data.id)
+        } else {
+            alert('Share feature not available. Please update Telegram.')
+        }
+    } catch (error) {
+        console.error('Error sharing:', error)
+        alert('Failed to share result')
+    }
+
+    // const shareTitle = `#mooot ${wordIndex}`
+    // const shareTries = tries === 7 ? 'X/6' : tries + '/6'
+    // const resultPattern = `${buildResultPattern(tries)} \n`
+    // const resultText = `${shareTitle}\n🎯 ${shareTries}\n⏳ ${time}\n\n${
+    //     hidden ? 'Quadrícula oculta 🫥 \n' : resultPattern
+    // }t.me/mooot_cat_bot/mooot`
+
+    // window.Telegram.WebApp.switchInlineQuery(resultText, ['groups'])
     //const noLinkPreview = resultText.replace(/https?:\/\//g, '$&\u200B')
     //if (isMobileDevice() && navigator.share) {
     // const shareData = {
