@@ -50,23 +50,23 @@ export function shareResult(
     //     .share(shareData)
     //     .catch((error) => console.error('Error sharing:', error))
     // } else {
-    //     copyToClipboard(resultText).catch((error) => {
-    //         console.error('Error copying to clipboard:', error)
-    //     })
-    //     showFeedback("Resultat copiat, enganxa'l on vulguis compartir-lo")
+    copyToClipboard(resultText).catch((error) => {
+        console.error('Error copying to clipboard:', error)
+    })
+    showFeedback("Resultat copiat, enganxa'l on vulguis compartir-lo")
     // }
 }
 
-export function isMobileDevice() {
-    return (
-        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-            navigator.userAgent
-        ) ||
-        (navigator.maxTouchPoints &&
-            navigator.maxTouchPoints > 2 &&
-            /MacIntel/.test(navigator.platform))
-    )
-}
+// export function isMobileDevice() {
+//     return (
+//         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+//             navigator.userAgent
+//         ) ||
+//         (navigator.maxTouchPoints &&
+//             navigator.maxTouchPoints > 2 &&
+//             /MacIntel/.test(navigator.platform))
+//     )
+// }
 
 export async function copyToClipboard(text) {
     if (navigator.clipboard && window.isSecureContext) {

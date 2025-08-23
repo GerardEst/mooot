@@ -8,6 +8,11 @@ import * as gameboard from './src/gameboard-module.ts'
 import { updateMenuData } from './src/stats-module.js'
 import { shareResult } from './src/share-utils.ts'
 import { closeMenu, closeModal, openMenu } from './src/dom-utils.ts'
+declare global {
+    interface Window {
+        Telegram: any
+    }
+}
 
 // Add this at the top of your game itialization
 function checkTelegramContext() {
