@@ -237,6 +237,8 @@ header {
     align-items: center;
     justify-content: center;
     gap: 1rem;
+    padding: 20px;
+    box-sizing: border-box;
     &.active {
         display: flex;
     }

@@ -80,7 +80,7 @@ function initDOMEvents() {
     // Share events
     shareButton!.addEventListener('click', async () => {
         const buttonImg = shareButton?.querySelector('img')
-        buttonImg?.setAttribute('src', '/assets/loading.gif')
+        buttonImg?.setAttribute('src', '/assets/loading.svg')
 
         await shareResult(
             words.getTodayWordIndex(),
@@ -88,11 +88,13 @@ function initDOMEvents() {
             getTodayTime()
         )
 
-        buttonImg?.setAttribute('src', '/assets/share.svg')
+        setTimeout(() => {
+            buttonImg?.setAttribute('src', '/assets/share.svg')
+        }, 1000)
     })
     shareHiddenButton!.addEventListener('click', async () => {
         const buttonImg = shareHiddenButton?.querySelector('img')
-        buttonImg?.setAttribute('src', '/assets/loading.gif')
+        buttonImg?.setAttribute('src', '/assets/loading.svg')
 
         await shareResult(
             words.getTodayWordIndex(),
@@ -101,7 +103,9 @@ function initDOMEvents() {
             true
         )
 
-        buttonImg?.setAttribute('src', '/assets/hidden_eye.svg')
+        setTimeout(() => {
+            buttonImg?.setAttribute('src', '/assets/hidden_eye.svg')
+        }, 1000)
     })
 
     // Modal events
