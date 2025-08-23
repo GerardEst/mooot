@@ -50,16 +50,7 @@ export async function shareResult(
         // Prepare the request body
         const requestBody = {
             user_id: userId,
-            result: {
-                type: 'article',
-                id: Date.now().toString(),
-                title: `Mooot`,
-                input_message_content: {
-                    message_text: resultText,
-                    parse_mode: 'HTML',
-                },
-                disable_web_page_preview: true,
-            },
+            message: resultText,
         }
 
         // Call your backend
