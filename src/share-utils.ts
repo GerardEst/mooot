@@ -39,7 +39,7 @@ export function shareResult(
         hidden ? 'Quadrícula oculta 🫥 \n' : resultPattern
     }t.me/mooot_cat_bot/mooot`
 
-    window.Telegram.WebApp.switchInlineQuery(['groups'])
+    //window.Telegram.WebApp.switchInlineQuery(['groups'])
     //const noLinkPreview = resultText.replace(/https?:\/\//g, '$&\u200B')
     //if (isMobileDevice() && navigator.share) {
     const shareData = {
