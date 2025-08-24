@@ -15,26 +15,12 @@ declare global {
 }
 
 // Add this at the top of your game itialization
-function checkTelegramContext() {
+function isFromTelegram() {
     const initData = window.Telegram.WebApp.initDataUnsafe
-    const hasUserData = initData && (initData.user || initData.chat_type)
+    const isFromTelegram = initData && (initData.user || initData.chat_type)
 
-    console.log('Telegram WebApp object exists:', !!window.Telegram.WebApp)
-    console.log('Has actual Telegram data:', hasUserData)
-    console.log('Init data:', initData)
-
-    if (!hasUserData) {
-        console.log('Not from app')
-        document.body.innerHTML = `
-          <div style="text-align: center; margin-top: 50px;">
-            <h2>🤖 Telegram Only</h2>
-            <p>This game only works inside Telegram!</p>
-            <p>Open it through your Telegram bot.</p>
-          </div>
-        `
-    }
+    return isFromTelegram
 }
-// checkTelegramContext()
 
 // We run storage checks at web loading and when visibilitychange
 // to ensure even with cached content and not closing pages, it refreshes every day
@@ -78,6 +64,10 @@ function initDOMEvents() {
     })
 
     // Share events
+    if (!isFromTelegram()) {
+        shareButton?.remove()
+        shareHiddenButton?.remove()
+    }
     shareButton!.addEventListener('click', async () => {
         const buttonImg = shareButton?.querySelector('img')
         buttonImg?.setAttribute('src', '/assets/loading.svg')
