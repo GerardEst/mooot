@@ -45,7 +45,7 @@ export async function shareResult(
         const resultPattern = `${buildResultPattern(tries)} \n`
         const resultText = `🎯 ${shareTries}\n⏳ ${time}\n\n${
             hidden ? 'Quadrícula oculta 🫥 \n' : resultPattern
-        }t.me/mooot_cat_bot/mooot`
+        }`
 
         // Prepare the request body
         const requestBody = {
