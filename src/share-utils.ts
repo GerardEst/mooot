@@ -44,7 +44,7 @@ export async function shareResult(
         const shareTitle = `#mooot ${wordIndex}`
         const shareTries = tries === 7 ? 'X/6' : tries + '/6'
         const resultPattern = `${buildResultPattern(tries)} \n`
-        const resultText = `${shareTitle}\n\n🎯 ${shareTries}\n⏳ ${time}\n\n${
+        const resultText = `${shareTitle}\n🎯 ${shareTries}\n⏳ ${time}\n\n${
             hidden ? 'Quadrícula oculta 🫥 \n' : resultPattern
         }`
 
