@@ -1,4 +1,5 @@
 import { showFeedback } from './dom-utils'
+import { supabase } from './supabase'
 
 function buildResultPattern(tries: number) {
     let result = ''
@@ -75,9 +76,22 @@ export async function shareResult(
         } else {
             alert('Share feature not available. Please update Telegram.')
         }
+
+        await supabase
+            .from('front_logs')
+            .insert([{ error: 'Correctly sharing proposal to user ' + userId }])
+            .select()
+
         return true
     } catch (error) {
-        console.error('Error sharing:', error)
+        // Log message if error is an object or a string
+        const errorMessage =
+            error instanceof Error ? error.message : String(error)
+        const { data } = await supabase
+            .from('front_logs')
+            .insert([{ error: 'Error sharing proposal: ' + errorMessage }])
+            .select()
+
         alert(error)
         return false
     }
