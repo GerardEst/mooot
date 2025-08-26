@@ -77,10 +77,11 @@ export async function shareResult(
             alert('Share feature not available. Please update Telegram.')
         }
 
-        await supabase
+        const { error } = await supabase
             .from('front_logs')
             .insert([{ error: 'Correctly sharing proposal to user ' + userId }])
             .select()
+        if (error) alert(JSON.stringify(error))
 
         return true
     } catch (error) {
