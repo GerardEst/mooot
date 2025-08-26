@@ -77,23 +77,23 @@ export async function shareResult(
             alert('Share feature not available. Please update Telegram.')
         }
 
-        const { error } = await supabase
-            .from('front_logs')
-            .insert([{ error: 'Correctly sharing proposal to user ' + userId }])
-            .select()
-        if (error) alert(JSON.stringify(error))
-
         return true
     } catch (error) {
         // Log message if error is an object or a string
         const errorMessage =
-            error instanceof Error ? error.message : String(error)
-        const { data } = await supabase
+            error instanceof Error ? error.message : JSON.parse(error)
+
+        const { data, error: logError } = await supabase
             .from('front_logs')
             .insert([{ error: 'Error sharing proposal: ' + errorMessage }])
-            .select()
 
-        alert(error)
+        if (logError) {
+            await supabase
+                .from('front_logs')
+                .insert([{ error: 'Error obtaining user error' }])
+        }
+
+        alert(error + '\n' + errorMessage)
         return false
     }
 }
