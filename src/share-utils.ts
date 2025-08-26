@@ -78,7 +78,7 @@ export async function shareResult(
         return true
     } catch (error) {
         console.error('Error sharing:', error)
-        alert('Failed to share result')
+        alert(error)
         return false
     }
 }
