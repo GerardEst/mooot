@@ -23,6 +23,7 @@ export default defineConfig({
             input: {
                 main: resolve(__dirname, 'index.html'),
                 bot: resolve(__dirname, 'bot/index.html'),
+                joc: resolve(__dirname, 'joc/index.html'),
             },
         },
     },
