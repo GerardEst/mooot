@@ -22,7 +22,6 @@ export default defineConfig({
         rollupOptions: {
             input: {
                 main: resolve(__dirname, 'index.html'),
-                bot: resolve(__dirname, 'bot/index.html'),
                 joc: resolve(__dirname, 'joc/index.html'),
             },
         },
