@@ -37,7 +37,11 @@ async function init() {
     updateMenuData()
 }
 
-init()
+if (isFromTelegram()) {
+    init()
+} else {
+    alert('Només es pot jugar des de Telegram')
+}
 
 function initDOMEvents() {
     const keys = document.querySelectorAll('.keyboard__key')
