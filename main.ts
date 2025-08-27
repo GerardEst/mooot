@@ -22,6 +22,12 @@ function isFromTelegram() {
     return isFromTelegram
 }
 
+if (isFromTelegram()) {
+    init()
+} else {
+    window.location.href = window.location.origin + '/bot'
+}
+
 // We run storage checks at web loading and when visibilitychange
 // to ensure even with cached content and not closing pages, it refreshes every day
 runStorageCheck()
@@ -35,12 +41,6 @@ async function init() {
     initDOMEvents()
     loadStoredGame()
     updateMenuData()
-}
-
-if (isFromTelegram()) {
-    init()
-} else {
-    alert('Només es pot jugar des de Telegram')
 }
 
 function initDOMEvents() {
