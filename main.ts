@@ -24,8 +24,8 @@ function isFromTelegram() {
 
 if (isFromTelegram()) {
     init()
-} else {
-    window.location.href = window.location.origin + '/bot'
+} else if (!window.location.pathname.includes('/bot')) {
+    window.location.replace(window.location.origin + '/bot')
 }
 
 // We run storage checks at web loading and when visibilitychange
