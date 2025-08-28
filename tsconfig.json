@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "target": "ES2020",
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "strict": true,
+        "allowJs": true,
+        "allowImportingTsExtensions": true,
+        "skipLibCheck": true,
+        "types": ["vitest/globals", "@testing-library/jest-dom"]
+    },
+    "exclude": ["node_modules", "dist"]
+}

@@ -31,7 +31,7 @@ vi.mock('../src/words-module.ts', async () => {
 })
 vi.useFakeTimers()
 
-const html = fs.readFileSync(path.resolve('./index.html'), 'utf8')
+const html = fs.readFileSync(path.resolve('./joc/index.html'), 'utf8')
 
 describe('timetrial', () => {
     beforeEach(() => {

@@ -29,7 +29,7 @@ vi.mock('../src/words-module.ts', async () => {
 vi.useFakeTimers()
 
 // Load the actual HTML structure
-const html = fs.readFileSync(path.resolve('./index.html'), 'utf8')
+const html = fs.readFileSync(path.resolve('./joc/index.html'), 'utf8')
 
 describe('cleanGameOnNewDays', () => {
     beforeEach(() => {

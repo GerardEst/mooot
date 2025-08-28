@@ -51,8 +51,11 @@ function initDOMEvents() {
     const menuOpenButton = document.querySelector('#openMenu')
 
     keys!.forEach((key) => {
-        key.addEventListener('click', (event) => {
-            gameboard.letterClick(event.target.dataset.key)
+        key.addEventListener('click', (event: Event) => {
+            const target = event.target as HTMLElement
+            if (target.dataset.key) {
+                gameboard.letterClick(target.dataset.key)
+            }
         })
     })
 
