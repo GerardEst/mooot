@@ -22,12 +22,9 @@ function isFromTelegram() {
     return isFromTelegram
 }
 
-if (isFromTelegram()) {
-    init()
-}
-
 // We run storage checks at web loading and when visibilitychange
 // to ensure even with cached content and not closing pages, it refreshes every day
+// It needs to run before everything else, to clean storage if necessary on new days
 runStorageCheck()
 document.addEventListener('visibilitychange', () => {
     if (!document.hidden) {
@@ -40,6 +37,8 @@ async function init() {
     loadStoredGame()
     updateMenuData()
 }
+
+if (isFromTelegram()) init()
 
 function initDOMEvents() {
     const keys = document.querySelectorAll('.keyboard__key')

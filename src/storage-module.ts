@@ -74,8 +74,8 @@ export function runStorageCheck() {
     const storedGame = localStorage.getItem('moootGameData')
     if (storedGame) {
         const storedGameData = JSON.parse(storedGame)
-        const storedGameTime = storedGameData[0]?.date
-        const cleanedLocalStorage = checkCleanLocalStorage(storedGameTime)
+        const storedGameDate = storedGameData[0]?.date
+        const cleanedLocalStorage = checkCleanLocalStorage(storedGameDate)
         if (cleanedLocalStorage) cleanGameboard()
     }
 }
