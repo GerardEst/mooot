@@ -23,6 +23,7 @@ export default defineConfig({
             input: {
                 main: resolve(__dirname, 'index.html'),
                 joc: resolve(__dirname, 'joc/index.html'),
+                trofeus: resolve(__dirname, 'trofeus/index.html'),
             },
         },
     },
