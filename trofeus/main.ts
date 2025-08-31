@@ -32,11 +32,17 @@ function waitForTelegram() {
         if (window.Telegram?.WebApp) {
             resolve()
         } else {
+            let attempts = 0
+            const maxAttempts = 30 // 3 seconds max
             const checkTelegram = () => {
+                attempts++
                 if (window.Telegram?.WebApp) {
                     resolve()
-                } else {
+                } else if (attempts < maxAttempts) {
                     setTimeout(checkTelegram, 100)
+                } else {
+                    log({ message: 'Telegram WebApp not available after 3s' })
+                    resolve()
                 }
             }
             setTimeout(checkTelegram, 100)
