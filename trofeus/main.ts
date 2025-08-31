@@ -27,11 +27,13 @@ if (isFromTelegram() || isDev) {
     const activeUserId =
         window.Telegram?.WebApp?.initDataUnsafe.user?.id || devUserId
 
-    console.log({ devUserId })
+    log({ details: devUserId })
     loadTrophiesFromUser(activeUserId)
 }
 
 async function loadTrophiesFromUser(userId: number) {
+    log({ details: 'wtf' })
+
     const trophies = await getTrophiesFromUser(userId)
     if (!trophies) return
 
