@@ -1,28 +1,35 @@
 import { supabase } from '../src/supabase'
 
-console.log('trofeus')
+const isDev = import.meta.env.DEV!
+const devUserId = import.meta.env.VITE_DEV_USER_ID!
 
 function isFromTelegram() {
+    if (!window.Telegram) return false
+
     const initData = window.Telegram.WebApp.initDataUnsafe
     const isFromTelegram = initData && (initData.user || initData.chat_type)
+
+    document.querySelector('userId')!.textContent = initData.user
 
     return isFromTelegram
 }
 
-if (isFromTelegram()) {
+if (isFromTelegram() || isDev) {
     // Call per pillar els premis de l'usuari
     // Potser només en aquet xat, potser a tots?
-    putTrophies()
+    const activeUserId =
+        window.Telegram?.WebApp?.initDataUnsafe.user_id || devUserId
+
+    console.log({ devUserId })
+    loadTrophiesFromUser(activeUserId)
 }
 
-async function putTrophies() {
-    const trophies = await getTrophiesFromUser(
-        window.Telegram.WebApp.initDataUnsafe.user_id
-    )
+async function loadTrophiesFromUser(userId: number) {
+    const trophies = await getTrophiesFromUser(userId)
     if (!trophies) return
 
     for (let trohpy of trophies) {
-        const trophyDOM = document.querySelector(`#${trohpy.trophy_id}`)
+        const trophyDOM = document.querySelector(`#t_${trohpy.trophy_id}`)
         trophyDOM?.classList.add('active')
     }
 
@@ -30,10 +37,15 @@ async function putTrophies() {
 }
 
 async function getTrophiesFromUser(userId: number) {
+    console.log({ userId })
     let { data: trophies_chats, error } = await supabase
         .from('trophies_chats')
         .select('*')
         .eq('user_id', userId)
+
+    if (error) {
+        console.error(error)
+    }
 
     return trophies_chats
 }
