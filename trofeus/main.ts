@@ -7,7 +7,7 @@ const devUserId = import.meta.env.VITE_DEV_USER_ID!
 log({ message: 'hola' })
 
 function isFromTelegram() {
-    log({ details: window.Telegram })
+    log({ message: '0', details: window.Telegram })
 
     if (!window.Telegram) return false
 
@@ -52,14 +52,14 @@ function waitForTelegram() {
 
 async function init() {
     await waitForTelegram()
-    
+
     if (isFromTelegram() || isDev) {
         // Call per pillar els premis de l'usuari
         // Potser només en aquet xat, potser a tots?
         const activeUserId =
             window.Telegram?.WebApp?.initDataUnsafe.user?.id || devUserId
 
-        log({ details: devUserId })
+        log({ message: '1', details: devUserId })
         loadTrophiesFromUser(activeUserId)
     }
 }
