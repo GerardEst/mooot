@@ -10,12 +10,6 @@ function getTelegramUserID() {
     const initData = window.Telegram.WebApp.initDataUnsafe
     const userId = initData.user.id
 
-    log({ message: 'Check isFromTelegram', details: initData })
-
-    if (initData.user) {
-        document.querySelector('#userId')!.textContent = userId.toString()
-    }
-
     return userId
 }
 
@@ -33,7 +27,6 @@ function waitForTelegram() {
                 } else if (attempts < maxAttempts) {
                     setTimeout(checkTelegram, 100)
                 } else {
-                    log({ message: 'Telegram WebApp not available after 3s' })
                     resolve()
                 }
             }
@@ -48,9 +41,7 @@ async function init() {
     const userId = getTelegramUserID()
 
     if (userId || isDev) {
-        log({ message: 'User id', details: userId })
-
-        loadTrophiesFromUser(userId)
+        loadTrophiesFromUser(userId || devUserId)
     }
 }
 
