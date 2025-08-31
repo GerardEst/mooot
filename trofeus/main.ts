@@ -7,7 +7,11 @@ const devUserId = import.meta.env.VITE_DEV_USER_ID!
 log({ message: 'hola' })
 
 function isFromTelegram() {
+    log({ details: window.Telegram })
+
     if (!window.Telegram) return false
+
+    log({ details: window.Telegram.WebApp })
 
     const initData = window.Telegram.WebApp.initDataUnsafe
 
