@@ -4,6 +4,8 @@ import { supabase } from '../src/supabase'
 const isDev = import.meta.env.DEV!
 const devUserId = import.meta.env.VITE_DEV_USER_ID!
 
+log({ message: 'hola' })
+
 function isFromTelegram() {
     if (!window.Telegram) return false
 
