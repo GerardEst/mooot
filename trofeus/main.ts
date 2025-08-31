@@ -9,7 +9,9 @@ function isFromTelegram() {
     const initData = window.Telegram.WebApp.initDataUnsafe
     const isFromTelegram = initData && (initData.user || initData.chat_type)
 
-    document.querySelector('userId')!.textContent = initData.user
+    if (initData.user) {
+        document.querySelector('userId')!.textContent = initData.user.id.toString()
+    }
 
     return isFromTelegram
 }
@@ -18,7 +20,7 @@ if (isFromTelegram() || isDev) {
     // Call per pillar els premis de l'usuari
     // Potser només en aquet xat, potser a tots?
     const activeUserId =
-        window.Telegram?.WebApp?.initDataUnsafe.user_id || devUserId
+        window.Telegram?.WebApp?.initDataUnsafe.user?.id || devUserId
 
     console.log({ devUserId })
     loadTrophiesFromUser(activeUserId)
