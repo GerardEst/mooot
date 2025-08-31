@@ -4,27 +4,19 @@ import { supabase } from '../src/supabase'
 const isDev = import.meta.env.DEV!
 const devUserId = import.meta.env.VITE_DEV_USER_ID!
 
-log({ message: 'hola' })
-
-function isFromTelegram() {
-    log({ message: '0', details: window.Telegram })
-
+function getTelegramUserID() {
     if (!window.Telegram) return false
 
-    log({ details: window.Telegram.WebApp })
-
     const initData = window.Telegram.WebApp.initDataUnsafe
+    const userId = initData.user.id
 
     log({ message: 'Check isFromTelegram', details: initData })
 
-    const isFromTelegram = initData && (initData.user || initData.chat_type)
-
     if (initData.user) {
-        document.querySelector('userId')!.textContent =
-            initData.user.id.toString()
+        document.querySelector('#userId')!.textContent = userId.toString()
     }
 
-    return isFromTelegram
+    return userId
 }
 
 function waitForTelegram() {
@@ -53,14 +45,12 @@ function waitForTelegram() {
 async function init() {
     await waitForTelegram()
 
-    if (isFromTelegram() || isDev) {
-        // Call per pillar els premis de l'usuari
-        // Potser només en aquet xat, potser a tots?
-        const activeUserId =
-            window.Telegram?.WebApp?.initDataUnsafe.user?.id || devUserId
+    const userId = getTelegramUserID()
 
-        log({ message: '1', details: devUserId })
-        loadTrophiesFromUser(activeUserId)
+    if (userId || isDev) {
+        log({ message: 'User id', details: userId })
+
+        loadTrophiesFromUser(userId)
     }
 }
 
