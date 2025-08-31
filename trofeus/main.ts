@@ -1,3 +1,4 @@
+import { log } from '../src/logs'
 import { supabase } from '../src/supabase'
 
 const isDev = import.meta.env.DEV!
@@ -7,10 +8,14 @@ function isFromTelegram() {
     if (!window.Telegram) return false
 
     const initData = window.Telegram.WebApp.initDataUnsafe
+
+    log({ message: 'Check isFromTelegram', details: initData })
+
     const isFromTelegram = initData && (initData.user || initData.chat_type)
 
     if (initData.user) {
-        document.querySelector('userId')!.textContent = initData.user.id.toString()
+        document.querySelector('userId')!.textContent =
+            initData.user.id.toString()
     }
 
     return isFromTelegram

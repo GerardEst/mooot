@@ -1,4 +1,5 @@
 import { showFeedback } from './dom-utils'
+import { log } from './logs'
 import { supabase } from './supabase'
 
 function buildResultPattern(tries: number) {
@@ -83,15 +84,7 @@ export async function shareResult(
         const errorMessage =
             error instanceof Error ? error.message : JSON.parse(error)
 
-        const { data, error: logError } = await supabase
-            .from('front_logs')
-            .insert([{ error: 'Error sharing proposal: ' + errorMessage }])
-
-        if (logError) {
-            await supabase
-                .from('front_logs')
-                .insert([{ error: 'Error obtaining user error' }])
-        }
+        log(errorMessage)
 
         alert(error + '\n' + errorMessage)
         return false
