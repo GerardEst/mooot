@@ -27,15 +27,38 @@ function isFromTelegram() {
     return isFromTelegram
 }
 
-if (isFromTelegram() || isDev) {
-    // Call per pillar els premis de l'usuari
-    // Potser només en aquet xat, potser a tots?
-    const activeUserId =
-        window.Telegram?.WebApp?.initDataUnsafe.user?.id || devUserId
-
-    log({ details: devUserId })
-    loadTrophiesFromUser(activeUserId)
+function waitForTelegram() {
+    return new Promise<void>((resolve) => {
+        if (window.Telegram?.WebApp) {
+            resolve()
+        } else {
+            const checkTelegram = () => {
+                if (window.Telegram?.WebApp) {
+                    resolve()
+                } else {
+                    setTimeout(checkTelegram, 100)
+                }
+            }
+            setTimeout(checkTelegram, 100)
+        }
+    })
 }
+
+async function init() {
+    await waitForTelegram()
+    
+    if (isFromTelegram() || isDev) {
+        // Call per pillar els premis de l'usuari
+        // Potser només en aquet xat, potser a tots?
+        const activeUserId =
+            window.Telegram?.WebApp?.initDataUnsafe.user?.id || devUserId
+
+        log({ details: devUserId })
+        loadTrophiesFromUser(activeUserId)
+    }
+}
+
+init()
 
 async function loadTrophiesFromUser(userId: number) {
     log({ details: 'wtf' })
