@@ -1,4 +1,3 @@
-import { log } from '../src/logs'
 import { supabase } from '../src/supabase'
 
 const isDev = import.meta.env.DEV!
@@ -48,8 +47,6 @@ async function init() {
 init()
 
 async function loadTrophiesFromUser(userId: number) {
-    log({ details: 'wtf' })
-
     const trophies = await getTrophiesFromUser(userId)
     if (!trophies) return
 

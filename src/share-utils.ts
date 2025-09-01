@@ -1,6 +1,4 @@
-import { showFeedback } from './dom-utils'
-import { log } from './logs'
-import { supabase } from './supabase'
+import { supalog } from './logs'
 
 function buildResultPattern(tries: number) {
     let result = ''
@@ -80,13 +78,10 @@ export async function shareResult(
 
         return true
     } catch (error) {
-        // Log message if error is an object or a string
-        const errorMessage =
-            error instanceof Error ? error.message : JSON.parse(error)
+        const userId = window.Telegram.WebApp.initDataUnsafe?.user?.id
 
-        log(errorMessage)
+        supalog({ message: 'Error sharing', details: error, userId })
 
-        alert(error + '\n' + errorMessage)
         return false
     }
 }
