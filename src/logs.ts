@@ -3,13 +3,16 @@ import { supabase } from './supabase'
 interface Log {
     type?: string
     message?: string
-    details?: any
+    details?: Object
     userId?: number
 }
-export async function supalog({ type, message, details }: Log) {
+export async function supalog({ type, message, details, userId }: Log) {
     const { data, error: logError } = await supabase.from('front_logs').insert([
         {
-            error: message + ' | ' + JSON.stringify(details),
+            type,
+            error: message,
+            details,
+            user_id: userId,
         },
     ])
 

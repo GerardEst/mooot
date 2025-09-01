@@ -25,7 +25,6 @@ function buildResultPattern(tries: number) {
     return result
 }
 
-// TODO - Tot això ha de cambiar molt
 export async function shareResult(
     wordIndex: number,
     tries: number,
@@ -64,7 +63,7 @@ export async function shareResult(
         })
 
         if (!response.ok) {
-            throw new Error('Failed to prepare message')
+            throw { message: 'Failed to prepare message', details: response }
         }
 
         const data = await response.json()
@@ -77,10 +76,12 @@ export async function shareResult(
         }
 
         return true
-    } catch (error) {
-        const userId = window.Telegram.WebApp.initDataUnsafe?.user?.id
-
-        supalog({ message: 'Error sharing', details: error, userId })
+    } catch (error: any) {
+        supalog({
+            message: error.message || 'Error sharing game',
+            details: error.details || error,
+            userId: window.Telegram.WebApp.initDataUnsafe?.user?.id,
+        })
 
         return false
     }
