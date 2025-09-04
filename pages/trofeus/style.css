@@ -6,7 +6,6 @@
 
 body {
     font-family: sans-serif;
-    width: 500px;
     margin: auto;
 }
 
@@ -18,6 +17,7 @@ body {
     gap: 0.5rem;
     width: fit-content;
     margin-bottom: 1rem;
+    margin: auto;
 
     & .header {
         padding-left: var(--left-space);

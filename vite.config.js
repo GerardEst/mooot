@@ -3,6 +3,10 @@ import { defineConfig } from 'vite'
 import { resolve } from 'path'
 
 export default defineConfig({
+    // Serve the app from the `pages/` directory in dev/preview
+    root: resolve(__dirname, 'pages'),
+    // Keep using the repository-level public directory for assets
+    publicDir: resolve(__dirname, 'public'),
     test: {
         environment: 'jsdom',
         setupFiles: ['./test-setup.ts'],
@@ -21,9 +25,9 @@ export default defineConfig({
     build: {
         rollupOptions: {
             input: {
-                main: resolve(__dirname, 'index.html'),
-                joc: resolve(__dirname, 'joc/index.html'),
-                trofeus: resolve(__dirname, 'trofeus/index.html'),
+                main: resolve(__dirname, 'pages/index.html'),
+                joc: resolve(__dirname, 'pages/joc/index.html'),
+                trofeus: resolve(__dirname, 'pages/trofeus/index.html'),
             },
         },
     },

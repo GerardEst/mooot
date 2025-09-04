@@ -44,7 +44,7 @@ vi.mock('../src/words-module.ts', async () => {
 })
 
 // Load the actual HTML structure
-const html = fs.readFileSync(path.resolve('./joc/index.html'), 'utf8')
+const html = fs.readFileSync(path.resolve('./pages/joc/index.html'), 'utf8')
 
 describe('user can play', () => {
     beforeEach(() => {

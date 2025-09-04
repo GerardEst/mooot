@@ -1,13 +1,13 @@
-import * as words from '../src/words-module.js'
+import * as words from '../../src/words-module.js'
 import {
     runStorageCheck,
     loadStoredGame,
     getTodayTime,
-} from '../src/storage-module.js'
-import * as gameboard from '../src/gameboard-module.ts'
-import { updateMenuData } from '../src/stats-module.js'
-import { shareResult } from '../src/share-utils.ts'
-import { closeMenu, closeModal, openMenu } from '../src/dom-utils.ts'
+} from '../../src/storage-module.js'
+import * as gameboard from '../../src/gameboard-module.ts'
+import { updateMenuData } from '../../src/stats-module.js'
+import { shareResult } from '../../src/share-utils.ts'
+import { closeMenu, closeModal, openMenu } from '../../src/dom-utils.ts'
 
 declare global {
     interface Window {

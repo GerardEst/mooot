@@ -1,4 +1,4 @@
-import { supabase } from '../src/supabase'
+import { supabase } from '../../src/supabase'
 
 const isDev = import.meta.env.DEV!
 const devUserId = import.meta.env.VITE_DEV_USER_ID!
