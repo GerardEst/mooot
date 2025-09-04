@@ -7,7 +7,13 @@
         "allowJs": true,
         "allowImportingTsExtensions": true,
         "skipLibCheck": true,
-        "types": ["vitest/globals", "@testing-library/jest-dom"],
+        "experimentalDecorators": true,
+        "useDefineForClassFields": false,
+        "types": [
+            "vitest/globals",
+            "@testing-library/jest-dom",
+            "vite/client"
+        ],
         "baseUrl": ".",
         "paths": {
             "@src/*": ["src/*"]
