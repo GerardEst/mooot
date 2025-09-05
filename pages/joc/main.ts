@@ -9,6 +9,8 @@ import { updateMenuData } from '@src/stats-module.js'
 import { shareResult } from '@src/share-utils.ts'
 import { closeMenu, closeModal, openMenu } from '@src/dom-utils.ts'
 
+const isDev = import.meta.env.DEV
+
 declare global {
     interface Window {
         Telegram: any
@@ -38,7 +40,7 @@ async function init() {
     updateMenuData()
 }
 
-if (isFromTelegram()) init()
+if (isFromTelegram() || isDev) init()
 
 function initDOMEvents() {
     const keys = document.querySelectorAll('.keyboard__key')
