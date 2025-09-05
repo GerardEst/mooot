@@ -129,7 +129,7 @@ export function fillRow(row: storedRow) {
     for (let i = 1; i <= 5; i++) {
         updateCell(row.row, i, row.word[i - 1])
     }
-    showHints(row.word, words.getTodayWord(), row.row)
+    showHints(row.word, words.getTodayWord(), row.row, false)
 
     setCurrentRow(row.row)
     setCurrentTry(row.row)
@@ -141,69 +141,70 @@ export function cleanRow(row: number) {
     for (let i = 1; i <= 5; i++) updateCell(row, i, '')
 }
 
-export function showHints(guess: string, target: string, row: number) {
+export function showHints(
+    guess: string,
+    target: string,
+    row: number,
+    animate: boolean = true
+) {
     const guessLetters = guess.toUpperCase().split('')
     const targetLetters = target.toUpperCase().split('')
 
-    for (let i = 0; i < 5; i++) {
-        const letter = guessLetters[i]
+    // Compute final statuses with proper duplicate handling
+    const statuses: Array<'correct' | 'present' | 'absent'> = new Array(5)
 
-        if (letter === targetLetters[i]) {
-            updateCell(row, i + 1, undefined, 'correct')
-            updateKey(letter, 'correct')
-        } else if (!targetLetters.includes(letter)) {
-            updateCell(row, i + 1, undefined, 'absent')
-            updateKey(letter, 'absent')
+    // First mark correct and build remaining letter counts
+    const remaining: Record<string, number> = {}
+    for (let i = 0; i < 5; i++) {
+        if (guessLetters[i] === targetLetters[i]) {
+            statuses[i] = 'correct'
         } else {
-            updateCell(row, i + 1, undefined, 'present')
-            updateKey(letter, 'present')
+            const t = targetLetters[i]
+            remaining[t] = (remaining[t] || 0) + 1
         }
     }
 
-    // Second pass: fix incorrect "present" markings for duplicate letters
+    // Then mark present/absent using remaining counts
     for (let i = 0; i < 5; i++) {
+        if (statuses[i] === 'correct') continue
+        const g = guessLetters[i]
+        if (remaining[g] > 0) {
+            statuses[i] = 'present'
+            remaining[g] -= 1
+        } else {
+            statuses[i] = 'absent'
+        }
+    }
+
+    // Style and animate
+    const baseDelay = 60 // ms per tile
+
+    if (!animate) {
+        for (let i = 0; i < 5; i++) {
+            updateCell(row, i + 1, undefined, statuses[i])
+            updateKey(guessLetters[i], statuses[i])
+        }
+        return
+    }
+
+    for (let i = 0; i < 5; i++) {
+        const delay = i * baseDelay
         const cell = document.querySelector(`#l${row}_${i + 1}`)
+        const status = statuses[i]
+        const letter = guessLetters[i]
+        if (!cell) continue
 
-        const guessLetter = guessLetters[i]
+        // Apply status (colors/text transition smoothly via CSS) and add a soft opacity overlay fade
+        setTimeout(() => {
+            updateCell(row, i + 1, undefined, status)
+            updateKey(letter, status)
 
-        // Skip if this cell is already correct or absent
-        if (
-            cell!.classList.contains('correct') ||
-            cell!.classList.contains('absent')
-        ) {
-            continue
-        }
-
-        // Count how many times this letter appears in the target word
-        const targetCount = targetLetters.filter(
-            (letter) => letter === guessLetter
-        ).length
-
-        // Count how many of this letter are already marked as correct
-        const correctCount = guessLetters.filter(
-            (letter, index) =>
-                letter === guessLetter &&
-                guessLetters[index] === targetLetters[index]
-        ).length
-
-        // Count how many of this letter should be marked as present (before this position)
-        let presentCount = 0
-        for (let j = 0; j < i; j++) {
-            if (
-                guessLetters[j] === guessLetter &&
-                guessLetters[j] !== targetLetters[j] &&
-                targetLetters.includes(guessLetters[j])
-            ) {
-                presentCount++
+            if (status === 'correct') {
+                cell.classList.add('hard-reveal')
+            } else {
+                cell.classList.add('soft-reveal')
             }
-        }
-
-        // If we've already accounted for all instances of this letter in the target,
-        // this one should be marked as absent
-        if (correctCount + presentCount >= targetCount) {
-            cell!.classList.remove('present')
-            cell!.classList.add('absent')
-        }
+        }, delay)
     }
 }
 
