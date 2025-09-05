@@ -177,7 +177,7 @@ export function showHints(
     }
 
     // Style and animate
-    const baseDelay = 60 // ms per tile
+    const baseDelay = 40 // ms per tile
 
     if (!animate) {
         for (let i = 0; i < 5; i++) {
