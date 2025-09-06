@@ -1,3 +1,4 @@
+import { AWARDS } from '@src/conf'
 import { LitElement, html, css } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
@@ -5,41 +6,24 @@ import { customElement, property } from 'lit/decorators.js'
 export class TrophyItem extends LitElement {
     static styles = css`
         .trophy {
-            width: 50px;
-            height: 50px;
             border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.3rem;
             border: 1px solid var(--cell-border, #ccc);
-            background-color: var(
-                --cell,
-                #f9f9f9
-            ); /* fallback for encapsulation */
-            transition: background-color 0.3s ease;
+            background-color: var(--cell, #f9f9f9);
             color: var(--text-color, #333);
-            opacity: 0.2;
-        }
-        .trophy.active {
-            opacity: 1;
         }
     `
-    @property({ type: Number }) trophyId!: number
-    @property({ type: String }) emoji: string = ''
-    @property({ type: Boolean, reflect: true }) active: boolean = false
 
-    // Use shadow DOM to encapsulate styles
+    @property({ type: Number }) trophyId!: number
 
     render() {
-        const classes = ['trophy']
-        if (this.active) classes.push('active')
+        const award = AWARDS.cat.find((award) => award.id === this.trophyId)
+        if (!award) return
 
-        return html`
-            <div id=${`t_${this.trophyId}`} class=${classes.join(' ')}>
-                ${this.emoji}
-            </div>
-        `
+        return html` <div class="trophy">${award.emoji} ${award.name}</div> `
     }
 }
 

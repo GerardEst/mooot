@@ -1,150 +1,299 @@
-export const leagues: {
-    id: number
-    emoji: string
-    trophies: { id: number; emoji: string }[]
-}[] = [
-    {
-        id: 1,
-        emoji: '⛄️',
-        trophies: [
-            { id: 11, emoji: '🥇' },
-            { id: 12, emoji: '🥈' },
-            { id: 13, emoji: '🥉' },
-            { id: 15, emoji: '🥇' },
-            { id: 16, emoji: '🥈' },
-            { id: 17, emoji: '🥉' },
-        ],
-    },
-    {
-        id: 2,
-        emoji: '🐥',
-        trophies: [
-            { id: 21, emoji: '🥇' },
-            { id: 22, emoji: '🥈' },
-            { id: 23, emoji: '🥉' },
-            { id: 25, emoji: '🥇' },
-            { id: 26, emoji: '🥈' },
-            { id: 27, emoji: '🥉' },
-        ],
-    },
-    {
-        id: 3,
-        emoji: '🌻',
-        trophies: [
-            { id: 31, emoji: '🥇' },
-            { id: 32, emoji: '🥈' },
-            { id: 33, emoji: '🥉' },
-            { id: 35, emoji: '🥇' },
-            { id: 36, emoji: '🥈' },
-            { id: 37, emoji: '🥉' },
-        ],
-    },
-    {
-        id: 4,
-        emoji: '🐉',
-        trophies: [
-            { id: 41, emoji: '🥇' },
-            { id: 42, emoji: '🥈' },
-            { id: 43, emoji: '🥉' },
-            { id: 45, emoji: '🥇' },
-            { id: 46, emoji: '🥈' },
-            { id: 47, emoji: '🥉' },
-        ],
-    },
-    {
-        id: 5,
-        emoji: '⚡',
-        trophies: [
-            { id: 51, emoji: '🧔🏼' },
-            { id: 52, emoji: '⛈️' },
-            { id: 53, emoji: '☂️' },
-            { id: 55, emoji: '🥇' },
-            { id: 56, emoji: '🥈' },
-            { id: 57, emoji: '🥉' },
-        ],
-    },
-    {
-        id: 6,
-        emoji: '🍈',
-        trophies: [
-            { id: 61, emoji: '🍈' },
-            { id: 62, emoji: '🍈' },
-            { id: 63, emoji: '🥥' },
-            { id: 65, emoji: '🥇' },
-            { id: 66, emoji: '🥈' },
-            { id: 67, emoji: '🥉' },
-        ],
-    },
-    {
-        id: 7,
-        emoji: '💨',
-        trophies: [
-            { id: 71, emoji: '🐫' },
-            { id: 72, emoji: '🌵' },
-            { id: 73, emoji: '🦗' },
-            { id: 75, emoji: '🐆' },
-            { id: 76, emoji: '🦏' },
-            { id: 77, emoji: '🐖' },
-        ],
-    },
-    {
-        id: 8,
-        emoji: '💃🏻',
-        trophies: [
-            { id: 81, emoji: '🥃' },
-            { id: 82, emoji: '🍺' },
-            { id: 83, emoji: '🍹' },
-            { id: 85, emoji: '🧨' },
-            { id: 86, emoji: '🌷' },
-            { id: 87, emoji: '💥' },
-        ],
-    },
-    {
-        id: 9,
-        emoji: '💛',
-        trophies: [
-            { id: 91, emoji: '🌾' },
-            { id: 92, emoji: '👫🏻' },
-            { id: 93, emoji: '💩' },
-            { id: 95, emoji: '🖐🏼' },
-            { id: 96, emoji: '🤝🏼' },
-            { id: 97, emoji: '🪈' },
-        ],
-    },
-    {
-        id: 10,
-        emoji: '🌰',
-        trophies: [
-            { id: 101, emoji: '🥇' },
-            { id: 102, emoji: '🥈' },
-            { id: 103, emoji: '🥉' },
-            { id: 105, emoji: '🥇' },
-            { id: 106, emoji: '🥈' },
-            { id: 107, emoji: '🥉' },
-        ],
-    },
-    {
-        id: 11,
-        emoji: '🪰',
-        trophies: [
-            { id: 111, emoji: '🥇' },
-            { id: 112, emoji: '🥈' },
-            { id: 113, emoji: '🥉' },
-            { id: 115, emoji: '🥇' },
-            { id: 116, emoji: '🥈' },
-            { id: 117, emoji: '🥉' },
-        ],
-    },
-    {
-        id: 12,
-        emoji: '🐫',
-        trophies: [
-            { id: 121, emoji: '🥇' },
-            { id: 122, emoji: '🥈' },
-            { id: 123, emoji: '🥉' },
-            { id: 125, emoji: '🥇' },
-            { id: 126, emoji: '🥈' },
-            { id: 127, emoji: '🥉' },
-        ],
-    },
-]
+export const AWARDS = {
+    cat: [
+        // Premis especials
+        {
+            id: 200,
+            name: 'Ram de disculpes',
+            emoji: '💐',
+        },
+        // Lliga del Raig
+        {
+            id: 50,
+            name: "Zeus d'or",
+            emoji: '🥇🧔🏼',
+        },
+        {
+            id: 51,
+            name: 'Tro de plata',
+            emoji: '🥈⛈️',
+        },
+        {
+            id: 52,
+            name: 'Patac de bronze',
+            emoji: '🥉☂️',
+        },
+
+        // Lliga del meló
+        {
+            id: 60,
+            name: 'Meló amb pernil',
+            emoji: '🥇🍈',
+        },
+        {
+            id: 61,
+            name: 'Meló groc de plata',
+            emoji: '🥈🍈',
+        },
+        {
+            id: 62,
+            name: 'Coco de bronze',
+            emoji: '🥉🥥',
+        },
+        // Lliga Seca
+        {
+            id: 70,
+            name: "Camell d'or",
+            emoji: '🥇🐫',
+        },
+        {
+            id: 71,
+            name: 'Cactus de plata',
+            emoji: '🥈🌵',
+        },
+        {
+            id: 72,
+            name: 'Grill de bronze',
+            emoji: '🥉🦗',
+        },
+        {
+            id: 75,
+            name: "Guepard d'or",
+            emoji: '🥇🐆',
+        },
+        {
+            id: 76,
+            name: 'Rinoceront de plata',
+            emoji: '🥈🦏',
+        },
+        {
+            id: 77,
+            name: 'Porquet de bronze',
+            emoji: '🥉🐖',
+        },
+        {
+            id: 79,
+            name: 'Una formiga',
+            emoji: '🐜',
+        },
+        // Lliga Major
+        {
+            id: 80,
+            name: "Ratafia d'or",
+            emoji: '🥇🥃',
+        },
+        {
+            id: 81,
+            name: 'Birra de plata',
+            emoji: '🥈🍺',
+        },
+        {
+            id: 82,
+            name: 'Cubata de bronze',
+            emoji: '🥉🍹',
+        },
+        {
+            id: 85,
+            name: "Traca d'or",
+            emoji: '🥇🧨',
+        },
+        {
+            id: 86,
+            name: 'Fanalet de plata',
+            emoji: '🥈🌷',
+        },
+        {
+            id: 87,
+            name: 'Pogo de bronze',
+            emoji: '🥉💥',
+        },
+        {
+            id: 89,
+            name: 'Un glaçó',
+            emoji: '🧊',
+        },
+        // Lliga de Catalunya
+        {
+            id: 90,
+            name: "Segador d'or",
+            emoji: '🥇🌾',
+        },
+        {
+            id: 91,
+            name: 'Gegant de plata',
+            emoji: '🥈👫🏻',
+        },
+        {
+            id: 92,
+            name: 'Caganer de bronze',
+            emoji: '🥉💩',
+        },
+        {
+            id: 95,
+            name: "Anxaneta d'or",
+            emoji: '🥇🖐🏼',
+        },
+        {
+            id: 96,
+            name: 'Sardana de plata',
+            emoji: '🥈🤝🏼',
+        },
+        {
+            id: 97,
+            name: 'Gralla de bronze',
+            emoji: '🥉🪈',
+        },
+        {
+            id: 99,
+            name: 'Una barretina',
+            emoji: '🔺',
+        },
+    ],
+    es: [
+        // Liga Mayor
+        {
+            id: 80,
+            name: 'Combinado de oro',
+            emoji: '🥇🥃',
+        },
+        {
+            id: 81,
+            name: 'Coctel de plata',
+            emoji: '🥈🍹',
+        },
+        {
+            id: 82,
+            name: 'Cerveza de bronce',
+            emoji: '🥉🍺',
+        },
+        {
+            id: 85,
+            name: 'Traca de oro',
+            emoji: '🥇🧨',
+        },
+        {
+            id: 86,
+            name: 'Baile de plata',
+            emoji: '🥈🌷',
+        },
+        {
+            id: 87,
+            name: 'Pogo de bronce',
+            emoji: '🥉💥',
+        },
+        {
+            id: 89,
+            name: 'Un hielo',
+            emoji: '🧊',
+        },
+        // Liga Escolar
+        {
+            id: 90,
+            name: 'Doctorado',
+            emoji: '🥇📜',
+        },
+        {
+            id: 91,
+            name: 'Máster',
+            emoji: '🥈📜',
+        },
+        {
+            id: 92,
+            name: 'Grado',
+            emoji: '🥉📜',
+        },
+        {
+            id: 95,
+            name: '',
+            emoji: '🥇',
+        },
+        {
+            id: 96,
+            name: '',
+            emoji: '🥈',
+        },
+        {
+            id: 97,
+            name: '',
+            emoji: '🥉',
+        },
+        {
+            id: 99,
+            name: '',
+            emoji: '',
+        },
+    ],
+    en: [
+        // Desert League
+        {
+            id: 80,
+            name: 'Gold Sunset',
+            emoji: '🥇☀️',
+        },
+        {
+            id: 81,
+            name: 'Silver Oasis',
+            emoji: '🥈🏝️',
+        },
+        {
+            id: 82,
+            name: 'Bronze Dune',
+            emoji: '🥉🏜️',
+        },
+        {
+            id: 85,
+            name: 'Gold Cheeta',
+            emoji: '🥇🐆',
+        },
+        {
+            id: 86,
+            name: 'Silver Rhino',
+            emoji: '🥈🦏',
+        },
+        {
+            id: 87,
+            name: 'Bronze Camel',
+            emoji: '🥉🐫',
+        },
+        {
+            id: 89,
+            name: 'A desert rock',
+            emoji: '🪨',
+        },
+        // Student League
+        {
+            id: 90,
+            name: 'Doctoral degree',
+            emoji: '🥇📜',
+        },
+        {
+            id: 91,
+            name: "Master's degree",
+            emoji: '🥈📜',
+        },
+        {
+            id: 92,
+            name: "Bachelor's degree",
+            emoji: '🥉📜',
+        },
+        {
+            id: 95,
+            name: '',
+            emoji: '🥇',
+        },
+        {
+            id: 96,
+            name: '',
+            emoji: '🥈',
+        },
+        {
+            id: 97,
+            name: '',
+            emoji: '🥉',
+        },
+        {
+            id: 99,
+            name: '',
+            emoji: '',
+        },
+    ],
+}

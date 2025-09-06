@@ -8,6 +8,8 @@ import * as gameboard from '@src/gameboard-module.ts'
 import { updateMenuData } from '@src/stats-module.js'
 import { shareResult } from '@src/share-utils.ts'
 import { closeMenu, closeModal, openMenu } from '@src/dom-utils.ts'
+import { initUser } from '@src/user-module'
+import '@src/components/user-trophies'
 
 const isDev = import.meta.env.DEV
 
@@ -38,6 +40,7 @@ async function init() {
     initDOMEvents()
     loadStoredGame()
     updateMenuData()
+    initUser(window.Telegram.WebApp.initDataUnsafe)
 }
 
 if (isFromTelegram() || isDev) init()
