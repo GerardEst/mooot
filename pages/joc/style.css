@@ -538,24 +538,6 @@ header {
         flex: 1;
         flex-direction: column;
         gap: 0.4rem;
-        & p {
-            border-radius: 5px;
-            padding: 6px 8px;
-            border: 1px solid;
-        }
-        & p.gold_trophy {
-            background-color: var(--gold);
-            border-color: var(--gold-border);
-        }
-        & p.silver_trophy {
-            background-color: var(--silver);
-            border-color: var(--silver-border);
-        }
-
-        & p.bronze_trophy {
-            background-color: var(--bronze);
-            border-color: var(--bronze-border);
-        }
     }
 }
 /* .pointedRow {

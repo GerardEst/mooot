@@ -5,11 +5,10 @@ import {
     getTodayTime,
 } from '@src/storage-module.js'
 import * as gameboard from '@src/gameboard-module.ts'
-import { updateMenuData } from '@src/stats-module.js'
 import { shareResult } from '@src/share-utils.ts'
-import { closeMenu, closeModal, openMenu } from '@src/dom-utils.ts'
-import { initUser } from '@src/user-module'
+import { closeModal } from '@src/dom-utils.ts'
 import '@src/components/user-trophies'
+import '@src/components/menu'
 
 const isDev = import.meta.env.DEV
 
@@ -39,8 +38,6 @@ document.addEventListener('visibilitychange', () => {
 async function init() {
     initDOMEvents()
     loadStoredGame()
-    updateMenuData()
-    initUser(window.Telegram.WebApp.initDataUnsafe)
 }
 
 if (isFromTelegram() || isDev) init()
@@ -52,8 +49,6 @@ function initDOMEvents() {
     const shareButton = document.querySelector('#share')
     const shareHiddenButton = document.querySelector('#shareHidden')
     const modalCloseButton = document.querySelector('#modal-close')
-    const menuCloseButton = document.querySelector('#closeMenu')
-    const menuOpenButton = document.querySelector('#openMenu')
 
     keys!.forEach((key) => {
         key.addEventListener('click', (event: Event) => {
@@ -105,8 +100,4 @@ function initDOMEvents() {
 
     // Modal events
     modalCloseButton!.addEventListener('click', closeModal)
-
-    // Menu events
-    menuOpenButton!.addEventListener('click', openMenu)
-    menuCloseButton!.addEventListener('click', closeMenu)
 }
