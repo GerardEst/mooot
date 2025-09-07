@@ -2,7 +2,7 @@ import { LitElement, html, css } from 'lit'
 import { customElement, state } from 'lit/decorators.js'
 import { supabase } from '@src/supabase'
 // import { leagues } from '@src/conf'
-import '@src/components/trophy-item'
+// import '@src/components/trophy-item'
 
 @customElement('trophies-expositor')
 export class TrophiesExpositor extends LitElement {
