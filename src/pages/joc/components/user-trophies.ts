@@ -8,8 +8,9 @@ export class UserTrophies extends LitElement {
     static styles = css`
         .userTrophies {
             display: flex;
-            flex-direction: column;
             gap: 0.3rem;
+            overflow: scroll;
+            padding-bottom: 10px;
         }
     `
 
@@ -62,6 +63,7 @@ export class UserTrophies extends LitElement {
                             position=${position}
                             name=${trophyInfo.name}
                             emoji=${trophyInfo.emoji}
+                            small=${true}
                         ></trophy-badge>
                     `
                 })}
@@ -69,3 +71,10 @@ export class UserTrophies extends LitElement {
         `
     }
 }
+
+declare global {
+    interface HTMLElementTagNameMap {
+        'user-trophies': UserTrophies
+    }
+}
+

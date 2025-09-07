@@ -106,7 +106,11 @@ export function updateMenuData() {
 }
 
 export function editLinkToDictionary(word: string) {
-    const dicLink = document.querySelector('#dicLink')
+    const game = document.querySelector('mooot-joc-game') as HTMLElement & {
+        shadowRoot?: ShadowRoot
+    }
+    const root: ParentNode = (game?.shadowRoot as ShadowRoot) || document
+    const dicLink = root.querySelector?.('#dicLink') as HTMLAnchorElement | null
     const dicUrl = `https://dlc.iec.cat/Results?DecEntradaText=${word}&AllInfoMorf=False&OperEntrada=0&OperDef=0&OperEx=0&OperSubEntrada=0&OperAreaTematica=0&InfoMorfType=0&OperCatGram=False&AccentSen=False&CurrentPage=0&refineSearch=0&Actualitzacions=False`
 
     if (!dicLink) {

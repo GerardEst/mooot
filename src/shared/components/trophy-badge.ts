@@ -4,7 +4,7 @@ import { customElement, property } from 'lit/decorators.js'
 @customElement('trophy-badge')
 export class TrophyBadge extends LitElement {
     static styles = css`
-        p {
+        .trophy {
             height: 50px;
             box-sizing: border-box;
             display: flex;
@@ -13,6 +13,11 @@ export class TrophyBadge extends LitElement {
             padding: 6px 8px;
             border: 2px solid;
             margin: 0;
+        }
+        .trophy.small {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
         }
         .gold_trophy {
             background-color: var(--gold);
@@ -34,6 +39,8 @@ export class TrophyBadge extends LitElement {
     name: string = ''
     @property({ type: String })
     emoji: string = ''
+    @property({ type: Boolean })
+    small: boolean = false
 
     private computeVariant(): 'gold' | 'silver' | 'bronze' | 'normal' {
         return this.position === 0 || this.position === 5
@@ -47,7 +54,9 @@ export class TrophyBadge extends LitElement {
 
     render() {
         const variant = this.computeVariant()
-        return html`<p class="${variant}_trophy">${this.emoji} ${this.name}</p>`
+        return html`<div class="trophy ${variant}_trophy">
+            ${this.emoji} ${!this.small ? this.name : ''}
+        </div>`
     }
 }
 

@@ -99,9 +99,16 @@ export function checkCleanLocalStorage(localDate: string) {
 
 export function cleanGameboard() {
     // Clean game cells
+    const game = document.querySelector('mooot-joc-game') as HTMLElement & {
+        shadowRoot?: ShadowRoot
+    }
+    const root: ParentNode = (game?.shadowRoot as ShadowRoot) || document
+
     for (let row = 1; row <= 6; row++) {
         for (let col = 1; col <= 5; col++) {
-            const cell = document.querySelector(`#l${row}_${col}`)
+            const cell = root.querySelector?.(
+                `#l${row}_${col}`
+            ) as HTMLElement | null
             if (cell) {
                 cell.textContent = ''
                 cell.classList.remove('correct', 'present', 'absent')
@@ -110,8 +117,12 @@ export function cleanGameboard() {
     }
 
     // Clean keyboard
-    document.querySelectorAll('.keyboard__key').forEach((key) => {
-        key.classList.remove('correct', 'present', 'absent')
+    root.querySelectorAll?.('.keyboard__key').forEach((key) => {
+        ;(key as HTMLElement).classList.remove(
+            'correct',
+            'present',
+            'absent'
+        )
     })
 }
 

@@ -1,4 +1,9 @@
-import { showFeedback, showModal, updateCell, updateKey } from './dom-utils'
+import {
+    showFeedback,
+    showModal,
+    updateCell,
+    updateKey,
+} from './dom-utils'
 import * as words from './words-module'
 import { saveToLocalStorage } from './storage-module'
 import type { storedRow } from './storage-module'
@@ -187,9 +192,17 @@ export function showHints(
         return
     }
 
+    // Helper to query inside the game's shadow DOM if present
+    const game = document.querySelector('mooot-joc-game') as HTMLElement & {
+        shadowRoot?: ShadowRoot
+    }
+    const root: ParentNode = (game?.shadowRoot as ShadowRoot) || document
+
     for (let i = 0; i < 5; i++) {
         const delay = i * baseDelay
-        const cell = document.querySelector(`#l${row}_${i + 1}`)
+        const cell = root.querySelector?.(`#l${row}_${i + 1}`) as
+            | HTMLElement
+            | null
         const status = statuses[i]
         const letter = guessLetters[i]
         if (!cell) continue

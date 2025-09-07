@@ -1,7 +1,7 @@
 import { LitElement, html, css } from 'lit'
 import { customElement, state } from 'lit/decorators.js'
 import { supabase } from '@src/supabase'
-import { leagues } from '@src/conf'
+// import { leagues } from '@src/conf'
 import '@src/components/trophy-item'
 
 @customElement('trophies-expositor')
@@ -109,30 +109,6 @@ export class TrophiesExpositor extends LitElement {
     }
 
     render() {
-        return html`
-            <div class="expositor">
-                ${this.renderHeader()}
-                ${leagues.map(
-                    (league) => html`
-                        <div id="league_${league.id}" class="league_section">
-                            <div class="league_emoji">${league.emoji}</div>
-                            <div class="league_trophies">
-                                ${league.trophies.map(
-                                    (trophy) => html`
-                                        <trophy-item
-                                            .trophyId=${trophy.id}
-                                            .emoji=${trophy.emoji}
-                                            .active=${this.activeTrophyIds.has(
-                                                trophy.id
-                                            )}
-                                        ></trophy-item>
-                                    `
-                                )}
-                            </div>
-                        </div>
-                    `
-                )}
-            </div>
-        `
+        return html` <div class="expositor">${this.renderHeader()}</div> `
     }
 }

@@ -1,50 +1,44 @@
 import { LitElement, html } from 'lit'
 import { customElement } from 'lit/decorators.js'
-import { updateMenuData } from '@src/stats-module'
-import '@src/components/trophy-badge'
+import '@src/shared/components/trophy-badge'
+import '@src/pages/joc/components/user-trophies'
+import { menu } from './style'
+import { global } from '@src/pages/global-styles'
+import '@src/pages/joc/components/header-logo'
+import '@src/pages/joc/components/flag'
+import '@src/pages/joc/components/divider'
 
 @customElement('mooot-menu')
 export class MoootMenu extends LitElement {
-    // Render into light DOM so global CSS and document.querySelector work
-    createRenderRoot() {
-        return this
-    }
-
-    connectedCallback(): void {
-        super.connectedCallback()
-        // Hook external open button
-        const opener = document.getElementById('openMenu')
-        opener?.addEventListener('click', this.openMenu)
-
-        console.log('Every time')
-    }
+    static styles = [menu, global]
 
     fillPlaceholderWith(text: string, location: string) {
         const usernamePlaceholders = document.querySelectorAll(location)
 
         for (const placeholder in usernamePlaceholders) {
+            // @ts-ignore - querySelectorAll NodeList access via index
             usernamePlaceholders[placeholder].textContent = text
         }
     }
 
     firstUpdated(): void {
-        console.log('First time')
         // updateMenuData()
 
         // Fill placeholder with name
-        this.fillPlaceholderWith(
-            window.Telegram.WebApp.initDataUnsafe.user.first_name,
-            '.placeholder_userName'
-        )
+        const firstName =
+            window?.Telegram?.WebApp?.initDataUnsafe?.user?.first_name
+        if (firstName)
+            this.fillPlaceholderWith(firstName, '.placeholder_userName')
     }
 
-    private openMenu = () => {
-        const menu = this.querySelector('.menu')
+    // Public API to control menu from parent
+    open() {
+        const menu = this.renderRoot?.querySelector('.menu') as HTMLElement
         menu?.classList.add('active')
     }
 
-    private closeMenu = () => {
-        const menu = this.querySelector('.menu')
+    close() {
+        const menu = this.renderRoot?.querySelector('.menu') as HTMLElement
         menu?.classList.remove('active')
     }
 
@@ -53,23 +47,12 @@ export class MoootMenu extends LitElement {
             <section class="menu">
                 <div class="menu__content">
                     <header class="menu__content__header">
-                        <img
-                            alt="Bandera de l'idioma"
-                            class="flag"
-                            src="/assets/flag.jpg"
-                            alt="Mooot Logo"
-                        />
-                        <div class="header__logo">
-                            <span>L</span>
-                            <span>L</span>
-                            <span>I</span>
-                            <span>G</span>
-                            <span>A</span>
-                        </div>
+                        <mooot-flag></mooot-flag>
+                        <mooot-header-logo text="LLIGA"></mooot-header-logo>
                         <div
                             id="closeMenu"
                             class="closeMenu"
-                            @click=${this.closeMenu}
+                            @click=${this.close}
                         >
                             <img
                                 alt="Tancar menu"
@@ -127,9 +110,8 @@ export class MoootMenu extends LitElement {
                             </div>
                         </div>
                         <div>
-                            <h4>Els teus premis</h4>
+                            <h4>Els teus trofeus</h4>
                             <user-trophies></user-trophies>
-                            <a href="/trofeus">Ampliar</a>
                         </div>
                         <div class="moootbotCallout">
                             <img
@@ -158,37 +140,7 @@ export class MoootMenu extends LitElement {
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="menu__stats">
-                        <section class="stats">
-                            <div class="pointedRow">
-                                <p>Partides jugades</p>
-                                <span></span>
-                                <p id="menustats-games"></p>
-                            </div>
-                            <div class="pointedRow">
-                                <p>Punts totals</p>
-                                <span></span>
-                                <p id="menustats-totalPoints"></p>
-                            </div>
-                            <div class="pointedRow">
-                                <p>Mitjana de punts</p>
-                                <span></span>
-                                <p id="menustats-averagePoints"></p>
-                            </div>
-                            <div class="pointedRow">
-                                <p>Ratxa actual</p>
-                                <span></span>
-                                <p id="menustats-streak"></p>
-                            </div>
-                            <div class="pointedRow">
-                                <p>Ratxa màxima</p>
-                                <span></span>
-                                <p id="menustats-maxStreak"></p>
-                            </div>
-                        </section>
-                    </div> -->
-
-                    <div class="divider"></div>
+                    <mooot-divider></mooot-divider>
                     <div class="menu__section">
                         <p class="smallText">
                             Basat en el joc

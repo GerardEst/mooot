@@ -1,10 +1,27 @@
+function getGameRoot(): Document | ShadowRoot {
+    const game = document.querySelector('mooot-joc-game') as HTMLElement & {
+        shadowRoot?: ShadowRoot
+    }
+    return game?.shadowRoot || document
+}
+
+function getMenuRoot(): Document | ShadowRoot {
+    const menu = document.querySelector('mooot-menu') as HTMLElement & {
+        shadowRoot?: ShadowRoot
+    }
+    return menu?.shadowRoot || document
+}
+
 export function updateCell(
     row: number,
     col: number,
     text?: string,
     status?: 'correct' | 'present' | 'absent'
 ) {
-    const cell = document.querySelector(`#l${row}_${col}`)
+    const root = getGameRoot()
+    const cell = (root as ParentNode).querySelector?.(
+        `#l${row}_${col}`
+    ) as HTMLElement | null
     if (cell && text !== undefined) cell.textContent = text
     if (cell && status) cell.classList.add(status)
 }
@@ -13,12 +30,18 @@ export function updateKey(
     letter: string,
     status: 'correct' | 'present' | 'absent'
 ) {
-    const key = document.querySelector(`.keyboard__key[data-key="${letter}"]`)
+    const root = getGameRoot()
+    const key = (root as ParentNode).querySelector?.(
+        `.keyboard__key[data-key="${letter}"]`
+    ) as HTMLElement | null
     if (key) key.classList.add(status)
 }
 
 export function updateStat(stat: string, content: string) {
-    const domstat = document.querySelector(`#stats-${stat}`)
+    const root = getGameRoot()
+    const domstat = (root as ParentNode).querySelector?.(
+        `#stats-${stat}`
+    ) as HTMLElement | null
 
     if (!domstat) {
         console.error('Cant find stat element')
@@ -29,7 +52,10 @@ export function updateStat(stat: string, content: string) {
 }
 
 export function updateMenuStat(stat: string, content: string) {
-    const domstat = document.querySelector(`#menustats-${stat}`)
+    const root = getMenuRoot()
+    const domstat = (root as ParentNode).querySelector?.(
+        `#menustats-${stat}`
+    ) as HTMLElement | null
 
     if (!domstat) {
         console.error('Cant find stat element')
@@ -42,7 +68,10 @@ export function updateMenuStat(stat: string, content: string) {
 // Feedback
 
 export function showFeedback(message) {
-    const feedbackElement = document.querySelector('.feedback')
+    const root = getGameRoot()
+    const feedbackElement = (root as ParentNode).querySelector?.(
+        '.feedback'
+    ) as HTMLElement | null
 
     if (!feedbackElement) {
         console.error('Cant find feedback element')
@@ -60,7 +89,10 @@ export function showFeedback(message) {
 // Modal
 
 export function showModal() {
-    const modal = document.querySelector('.modal')
+    const root = getGameRoot()
+    const modal = (root as ParentNode).querySelector?.(
+        '.modal'
+    ) as HTMLElement | null
 
     if (!modal) {
         console.error('Cant find modal element')
@@ -70,7 +102,10 @@ export function showModal() {
 }
 
 export function closeModal() {
-    const modal = document.querySelector('.modal')
+    const root = getGameRoot()
+    const modal = (root as ParentNode).querySelector?.(
+        '.modal'
+    ) as HTMLElement | null
 
     if (!modal) {
         console.error('Cant find modal element')
@@ -83,7 +118,10 @@ export function closeModal() {
 // Menu
 
 export function openMenu() {
-    const menu = document.querySelector('.menu')
+    const root = getMenuRoot()
+    const menu = (root as ParentNode).querySelector?.(
+        '.menu'
+    ) as HTMLElement | null
 
     if (!menu) {
         console.error('Cant find menu element')
@@ -94,7 +132,10 @@ export function openMenu() {
 }
 
 export function closeMenu() {
-    const menu = document.querySelector('.menu')
+    const root = getMenuRoot()
+    const menu = (root as ParentNode).querySelector?.(
+        '.menu'
+    ) as HTMLElement | null
 
     if (!menu) {
         console.error('Cant find menu element')

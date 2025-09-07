@@ -1,1 +1,1 @@
-import '@src/components/trophies-expositor'
+import '@src/pages/trofeus/trofeus'
