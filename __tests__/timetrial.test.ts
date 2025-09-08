@@ -14,7 +14,7 @@ import {
     setCurrentTry,
     setCurrentWord,
     validateLastRow,
-} from '../src/gameboard-module'
+} from '../src/features/game/gameboard-module'
 
 vi.mock('../src/words-module.ts', async () => {
     const actual = await vi.importActual('../src/words-module.ts')

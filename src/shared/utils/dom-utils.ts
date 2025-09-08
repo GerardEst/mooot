@@ -12,19 +12,7 @@ function getMenuRoot(): Document | ShadowRoot {
     return menu?.shadowRoot || document
 }
 
-export function updateCell(
-    row: number,
-    col: number,
-    text?: string,
-    status?: 'correct' | 'present' | 'absent'
-) {
-    const root = getGameRoot()
-    const cell = (root as ParentNode).querySelector?.(
-        `#l${row}_${col}`
-    ) as HTMLElement | null
-    if (cell && text !== undefined) cell.textContent = text
-    if (cell && status) cell.classList.add(status)
-}
+// updateCell has moved into the game component (mooot-joc-game)
 
 export function updateKey(
     letter: string,

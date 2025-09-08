@@ -1,4 +1,4 @@
-import { updateMenuStat, updateStat } from './dom-utils'
+import { updateMenuStat, updateStat } from './shared/utils/dom-utils'
 import { getTodayNiceWord } from './words-module'
 
 interface storedStats {

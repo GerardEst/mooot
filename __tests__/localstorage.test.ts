@@ -14,7 +14,7 @@ import {
     setCurrentTry,
     setCurrentWord,
     validateLastRow,
-} from '../src/gameboard-module'
+} from '../src/features/game/gameboard-module'
 
 // Mock only the word functions to return predictable values
 vi.mock('../src/words-module.ts', async () => {

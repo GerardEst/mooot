@@ -6,11 +6,12 @@ import {
     loadStoredGame,
     getTodayTime,
 } from '@src/storage-module.js'
-import * as gameboard from '@src/gameboard-module.ts'
-import { shareResult } from '@src/share-utils.ts'
-import { closeModal } from '@src/dom-utils.ts'
+import * as gameboard from '@src/features/game/gameboard-module'
+import { shareResult } from '@src/shared/utils/share-utils'
+import { closeModal } from '@src/shared/utils/dom-utils'
 import { game } from './style'
 import { global } from '@src/pages/global-styles'
+import './components/keyboard'
 
 declare global {
     interface Window {
@@ -34,6 +35,7 @@ export class MoootJocGame extends LitElement {
         document.addEventListener('visibilitychange', this.onVisibility)
 
         const isDev = import.meta.env.DEV
+        console.log({ isDev })
         if (isFromTelegram() || isDev) {
             this.init()
         }
@@ -49,70 +51,77 @@ export class MoootJocGame extends LitElement {
     }
 
     private init() {
-        this.initDOMEvents()
         loadStoredGame()
     }
 
-    private initDOMEvents() {
-        const root = this.renderRoot as DocumentFragment
-        const keys = root.querySelectorAll('.keyboard__key')
-        const backspace = root.querySelector('.keyboard__back')
-        const enter = root.querySelector('.keyboard__enter')
-        const shareButton = root.querySelector('#share')
-        const shareHiddenButton = root.querySelector('#shareHidden')
-        const modalCloseButton = root.querySelector('#modal-close')
+    letterClick(e: CustomEvent) {
+        console.log(e.detail.letter)
 
-        keys.forEach((key) => {
-            key.addEventListener('click', (event: Event) => {
-                const target = event.target as HTMLElement
-                if (target.dataset.key) {
-                    gameboard.letterClick(target.dataset.key)
-                }
-            })
-        })
+        gameboard.letterClick(e.detail.letter)
+    }
 
-        backspace?.addEventListener('click', () => {
-            gameboard.deleteLastLetter()
-        })
+    backClick() {
+        console.log('back clicked')
 
-        enter?.addEventListener('click', () => {
-            gameboard.validateLastRow()
-        })
+        gameboard.deleteLastLetter()
+    }
 
-        // Share events
-        shareButton?.addEventListener('click', async () => {
-            const buttonImg = shareButton?.querySelector('img')
-            buttonImg?.setAttribute('src', '/assets/loading.svg')
+    enterClick() {
+        console.log('enter clicked')
 
-            await shareResult(
-                words.getTodayWordIndex(),
-                gameboard.currentTry,
-                getTodayTime()
-            )
+        gameboard.validateLastRow()
+    }
 
-            setTimeout(() => {
-                buttonImg?.setAttribute('src', '/assets/share.svg')
-            }, 1000)
-        })
+    // LitElement-scoped DOM update for cells
+    updateCell(
+        row: number,
+        col: number,
+        text?: string,
+        status?: 'correct' | 'present' | 'absent'
+    ) {
+        const cell = this.renderRoot.querySelector(
+            `#l${row}_${col}`
+        ) as HTMLElement | null
+        if (!cell) return
+        if (text !== undefined) cell.textContent = text
+        if (status) cell.classList.add(status)
+    }
 
-        shareHiddenButton?.addEventListener('click', async () => {
-            const buttonImg = shareHiddenButton?.querySelector('img')
-            buttonImg?.setAttribute('src', '/assets/loading.svg')
+    private onShareClick = async (e: Event) => {
+        const target = e.currentTarget as HTMLElement | null
+        const buttonImg = target?.querySelector('img') || undefined
+        buttonImg?.setAttribute('src', '/assets/loading.svg')
 
-            await shareResult(
-                words.getTodayWordIndex(),
-                gameboard.currentTry,
-                getTodayTime(),
-                true
-            )
+        await shareResult(
+            words.getTodayWordIndex(),
+            gameboard.currentTry,
+            getTodayTime()
+        )
 
-            setTimeout(() => {
-                buttonImg?.setAttribute('src', '/assets/hidden_eye.svg')
-            }, 1000)
-        })
+        setTimeout(() => {
+            buttonImg?.setAttribute('src', '/assets/share.svg')
+        }, 1000)
+    }
 
-        // Modal events
-        modalCloseButton?.addEventListener('click', closeModal)
+    private onShareHiddenClick = async (e: Event) => {
+        const target = e.currentTarget as HTMLElement | null
+        const buttonImg = target?.querySelector('img') || undefined
+        buttonImg?.setAttribute('src', '/assets/loading.svg')
+
+        await shareResult(
+            words.getTodayWordIndex(),
+            gameboard.currentTry,
+            getTodayTime(),
+            true
+        )
+
+        setTimeout(() => {
+            buttonImg?.setAttribute('src', '/assets/hidden_eye.svg')
+        }, 1000)
+    }
+
+    private onModalCloseClick = () => {
+        closeModal()
     }
 
     render() {
@@ -166,56 +175,11 @@ export class MoootJocGame extends LitElement {
                     </div>
                 </section>
 
-                <section class="keyboard">
-                    <div class="keyboard__row">
-                        <div class="keyboard__key" data-key="Q">Q</div>
-                        <div class="keyboard__key" data-key="W">W</div>
-                        <div class="keyboard__key" data-key="E">E</div>
-                        <div class="keyboard__key" data-key="R">R</div>
-                        <div class="keyboard__key" data-key="T">T</div>
-                        <div class="keyboard__key" data-key="Y">Y</div>
-                        <div class="keyboard__key" data-key="U">U</div>
-                        <div class="keyboard__key" data-key="I">I</div>
-                        <div class="keyboard__key" data-key="O">O</div>
-                        <div class="keyboard__key" data-key="P">P</div>
-                    </div>
-                    <div class="keyboard__row">
-                        <div class="keyboard__key" data-key="A">A</div>
-                        <div class="keyboard__key" data-key="S">S</div>
-                        <div class="keyboard__key" data-key="D">D</div>
-                        <div class="keyboard__key" data-key="F">F</div>
-                        <div class="keyboard__key" data-key="G">G</div>
-                        <div class="keyboard__key" data-key="H">H</div>
-                        <div class="keyboard__key" data-key="J">J</div>
-                        <div class="keyboard__key" data-key="K">K</div>
-                        <div class="keyboard__key" data-key="L">L</div>
-                        <div class="keyboard__key" data-key="Ç">Ç</div>
-                    </div>
-                    <div class="keyboard__row">
-                        <div
-                            class="keyboard__enter keyboard__key--wide"
-                            data-key="enter"
-                        >
-                            <img alt="Intro teclat" src="/assets/intro.svg" />
-                        </div>
-                        <div class="keyboard__key" data-key="Z">Z</div>
-                        <div class="keyboard__key" data-key="X">X</div>
-                        <div class="keyboard__key" data-key="C">C</div>
-                        <div class="keyboard__key" data-key="V">V</div>
-                        <div class="keyboard__key" data-key="B">B</div>
-                        <div class="keyboard__key" data-key="N">N</div>
-                        <div class="keyboard__key" data-key="M">M</div>
-                        <div
-                            class="keyboard__back keyboard__key--wide"
-                            data-key="back"
-                        >
-                            <img
-                                alt="Esborrar teclat"
-                                src="/assets/backspace.svg"
-                            />
-                        </div>
-                    </div>
-                </section>
+                <mooot-keyboard
+                    @letter-clicked="${(e: CustomEvent) => this.letterClick(e)}"
+                    @back-clicked="${() => this.backClick()}"
+                    @enter-clicked="${() => this.enterClick()}"
+                ></mooot-keyboard>
 
                 <section class="modal modal-win">
                     <div class="modal__content">
@@ -226,6 +190,7 @@ export class MoootJocGame extends LitElement {
                                 id="modal-close"
                                 class="modal__content__close"
                                 src="/assets/close.svg"
+                                @click="${() => this.onModalCloseClick()}"
                             />
                         </div>
                         <section class="stats">
@@ -283,11 +248,19 @@ export class MoootJocGame extends LitElement {
                             </div>
                         </section>
                         <div class="modal__buttons">
-                            <button class="button--danger" id="shareHidden">
+                            <button
+                                class="button--danger"
+                                id="shareHidden"
+                                @click="${(e: Event) =>
+                                    this.onShareHiddenClick(e)}"
+                            >
                                 Compartir sense cubs
                                 <img alt="Ocult" src="/assets/hidden_eye.svg" />
                             </button>
-                            <button id="share">
+                            <button
+                                id="share"
+                                @click="${(e: Event) => this.onShareClick(e)}"
+                            >
                                 Compartir
                                 <img alt="Compartir" src="/assets/share.svg" />
                             </button>

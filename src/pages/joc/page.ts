@@ -2,10 +2,10 @@ import { LitElement, html } from 'lit'
 import { customElement } from 'lit/decorators.js'
 import { jocPage } from './style'
 import { global } from '@src/pages/global-styles'
-import '@src/pages/joc/components/game/game'
-import '@src/pages/joc/components/menu/menu'
-import '@src/pages/joc/components/header-logo'
-import '@src/pages/joc/components/flag'
+import '@src/features/game/game'
+import '@src/features/menu/menu'
+import '@src/shared/components/header-logo'
+import '@src/shared/components/flag'
 
 @customElement('mooot-joc-page')
 export class MoootJocPage extends LitElement {

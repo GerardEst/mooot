@@ -1,12 +1,12 @@
 import { LitElement, html } from 'lit'
 import { customElement } from 'lit/decorators.js'
 import '@src/shared/components/trophy-badge'
-import '@src/pages/joc/components/user-trophies'
+import '@src/features/menu/components/user-trophies'
 import { menu } from './style'
 import { global } from '@src/pages/global-styles'
-import '@src/pages/joc/components/header-logo'
-import '@src/pages/joc/components/flag'
-import '@src/pages/joc/components/divider'
+import '@src/shared/components/header-logo'
+import '@src/shared/components/flag'
+import '@src/shared/components/divider'
 
 @customElement('mooot-menu')
 export class MoootMenu extends LitElement {

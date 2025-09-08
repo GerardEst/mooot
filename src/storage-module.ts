@@ -1,5 +1,5 @@
-import { showModal } from './dom-utils.ts'
-import * as gameboard from './gameboard-module.ts'
+import { showModal } from './shared/utils/dom-utils.ts'
+import * as gameboard from './features/game/gameboard-module.ts'
 import { editLinkToDictionary, fillModalStats } from './stats-module.ts'
 import {
     getTodayNiceWord,
@@ -118,11 +118,7 @@ export function cleanGameboard() {
 
     // Clean keyboard
     root.querySelectorAll?.('.keyboard__key').forEach((key) => {
-        ;(key as HTMLElement).classList.remove(
-            'correct',
-            'present',
-            'absent'
-        )
+        ;(key as HTMLElement).classList.remove('correct', 'present', 'absent')
     })
 }
 

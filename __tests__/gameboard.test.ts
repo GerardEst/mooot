@@ -10,7 +10,7 @@ import {
     currentRow,
     currentColumn,
     currentWord,
-} from '../src/gameboard-module'
+} from '../src/features/game/gameboard-module'
 import fs from 'fs'
 import path from 'path'
 

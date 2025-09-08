@@ -1,18 +1,17 @@
 import {
     showFeedback,
     showModal,
-    updateCell,
     updateKey,
-} from './dom-utils'
-import * as words from './words-module'
-import { saveToLocalStorage } from './storage-module'
-import type { storedRow } from './storage-module'
+} from '../../shared/utils/dom-utils'
+import * as words from '../../words-module'
+import { saveToLocalStorage } from '../../storage-module'
+import type { storedRow } from '../../storage-module'
 import {
     editLinkToDictionary,
     fillModalStats,
     updateMenuData,
     updateStoredStats,
-} from './stats-module'
+} from '../../stats-module'
 
 export let currentRow = 1
 export let currentColumn = 1
@@ -33,6 +32,19 @@ export function setCurrentWord(to: string) {
 
 export function setCurrentTry(to: number) {
     currentTry = to
+}
+
+// Use the LitElement component instance to update cells inside its shadow DOM
+function updateCellProxy(
+    row: number,
+    col: number,
+    text?: string,
+    status?: 'correct' | 'present' | 'absent'
+) {
+    const game = document.querySelector('mooot-joc-game') as any
+    if (game?.updateCell) {
+        game.updateCell(row, col, text, status)
+    }
 }
 
 export function moveToNextRow() {
@@ -66,7 +78,7 @@ export function letterClick(letter: string) {
         words.loadWordsData()
     }
 
-    updateCell(currentRow, currentColumn, letter)
+    updateCellProxy(currentRow, currentColumn, letter)
 
     currentWord += letter
     currentColumn++
@@ -76,7 +88,7 @@ export function deleteLastLetter() {
     if (currentColumn <= 1) return
 
     currentColumn--
-    updateCell(currentRow, currentColumn, ' ')
+    updateCellProxy(currentRow, currentColumn, ' ')
     currentWord = currentWord.slice(0, -1)
 }
 
@@ -132,7 +144,7 @@ export function validateLastRow() {
 
 export function fillRow(row: storedRow) {
     for (let i = 1; i <= 5; i++) {
-        updateCell(row.row, i, row.word[i - 1])
+        updateCellProxy(row.row, i, row.word[i - 1])
     }
     showHints(row.word, words.getTodayWord(), row.row, false)
 
@@ -143,7 +155,7 @@ export function fillRow(row: storedRow) {
 }
 
 export function cleanRow(row: number) {
-    for (let i = 1; i <= 5; i++) updateCell(row, i, '')
+    for (let i = 1; i <= 5; i++) updateCellProxy(row, i, '')
 }
 
 export function showHints(
@@ -186,7 +198,7 @@ export function showHints(
 
     if (!animate) {
         for (let i = 0; i < 5; i++) {
-            updateCell(row, i + 1, undefined, statuses[i])
+            updateCellProxy(row, i + 1, undefined, statuses[i])
             updateKey(guessLetters[i], statuses[i])
         }
         return
@@ -200,16 +212,16 @@ export function showHints(
 
     for (let i = 0; i < 5; i++) {
         const delay = i * baseDelay
-        const cell = root.querySelector?.(`#l${row}_${i + 1}`) as
-            | HTMLElement
-            | null
+        const cell = root.querySelector?.(
+            `#l${row}_${i + 1}`
+        ) as HTMLElement | null
         const status = statuses[i]
         const letter = guessLetters[i]
         if (!cell) continue
 
         // Apply status (colors/text transition smoothly via CSS) and add a soft opacity overlay fade
         setTimeout(() => {
-            updateCell(row, i + 1, undefined, status)
+            updateCellProxy(row, i + 1, undefined, status)
             updateKey(letter, status)
 
             if (status === 'correct') {
