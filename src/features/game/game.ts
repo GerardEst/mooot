@@ -1,6 +1,6 @@
 import { LitElement, html } from 'lit'
 import { customElement, query, state } from 'lit/decorators.js'
-import * as words from '@src/features/game/words-module.js'
+import * as words from '@src/features/game/services/words-service.js'
 import {
     runStorageCheck,
     getTodayTime,
@@ -15,6 +15,7 @@ import { game } from './game.style'
 import { global } from '@src/pages/global-styles'
 import './components/keyboard'
 import './components/endgame-modal'
+import { showFeedback as showFeedbackToast } from './services/feedback-service'
 import type { Keyboard } from './components/keyboard'
 
 @customElement('mooot-joc-game')
@@ -34,8 +35,6 @@ export class MoootJocGame extends LitElement {
     @state() private modalStreak = '0'
     @state() private modalMaxStreak = '0'
     @state() private modalDicHref = '#'
-    @state() private feedbackActive = false
-    @state() private feedbackText = '...'
 
     connectedCallback(): void {
         super.connectedCallback()
@@ -70,13 +69,7 @@ export class MoootJocGame extends LitElement {
         this.modalActive = true
     }
 
-    public showFeedback(message: string) {
-        this.feedbackText = message
-        this.feedbackActive = true
-        setTimeout(() => {
-            this.feedbackActive = false
-        }, 4000)
-    }
+    // feedback handled by feedback service (toast component)
 
     private computeTitle(points: number) {
         return points === 6
@@ -155,9 +148,6 @@ export class MoootJocGame extends LitElement {
 
     render() {
         return html`
-            <section class="feedback ${this.feedbackActive ? 'active' : ''}">
-                <p>${this.feedbackText}</p>
-            </section>
             <section class="wordgrid">
                 <div class="wordgrid__row" id="l1">
                     <div id="l1_1" class="wordgrid__cell"></div>
@@ -367,15 +357,7 @@ export function validateLastRow() {
             else document.querySelector('.modal')?.classList.add('active')
         }, 1000)
     } else if (rowStatus === 'invalid') {
-        if (gameInstance) gameInstance.showFeedback('No és una paraula vàlida')
-        else {
-            const fb = document.querySelector('.feedback') as HTMLElement | null
-            if (fb) {
-                fb.textContent = 'No és una paraula vàlida'
-                fb.classList.add('active')
-                setTimeout(() => fb.classList.remove('active'), 4000)
-            }
-        }
+        showFeedbackToast('No és una paraula vàlida')
         currentColumn = 1
         cleanRow(currentRow)
     } else {

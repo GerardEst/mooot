@@ -55,11 +55,6 @@ export const global = css`
         margin: 0;
     }
 
-    a {
-        text-decoration: none;
-        color: black;
-    }
-
     .smallText {
         font-size: 0.8rem;
         color: var(--text-color);
@@ -67,7 +62,7 @@ export const global = css`
     }
 
     * {
-        user-select: none; /* Prevents text selection which can trigger zoom */
+        user-select: none;
         -webkit-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
@@ -77,5 +72,10 @@ export const global = css`
         display: flex;
         flex-direction: column;
         align-items: center;
+    }
+
+    .button {
+        text-decoration: none;
+        color: black;
     }
 `

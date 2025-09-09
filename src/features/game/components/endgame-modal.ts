@@ -1,6 +1,6 @@
 import { LitElement, html } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
-import * as words from '@src/features/game/words-module.js'
+import * as words from '@src/features/game/services/words-service.js'
 import { getTodayTime } from '@src/shared/utils/storage-utils.js'
 import { shareResult } from '@src/shared/utils/share-utils'
 import { currentTry } from '@src/features/game/game'
