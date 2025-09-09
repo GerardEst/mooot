@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit'
 import { customElement, state } from 'lit/decorators.js'
-import { supabase } from '@src/supabase'
+import { supabase } from '@src/core/supabase'
 // import { leagues } from '@src/conf'
 // import '@src/components/trophy-item'
 

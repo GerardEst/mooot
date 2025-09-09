@@ -1,4 +1,4 @@
-import { supabase } from './supabase'
+import { supabase } from '@src/core/supabase'
 
 interface Log {
     type?: string

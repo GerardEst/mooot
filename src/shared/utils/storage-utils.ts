@@ -1,55 +1,7 @@
-import { showModal } from './shared/utils/dom-utils.ts'
-import * as gameboard from './features/game/gameboard-module.ts'
-import { editLinkToDictionary, fillModalStats } from './stats-module.ts'
-import {
-    getTodayNiceWord,
-    getTodayWord,
-    loadWordsData,
-} from './words-module.ts'
-
 export interface storedRow {
     row: number
     word: string
     date: string
-}
-
-export async function loadStoredGame() {
-    const storedData = localStorage.getItem('moootGameData')
-    if (storedData) {
-        const storedGame = JSON.parse(storedData)
-        await loadWordsData()
-
-        storedGame.forEach((row: storedRow) => gameboard.fillRow(row))
-
-        const playerWon =
-            gameboard.currentTry <= 6 &&
-            storedGame.at(-1).word.toUpperCase() ===
-                getTodayWord().toUpperCase()
-
-        const playerLost =
-            gameboard.currentTry === 6 &&
-            storedGame.at(-1).word.toUpperCase() !==
-                getTodayWord().toUpperCase()
-
-        const time = localStorage.getItem('todayTime') || null
-
-        if (playerWon) {
-            fillModalStats(7 - gameboard.currentTry, time)
-            editLinkToDictionary(getTodayNiceWord())
-            gameboard.setCurrentRow(0)
-
-            showModal()
-        } else if (playerLost) {
-            fillModalStats(0, time)
-            editLinkToDictionary(getTodayNiceWord())
-            gameboard.setCurrentRow(0)
-            gameboard.setCurrentTry(7)
-
-            showModal()
-        } else {
-            gameboard.moveToNextRow()
-        }
-    }
 }
 
 export function saveToLocalStorage(word: string, row: number) {

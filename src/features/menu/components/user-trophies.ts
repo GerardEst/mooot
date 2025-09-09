@@ -1,7 +1,7 @@
 import { LitElement, html, css } from 'lit'
 import { customElement, state } from 'lit/decorators.js'
-import { supabase } from '@src/supabase'
-import { AWARDS } from '@src/conf'
+import { supabase } from '@src/core/supabase'
+import { AWARDS } from '@src/core/conf'
 
 @customElement('user-trophies')
 export class UserTrophies extends LitElement {
@@ -77,4 +77,3 @@ declare global {
         'user-trophies': UserTrophies
     }
 }
-

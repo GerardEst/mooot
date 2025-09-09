@@ -3,7 +3,7 @@ import {
     runStorageCheck,
     cleanGameboard,
     loadStoredGame,
-} from '../src/storage-module'
+} from '../src/shared/utils/storage-utils'
 import fs from 'fs'
 import path from 'path'
 import {

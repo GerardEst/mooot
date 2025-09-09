@@ -7,7 +7,6 @@ export class Keyboard extends LitElement {
         return css`
             .keyboard {
                 --spacing: 5px;
-                width: 100%;
                 max-width: 500px;
                 display: grid;
                 grid-template-rows: repeat(3, 1fr);
@@ -15,6 +14,7 @@ export class Keyboard extends LitElement {
                 touch-action: manipulation;
                 padding: 1rem;
                 box-sizing: border-box;
+                margin: auto;
             }
             .keyboard > .keyboard__row {
                 display: flex;
@@ -69,6 +69,17 @@ export class Keyboard extends LitElement {
                 flex: 1.8;
             }
         `
+    }
+
+    // Allow game to update key statuses without querying outside
+    public setKeyStatus(
+        letter: string,
+        status: 'correct' | 'present' | 'absent'
+    ) {
+        const key = this.renderRoot.querySelector(
+            `.keyboard__key[data-key="${letter}"]`
+        ) as HTMLElement | null
+        key?.classList.add(status)
     }
 
     letterClick(letter: string) {

@@ -21,4 +21,13 @@ export const jocPage = css`
         margin-right: -15px;
         justify-self: flex-end;
     }
+
+    mooot-joc-game {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
+        padding-bottom: 50px;
+    }
 `

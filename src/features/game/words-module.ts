@@ -1,6 +1,6 @@
 let dicc: any
 let diccPromise: Promise<Set<string>> | null = null
-let allWords: { key: string; value: string }
+let allWords: { [key: string]: string }
 let wordsPromise: Promise<{ [key: string]: string }> | null = null
 let todayWord: string
 let todayWordIndex: number

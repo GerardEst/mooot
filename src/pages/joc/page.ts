@@ -1,5 +1,6 @@
 import { LitElement, html } from 'lit'
 import { customElement } from 'lit/decorators.js'
+
 import { jocPage } from './style'
 import { global } from '@src/pages/global-styles'
 import '@src/features/game/game'
@@ -34,11 +35,5 @@ export class MoootJocPage extends LitElement {
             <mooot-joc-game></mooot-joc-game>
             <mooot-menu></mooot-menu>
         `
-    }
-}
-
-declare global {
-    interface HTMLElementTagNameMap {
-        'mooot-joc-page': MoootJocPage
     }
 }

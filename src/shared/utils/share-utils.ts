@@ -1,4 +1,4 @@
-import { supalog } from '../../logs'
+import { supalog } from '@src/core/logs'
 
 function buildResultPattern(tries: number) {
     let result = ''
