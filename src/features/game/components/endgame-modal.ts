@@ -3,7 +3,6 @@ import { customElement, property } from 'lit/decorators.js'
 import * as words from '@src/features/game/services/words-service.js'
 import { getTodayTime } from '@src/shared/utils/storage-utils.js'
 import { shareResult } from '@src/shared/utils/share-utils'
-import { currentTry } from '@src/features/game/game'
 import { modalStyles } from './endgame-modal.style'
 import { global } from '@src/pages/global-styles'
 import { getStoredStats } from '@src/shared/utils/stats-utils'
@@ -15,6 +14,7 @@ export class MoootEndgameModal extends LitElement {
     @property({ type: String }) points = '0'
     @property({ type: String }) time = '00:00:00'
     @property({ type: Boolean }) active = false
+    @property({ type: Number }) currentTry = 0
     @property({ type: String }) private modalTitle = '...'
     @property({ type: String }) private word = ''
     @property({ type: String }) private games = '0'
@@ -24,7 +24,6 @@ export class MoootEndgameModal extends LitElement {
     @property({ type: String }) private streak = '0'
     @property({ type: String }) private maxStreak = '0'
     @property({ type: String }) private dicHref = '#'
-    @property({ type: String }) private currentTry = '0'
 
     connectedCallback(): void {
         super.connectedCallback()
@@ -33,7 +32,7 @@ export class MoootEndgameModal extends LitElement {
     }
 
     private fillStats() {
-        this.word = words.getTodayNiceWord()
+        this.word = words.getTodayNiceWord() || ''
         this.modalTitle = this.computeTitle(Number(this.points))
         this.dicHref = this.buildDicUrl(this.word)
 
@@ -44,7 +43,6 @@ export class MoootEndgameModal extends LitElement {
         this.averageTime = stats?.averageTime || '00:00:00'
         this.streak = String(stats?.streak ?? 0)
         this.maxStreak = String(stats?.maxStreak ?? 0)
-        this.currentTry = (7 - Number(this.points)).toString()
     }
 
     private computeTitle(points: number) {
@@ -78,7 +76,11 @@ export class MoootEndgameModal extends LitElement {
         const buttonImg = target?.querySelector('img') || undefined
         buttonImg?.setAttribute('src', '/assets/loading.svg')
 
-        await shareResult(words.getTodayWordIndex(), currentTry, getTodayTime())
+        await shareResult(
+            words.getTodayWordIndex(),
+            this.currentTry,
+            getTodayTime()
+        )
 
         setTimeout(() => {
             buttonImg?.setAttribute('src', '/assets/share.svg')
@@ -92,7 +94,7 @@ export class MoootEndgameModal extends LitElement {
 
         await shareResult(
             words.getTodayWordIndex(),
-            currentTry,
+            this.currentTry,
             getTodayTime(),
             true
         )

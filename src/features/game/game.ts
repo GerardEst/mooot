@@ -1,23 +1,16 @@
 import { LitElement, html } from 'lit'
 import { customElement, query, state } from 'lit/decorators.js'
 import * as words from '@src/features/game/services/words-service.js'
-import {
-    runStorageCheck,
-    getTodayTime,
-} from '@src/shared/utils/storage-utils.js'
+import { runStorageCheck } from '@src/shared/utils/storage-utils.js'
 import { saveToLocalStorage } from '@src/shared/utils/storage-utils.js'
 import type { storedRow } from '@src/shared/utils/storage-utils.js'
-import {
-    getStoredStats,
-    updateStoredStats,
-} from '@src/shared/utils/stats-utils'
+import { updateStoredStats } from '@src/shared/utils/stats-utils'
 import { game } from './game.style'
 import { global } from '@src/pages/global-styles'
 import './components/keyboard'
 import './components/endgame-modal'
 import { showFeedback as showFeedbackToast } from './services/feedback-service'
 import type { Keyboard } from './components/keyboard'
-import { fillRow } from './services/game-service'
 
 @customElement('mooot-joc-game')
 export class MoootJocGame extends LitElement {
@@ -27,6 +20,12 @@ export class MoootJocGame extends LitElement {
     @state() private modalActive = false
     @state() private points = '0'
     @state() private time = '00:00:00'
+    @state() private gameState = {
+        currentRow: 1,
+        currentColumn: 1,
+        currentTry: 1,
+        currentWord: '',
+    }
 
     connectedCallback(): void {
         super.connectedCallback()
@@ -37,60 +36,71 @@ export class MoootJocGame extends LitElement {
         })
     }
 
+    setCurrentRow(to: number) {
+        this.gameState.currentRow = to
+    }
+
+    setCurrentColumn(to: number) {
+        this.gameState.currentColumn = to
+    }
+
+    setCurrentWord(to: string) {
+        this.gameState.currentWord = to
+    }
+
+    setCurrentTry(to: number) {
+        this.gameState.currentTry = to
+    }
+
+    moveToNextRow() {
+        this.gameState.currentRow++
+        this.gameState.currentTry++
+    }
+
     protected firstUpdated(): void {
         this.loadStoredGame()
     }
 
     async loadStoredGame() {
-        const storedData = localStorage.getItem('moootGameData')
-        if (!storedData) {
-            // No saved game for today: show modal with current stats and empty time
-            this.fillModalStats(0, getTodayTime())
-            this.showModal()
+        // We get the stored game data from localStorage
+        const storedGameData = localStorage.getItem('moootGameData')
 
-            return
-        }
+        // If no stored game, we exit
+        if (!storedGameData) return
 
-        const storedGame = JSON.parse(storedData)
+        const storedGame = JSON.parse(storedGameData)
+
+        // We need the words data from the beginning
         await words.loadWordsData()
 
-        if (Array.isArray(storedGame) && storedGame.length === 0) {
-            // Explicitly empty saved game
-            this.fillModalStats(0, getTodayTime())
-            this.showModal()
-
-            return
-        }
-
-        storedGame.forEach((row: storedRow) => fillRow(row))
+        // We fill each row of the gameboard
+        storedGame.forEach((row: storedRow) => this.fillRow(row))
 
         const playerWon =
-            currentTry <= 6 &&
+            this.gameState.currentTry <= 6 &&
             storedGame.at(-1).word.toUpperCase() ===
                 words.getTodayWord().toUpperCase()
 
         const playerLost =
-            currentTry === 6 &&
+            this.gameState.currentTry === 6 &&
             storedGame.at(-1).word.toUpperCase() !==
                 words.getTodayWord().toUpperCase()
 
         const time = localStorage.getItem('todayTime') || null
 
         if (playerWon) {
-            if (gameInstance) gameInstance.fillModalStats(7 - currentTry, time)
-            setCurrentRow(0)
+            this.fillModalStats(7 - this.gameState.currentTry, time)
+            this.setCurrentRow(0)
 
-            if (gameInstance) gameInstance.showModal()
-            else document.querySelector('.modal')?.classList.add('active')
+            this.showModal()
         } else if (playerLost) {
-            if (gameInstance) gameInstance.fillModalStats(0, time)
-            setCurrentRow(0)
-            setCurrentTry(7)
+            this.fillModalStats(0, time)
+            this.setCurrentRow(0)
+            this.setCurrentTry(7)
 
-            if (gameInstance) gameInstance.showModal()
-            else document.querySelector('.modal')?.classList.add('active')
+            this.showModal()
         } else {
-            moveToNextRow()
+            this.moveToNextRow()
         }
     }
 
@@ -112,17 +122,184 @@ export class MoootJocGame extends LitElement {
     }
 
     onLetterClick(e: CustomEvent) {
-        letterClick(e.detail.letter)
+        this.letterClick(e.detail.letter)
     }
 
     onBackClick() {
-        console.log('back clicked')
-        deleteLastLetter()
+        this.deleteLastLetter()
     }
 
     onEnterClick() {
-        console.log('enter clicked')
-        validateLastRow()
+        this.validateLastRow()
+    }
+
+    letterClick(letter: string) {
+        if (
+            this.gameState.currentColumn === 1 &&
+            this.gameState.currentRow === 1 &&
+            !localStorage.getItem('timetrial-start')
+        ) {
+            localStorage.setItem('timetrial-start', new Date().toISOString())
+        }
+        if (this.gameState.currentColumn > 5) return
+        if (this.gameState.currentColumn === 3) {
+            words.loadDiccData()
+            words.loadWordsData()
+        }
+
+        this.updateCell(
+            this.gameState.currentRow,
+            this.gameState.currentColumn,
+            letter
+        )
+
+        this.gameState.currentWord += letter
+        this.gameState.currentColumn++
+    }
+
+    deleteLastLetter() {
+        if (this.gameState.currentColumn <= 1) return
+
+        this.gameState.currentColumn--
+        this.updateCell(
+            this.gameState.currentRow,
+            this.gameState.currentColumn,
+            ' '
+        )
+        this.gameState.currentWord = this.gameState.currentWord.slice(0, -1)
+    }
+
+    validateLastRow() {
+        if (this.gameState.currentWord.length !== 5) return
+
+        const rowStatus = words.checkWord(this.gameState.currentWord)
+        if (rowStatus === 'correct') {
+            this.showHints(
+                this.gameState.currentWord,
+                words.getTodayWord(),
+                this.gameState.currentRow
+            )
+            saveToLocalStorage(
+                this.gameState.currentWord,
+                this.gameState.currentRow
+            )
+
+            const time = this.calculateTime()
+            localStorage.removeItem('timetrial-start')
+            localStorage.setItem('todayTime', time)
+
+            updateStoredStats(7 - this.gameState.currentTry, time)
+            this.fillModalStats(7 - this.gameState.currentTry, time)
+
+            this.gameState.currentRow = 0
+            setTimeout(() => {
+                this.showModal()
+            }, 1000)
+        } else if (rowStatus === 'invalid') {
+            showFeedbackToast('No és una paraula vàlida')
+            this.gameState.currentColumn = 1
+            this.cleanRow(this.gameState.currentRow)
+        } else {
+            this.showHints(
+                this.gameState.currentWord,
+                words.getTodayWord(),
+                this.gameState.currentRow
+            )
+            saveToLocalStorage(
+                this.gameState.currentWord,
+                this.gameState.currentRow
+            )
+
+            if (this.gameState.currentRow >= 6) {
+                const time = this.calculateTime()
+                localStorage.removeItem('timetrial-start')
+                localStorage.setItem('todayTime', time)
+
+                updateStoredStats(0, time)
+                this.fillModalStats(0, time)
+
+                setTimeout(() => {
+                    this.showModal()
+                }, 1000)
+            }
+            this.gameState.currentColumn = 1
+            this.gameState.currentRow++
+            this.gameState.currentTry++
+        }
+        this.gameState.currentWord = ''
+    }
+
+    cleanRow(row: number) {
+        for (let i = 1; i <= 5; i++) this.updateCell(row, i, '')
+    }
+
+    showHints(
+        guess: string,
+        target: string,
+        row: number,
+        animate: boolean = true
+    ) {
+        const guessLetters = guess.toUpperCase().split('')
+        const targetLetters = target.toUpperCase().split('')
+
+        const statuses: Array<'correct' | 'present' | 'absent'> = new Array(5)
+
+        const remaining: Record<string, number> = {}
+        for (let i = 0; i < 5; i++) {
+            if (guessLetters[i] === targetLetters[i]) {
+                statuses[i] = 'correct'
+            } else {
+                const t = targetLetters[i]
+                remaining[t] = (remaining[t] || 0) + 1
+            }
+        }
+
+        for (let i = 0; i < 5; i++) {
+            if (statuses[i] === 'correct') continue
+            const g = guessLetters[i]
+            if (remaining[g] > 0) {
+                statuses[i] = 'present'
+                remaining[g] -= 1
+            } else {
+                statuses[i] = 'absent'
+            }
+        }
+
+        const baseDelay = 40
+
+        if (!animate) {
+            for (let i = 0; i < 5; i++) {
+                this.updateCell(row, i + 1, undefined, statuses[i])
+
+                this.setKeyStatus(guessLetters[i], statuses[i])
+            }
+            return
+        }
+
+        for (let i = 0; i < 5; i++) {
+            const delay = i * baseDelay
+            const cell =
+                ((this?.renderRoot as ShadowRoot)?.getElementById?.(
+                    `l${row}_${i + 1}`
+                ) as HTMLElement | null) ||
+                (document.getElementById(
+                    `l${row}_${i + 1}`
+                ) as HTMLElement | null)
+            const status = statuses[i]
+            const letter = guessLetters[i]
+            if (!cell) continue
+
+            setTimeout(() => {
+                this.updateCell(row, i + 1, undefined, status)
+                this.setKeyStatus(letter, status)
+
+                if (status === 'correct') {
+                    cell.classList.add('hard-reveal')
+                } else {
+                    cell.classList.add('soft-reveal')
+                }
+            }, delay)
+        }
     }
 
     updateCell(
@@ -139,7 +316,36 @@ export class MoootJocGame extends LitElement {
         if (status) cell.classList.add(status)
     }
 
-    // Modal lives in <mooot-endgame-modal>
+    fillRow(row: storedRow) {
+        for (let i = 1; i <= 5; i++) {
+            this.updateCell(row.row, i, row.word[i - 1])
+        }
+        this.showHints(row.word, words.getTodayWord(), row.row, false)
+
+        this.setCurrentRow(row.row)
+        this.setCurrentTry(row.row)
+        this.setCurrentColumn(1)
+        this.setCurrentWord('')
+    }
+
+    calculateTime(): string {
+        // Get the time from the start to now, in HH:MM:SS format
+        const startTime = localStorage.getItem('timetrial-start')
+        if (!startTime) return '00:00:00'
+
+        const startDate = new Date(startTime)
+        const endDate = new Date()
+
+        const diff = endDate.getTime() - startDate.getTime()
+        const seconds = Math.floor((diff / 1000) % 60)
+        const minutes = Math.floor((diff / (1000 * 60)) % 60)
+        const hours = Math.floor(diff / (1000 * 60 * 60))
+
+        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(
+            2,
+            '0'
+        )}:${String(seconds).padStart(2, '0')}`
+    }
 
     render() {
         return html`
@@ -198,67 +404,9 @@ export class MoootJocGame extends LitElement {
                 .active=${this.modalActive}
                 .points=${this.points}
                 .time=${this.time}
+                .currentTry=${this.gameState.currentTry}
                 @modal-close=${() => (this.modalActive = false)}
             ></mooot-endgame-modal>
         `
     }
-}
-
-// -----------------
-// Gameboard logic
-// -----------------
-
-export function checkWord(word: string) {
-    const cleanWord = word.toUpperCase().trim()
-
-    if (cleanWord === words.getTodayWord().toUpperCase()) {
-        return 'correct'
-    }
-
-    if (words.wordExists(cleanWord)) return 'next'
-
-    return 'invalid'
-}
-
-function updateMenuStat(stat: string, content: string) {
-    const menu = document.querySelector('mooot-menu') as HTMLElement & {
-        shadowRoot?: ShadowRoot
-    }
-    const menuRoot = (menu?.shadowRoot as ShadowRoot) || document
-    const target = menuRoot.querySelector?.(
-        `#menustats-${stat}`
-    ) as HTMLElement | null
-    if (!target) return
-    target.textContent = content
-}
-
-function updateMenuData() {
-    const storedStats = getStoredStats()
-
-    updateMenuStat('games', storedStats?.games.toString() || '0')
-    updateMenuStat('totalPoints', storedStats?.totalPoints.toString() || '0')
-    updateMenuStat(
-        'averagePoints',
-        storedStats?.averagePoints.toFixed(2) || '0'
-    )
-    updateMenuStat('streak', storedStats?.streak.toString() || '0')
-    updateMenuStat('maxStreak', storedStats?.maxStreak.toString() || '0')
-}
-
-function calculateTime(): string {
-    const startTime = localStorage.getItem('timetrial-start')
-    if (!startTime) return '00:00:00'
-
-    const startDate = new Date(startTime)
-    const endDate = new Date()
-
-    const diff = endDate.getTime() - startDate.getTime()
-    const seconds = Math.floor((diff / 1000) % 60)
-    const minutes = Math.floor((diff / (1000 * 60)) % 60)
-    const hours = Math.floor(diff / (1000 * 60 * 60))
-
-    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(
-        2,
-        '0'
-    )}:${String(seconds).padStart(2, '0')}`
 }

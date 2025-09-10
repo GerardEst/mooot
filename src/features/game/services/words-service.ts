@@ -82,6 +82,7 @@ export function getTodayWord() {
 }
 
 export function getTodayNiceWord() {
+    if (!todayWord) return
     return allWords[todayWord.toLowerCase()].toUpperCase()
 }
 
@@ -123,4 +124,16 @@ export function getTodayWordIndex() {
     todayWordIndex = daysElapsed % Object.keys(allWords).length
 
     return todayWordIndex
+}
+
+export function checkWord(word: string) {
+    const cleanWord = word.toUpperCase().trim()
+
+    if (cleanWord === getTodayWord().toUpperCase()) {
+        return 'correct'
+    }
+
+    if (wordExists(cleanWord)) return 'next'
+
+    return 'invalid'
 }
