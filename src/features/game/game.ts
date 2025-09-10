@@ -25,38 +25,19 @@ export class MoootJocGame extends LitElement {
 
     @query('mooot-keyboard') private keyboardEl?: Keyboard
     @state() private modalActive = false
-    @state() private modalTitle = '...'
-    @state() private modalWord = ''
-    @state() private modalPoints = '0'
-    @state() private modalTime = '00:00:00'
-    @state() private modalGames = '0'
-    @state() private modalTotalPoints = '0'
-    @state() private modalAveragePoints = '0.00'
-    @state() private modalAverageTime = '00:00:00'
-    @state() private modalStreak = '0'
-    @state() private modalMaxStreak = '0'
-    @state() private modalDicHref = '#'
+    @state() private points = '0'
+    @state() private time = '00:00:00'
 
     connectedCallback(): void {
         super.connectedCallback()
-        // Register this instance so game logic can update the shadow DOM directly
-        gameInstance = this
+
         runStorageCheck()
-        document.addEventListener('visibilitychange', this.onVisibility)
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) runStorageCheck()
+        })
     }
 
-    disconnectedCallback(): void {
-        document.removeEventListener('visibilitychange', this.onVisibility)
-        // Unregister instance when detached
-        if (gameInstance === this) gameInstance = null
-        super.disconnectedCallback()
-    }
-
-    private onVisibility = () => {
-        if (!document.hidden) runStorageCheck()
-    }
-
-    private init() {
+    protected firstUpdated(): void {
         this.loadStoredGame()
     }
 
@@ -113,50 +94,14 @@ export class MoootJocGame extends LitElement {
         }
     }
 
-    protected firstUpdated(): void {
-        // Ensure DOM (including modal) is rendered before trying to show it
-        this.init()
-    }
-
     // UI methods (inside component, reactive)
     public showModal() {
         this.modalActive = true
     }
 
-    private computeTitle(points: number) {
-        return points === 6
-            ? '🤨 ESCANDALÓS!'
-            : points === 5
-            ? '🏆 Increíble!'
-            : points === 4
-            ? '🤯 Impresionant!'
-            : points === 3
-            ? '😎 Molt bé!'
-            : points === 2
-            ? '😐 Fet!'
-            : points === 1
-            ? '😭 Pels pèls!'
-            : '💩 Vaja...'
-    }
-
-    private buildDicUrl(word: string) {
-        return `https://dlc.iec.cat/Results?DecEntradaText=${word}&AllInfoMorf=False&OperEntrada=0&OperDef=0&OperEx=0&OperSubEntrada=0&OperAreaTematica=0&InfoMorfType=0&OperCatGram=False&AccentSen=False&CurrentPage=0&refineSearch=0&Actualitzacions=False`
-    }
-
     public fillModalStats(todayPoints: number, todayTime: string | null) {
-        const stats = updateStoredStats(todayPoints, todayTime)
-
-        this.modalTitle = this.computeTitle(todayPoints)
-        this.modalWord = words.getTodayNiceWord()
-        this.modalPoints = String(todayPoints)
-        this.modalTime = todayTime || '-'
-        this.modalGames = String(stats?.games ?? 0)
-        this.modalTotalPoints = String(stats?.totalPoints ?? 0)
-        this.modalAveragePoints = (stats?.averagePoints ?? 0).toFixed(2)
-        this.modalAverageTime = stats?.averageTime || '00:00:00'
-        this.modalStreak = String(stats?.streak ?? 0)
-        this.modalMaxStreak = String(stats?.maxStreak ?? 0)
-        this.modalDicHref = this.buildDicUrl(this.modalWord)
+        this.points = String(todayPoints)
+        this.time = todayTime || '-'
     }
 
     public setKeyStatus(
@@ -251,17 +196,8 @@ export class MoootJocGame extends LitElement {
 
             <mooot-endgame-modal
                 .active=${this.modalActive}
-                .title=${this.modalTitle}
-                .word=${this.modalWord}
-                .points=${this.modalPoints}
-                .time=${this.modalTime}
-                .games=${this.modalGames}
-                .totalPoints=${this.modalTotalPoints}
-                .averagePoints=${this.modalAveragePoints}
-                .averageTime=${this.modalAverageTime}
-                .streak=${this.modalStreak}
-                .maxStreak=${this.modalMaxStreak}
-                .dicHref=${this.modalDicHref}
+                .points=${this.points}
+                .time=${this.time}
                 @modal-close=${() => (this.modalActive = false)}
             ></mooot-endgame-modal>
         `

@@ -6,23 +6,66 @@ import { shareResult } from '@src/shared/utils/share-utils'
 import { currentTry } from '@src/features/game/game'
 import { modalStyles } from './endgame-modal.style'
 import { global } from '@src/pages/global-styles'
+import { getStoredStats } from '@src/shared/utils/stats-utils'
 
 @customElement('mooot-endgame-modal')
 export class MoootEndgameModal extends LitElement {
     static styles = [global, modalStyles]
 
-    @property({ type: Boolean }) active = false
-    @property({ type: String }) title = '...'
-    @property({ type: String }) word = ''
     @property({ type: String }) points = '0'
     @property({ type: String }) time = '00:00:00'
-    @property({ type: String }) games = '0'
-    @property({ type: String }) totalPoints = '0'
-    @property({ type: String }) averagePoints = '0.00'
-    @property({ type: String }) averageTime = '00:00:00'
-    @property({ type: String }) streak = '0'
-    @property({ type: String }) maxStreak = '0'
-    @property({ type: String }) dicHref = '#'
+    @property({ type: Boolean }) active = false
+    @property({ type: String }) private modalTitle = '...'
+    @property({ type: String }) private word = ''
+    @property({ type: String }) private games = '0'
+    @property({ type: String }) private totalPoints = '0'
+    @property({ type: String }) private averagePoints = '0.00'
+    @property({ type: String }) private averageTime = '00:00:00'
+    @property({ type: String }) private streak = '0'
+    @property({ type: String }) private maxStreak = '0'
+    @property({ type: String }) private dicHref = '#'
+    @property({ type: String }) private currentTry = '0'
+
+    connectedCallback(): void {
+        super.connectedCallback()
+
+        this.fillStats()
+    }
+
+    private fillStats() {
+        this.word = words.getTodayNiceWord()
+        this.modalTitle = this.computeTitle(Number(this.points))
+        this.dicHref = this.buildDicUrl(this.word)
+
+        const stats = getStoredStats()
+        this.games = String(stats?.games ?? 0)
+        this.totalPoints = String(stats?.totalPoints ?? 0)
+        this.averagePoints = (stats?.averagePoints ?? 0).toFixed(2)
+        this.averageTime = stats?.averageTime || '00:00:00'
+        this.streak = String(stats?.streak ?? 0)
+        this.maxStreak = String(stats?.maxStreak ?? 0)
+        this.currentTry = (7 - Number(this.points)).toString()
+    }
+
+    private computeTitle(points: number) {
+        return points === 6
+            ? '🤨 ESCANDALÓS!'
+            : points === 5
+            ? '🏆 Increíble!'
+            : points === 4
+            ? '🤯 Impresionant!'
+            : points === 3
+            ? '😎 Molt bé!'
+            : points === 2
+            ? '😐 Fet!'
+            : points === 1
+            ? '😭 Pels pèls!'
+            : '💩 Vaja...'
+    }
+
+    private buildDicUrl(word: string) {
+        return `https://dlc.iec.cat/Results?DecEntradaText=${word}&AllInfoMorf=False&OperEntrada=0&OperDef=0&OperEx=0&OperSubEntrada=0&OperAreaTematica=0&InfoMorfType=0&OperCatGram=False&AccentSen=False&CurrentPage=0&refineSearch=0&Actualitzacions=False`
+    }
 
     private onModalCloseClick = () => {
         this.dispatchEvent(
@@ -65,7 +108,7 @@ export class MoootEndgameModal extends LitElement {
                 <div class="modal__content">
                     <div class="header">
                         <h2 id="stats-title" class="modal__title">
-                            ${this.title}
+                            ${this.modalTitle}
                         </h2>
                         <img
                             alt="Tancar modal"
