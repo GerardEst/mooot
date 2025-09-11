@@ -30,7 +30,7 @@ export class UserTrophies extends LitElement {
     }
 
     private async loadUserTrophies() {
-        const isDev = import.meta.env.DEV
+        const isDev = import.meta.env.ENV === 'dev'
         const devUserId = import.meta.env.VITE_DEV_USER_ID as string | undefined
         const userId =
             this.getTelegramUserId() || (isDev ? Number(devUserId) : undefined)
@@ -63,7 +63,7 @@ export class UserTrophies extends LitElement {
                             position=${position}
                             name=${trophyInfo.name}
                             emoji=${trophyInfo.emoji}
-                            small=${true}
+                            ?small=${true}
                         ></trophy-badge>
                     `
                 })}

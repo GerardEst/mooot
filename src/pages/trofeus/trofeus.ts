@@ -75,7 +75,7 @@ export class TrophiesExpositor extends LitElement {
 
     private async loadUserTrophies() {
         await this.waitForTelegram()
-        const isDev = import.meta.env.DEV
+        const isDev = import.meta.env.ENV === 'dev'
         const devUserId = import.meta.env.VITE_DEV_USER_ID as string | undefined
         const userId =
             this.getTelegramUserId() || (isDev ? Number(devUserId) : undefined)
