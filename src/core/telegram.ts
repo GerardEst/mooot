@@ -9,3 +9,7 @@ export function isFromTelegram() {
     const isFromTelegram = initData && (initData.user || initData.chat_type)
     return Boolean(isFromTelegram)
 }
+
+export function getUserFirstName() {
+    return window?.Telegram?.WebApp?.initDataUnsafe?.user?.first_name || '...'
+}
