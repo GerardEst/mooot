@@ -157,6 +157,14 @@ export class MoootMenu extends LitElement {
                             >
                         </p>
                     </div>
+                    <nav class="menu__links smallText">
+                        <a href="/">Inici</a>
+                        <a href="/about/">Sobre Mooot</a>
+                        <a href="/contact/">Contacte</a>
+                        <a href="/privacy/">Privacitat</a>
+                        <a href="/cookies/">Cookies</a>
+                        <a href="/terms/">Termes</a>
+                    </nav>
                 </div>
             </section>
         `

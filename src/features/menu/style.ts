@@ -52,6 +52,13 @@ export const menu = css`
                 gap: 0.5rem;
                 padding-bottom: 2rem;
             }
+            & .menu__links {
+                display: flex;
+                gap: 0.6rem;
+                flex-wrap: wrap;
+                justify-content: center;
+                padding-bottom: 1rem;
+            }
             & .menu__motbot {
                 flex: 1;
                 position: relative;
