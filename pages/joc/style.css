@@ -283,6 +283,7 @@ header {
     touch-action: manipulation;
     padding: 1rem;
     box-sizing: border-box;
+    padding-bottom: 3rem;
     & > .keyboard__row {
         display: flex;
         align-items: center;
