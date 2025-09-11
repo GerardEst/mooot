@@ -27,11 +27,6 @@
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://mooot.cat/guia/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://mooot.cat/privacy/</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
