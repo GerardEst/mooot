@@ -1,5 +1,5 @@
 import { LitElement, html } from 'lit'
-import { customElement } from 'lit/decorators.js'
+import { customElement, property, state } from 'lit/decorators.js'
 import '@src/shared/components/trophy-badge'
 import '@src/features/menu/components/user-trophies'
 import { menu } from './style'
@@ -7,28 +7,16 @@ import { global } from '@src/pages/global-styles'
 import '@src/shared/components/header-logo'
 import '@src/shared/components/flag'
 import '@src/shared/components/divider'
+import { getUserFirstName } from '@src/core/telegram'
 
 @customElement('mooot-menu')
 export class MoootMenu extends LitElement {
     static styles = [menu, global]
 
-    fillPlaceholderWith(text: string, location: string) {
-        const usernamePlaceholders = document.querySelectorAll(location)
-
-        for (const placeholder in usernamePlaceholders) {
-            // @ts-ignore - querySelectorAll NodeList access via index
-            usernamePlaceholders[placeholder].textContent = text
-        }
-    }
+    @property({ type: String }) userName = ''
 
     firstUpdated(): void {
-        // updateMenuData()
-
-        // Fill placeholder with name
-        const firstName =
-            window?.Telegram?.WebApp?.initDataUnsafe?.user?.first_name
-        if (firstName)
-            this.fillPlaceholderWith(firstName, '.placeholder_userName')
+        this.userName = getUserFirstName()
     }
 
     // Public API to control menu from parent
@@ -121,9 +109,7 @@ export class MoootMenu extends LitElement {
                                 src="/assets/moootbot_M.png"
                             />
                             <h4>
-                                Psst,
-                                <span class="placeholder_userName"></span>, vols
-                                guanyar més premis?
+                                Psst, ${this.userName}, vols guanyar més premis?
                             </h4>
                             <p style="line-height: 1.5">
                                 Crea altres lligues privades amb qui vulguis
