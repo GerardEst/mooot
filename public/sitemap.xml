@@ -17,27 +17,17 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mooot.cat/about/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
     <loc>https://mooot.cat/contact/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://mooot.cat/privacy/</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <loc>https://mooot.cat/com-jugar/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://mooot.cat/cookies/</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://mooot.cat/terms/</loc>
+    <loc>https://mooot.cat/legal/</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>

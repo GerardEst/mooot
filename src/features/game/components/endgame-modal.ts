@@ -51,7 +51,7 @@ export class MoootEndgameModal extends LitElement {
             : points === 5
             ? '🏆 Increíble!'
             : points === 4
-            ? '🤯 Impresionant!'
+            ? '🤯 Impressionant!'
             : points === 3
             ? '😎 Molt bé!'
             : points === 2

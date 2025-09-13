@@ -4,108 +4,49 @@ export const menu = css`
     .menu {
         position: fixed;
         display: none;
+        flex-direction: column;
         top: 0;
         left: 0;
         width: 100%;
         height: 100vh;
-        align-items: center;
-        justify-content: center;
-        gap: 1rem;
-        background-color: rgba(255, 255, 255, 0.8);
-        backdrop-filter: blur(7px);
+        background-color: white;
+        timeline-scope: --menu-x;
         &.active {
             display: flex;
         }
-        & .menu__content {
-            position: relative;
-            max-width: 500px;
-            width: 100%;
-            height: 100vh;
-            box-sizing: border-box;
+        & .menu_content {
+            flex: 1;
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scroll-timeline-name: --menu-x;
+            scroll-timeline-axis: inline;
+            /* Hide scrollbar across browsers */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE 10+ */
+            &::-webkit-scrollbar {
+                display: none; /* Safari and Chrome */
+            }
+            & .menu_section {
+                min-width: 100%;
+                scroll-snap-align: start;
+                scroll-snap-stop: always;
+                & .menu_section_content {
+                    padding: 20px;
+                }
+            }
+
+            & callout-creategroups {
+                margin-top: auto;
+            }
+        }
+        & .menu_footer {
             display: flex;
             flex-direction: column;
-            padding: 0 1rem;
-            & .menu__content__header {
-                padding: 1rem 0;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                width: 100%;
-                box-sizing: border-box;
-                justify-items: center;
-                & .closeMenu {
-                    display: flex;
-                    cursor: pointer;
-                    padding: 15px;
-                    margin-right: -15px;
-                    justify-self: flex-end;
-                }
-            }
-            & .menu__stats {
-                display: none;
-                flex: 1;
-                padding: 2rem 0;
-            }
-            & .menu__section {
-                display: flex;
-                flex-direction: column;
-                gap: 0.5rem;
-                padding-bottom: 2rem;
-            }
-            & .menu__links {
-                display: flex;
-                gap: 0.6rem;
-                flex-wrap: wrap;
-                justify-content: center;
-                padding-bottom: 1rem;
-            }
-            & .menu__motbot {
-                flex: 1;
-                position: relative;
-                display: flex;
-                flex-direction: column;
-                gap: 1.5rem;
-                & .moootbot_badge {
-                    position: absolute;
-                    top: -20px;
-                    right: -20px;
-                    transform: rotate(14deg);
-                    /* background-color: var(--button-danger-color); */
-                    border-radius: 100%;
-                    padding: 0.3rem;
-                }
-                & .menu__motbot__row {
-                    display: flex;
-                    gap: 1rem;
-                    justify-content: space-between;
-                }
-                & .moootbotCallout {
-                    position: relative;
-                    display: flex;
-                    flex-direction: column;
-                    margin-top: auto;
-                    gap: 0.7rem;
-                    padding: 10px 13px;
-                    padding-right: 40px;
-                    border: 1px solid var(--cell-border);
-                    border-radius: 4px;
-                    background-color: var(--cell);
-                    & .callout_buttons {
-                        display: flex;
-                        gap: 0.5rem;
-                        a:first-child {
-                            background-color: var(--button-callout);
-                            border: none;
-                            padding: 0.7rem 1rem;
-                        }
-                        a:last-child {
-                            background: white;
-                            border-color: var(--cell-border);
-                            padding: 0.7rem 1rem;
-                        }
-                    }
-                }
-            }
+            gap: 16px;
+            padding: 16px 20px;
         }
     }
     .motbot_trophies {
@@ -117,6 +58,26 @@ export const menu = css`
             flex: 1;
             flex-direction: column;
             gap: 0.4rem;
+        }
+    }
+
+    @keyframes hide {
+        from {
+            transform: translateY(0);
+        }
+        to {
+            transform: translateY(-100px);
+        }
+    }
+
+    @supports (animation-timeline: --foo) and (scroll-timeline-name: --bar) {
+        .menu menu-header {
+            animation-name: hide;
+            animation-duration: 1s;
+            animation-timing-function: linear;
+            animation-fill-mode: both;
+            animation-timeline: --menu-x;
+            animation-range: 0% 100%;
         }
     }
 `
