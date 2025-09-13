@@ -87,6 +87,8 @@ export const menu = css`
             animation-fill-mode: both;
             animation-timeline: --menu-x;
             animation-range: 0% 50%;
+            /* Hint browser to optimize margin changes */
+            will-change: margin-top;
         }
         .menu .menu_footer {
             animation-name: hide-footer;
@@ -96,6 +98,8 @@ export const menu = css`
             animation-fill-mode: both;
             animation-timeline: --menu-x;
             animation-range: 0% 50%;
+            /* Hint browser to optimize margin changes */
+            will-change: margin-bottom;
         }
     }
 `

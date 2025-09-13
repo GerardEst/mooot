@@ -6,6 +6,7 @@ import { shareResult } from '@src/shared/utils/share-utils'
 import { modalStyles } from './endgame-modal.style'
 import { global } from '@src/pages/global-styles'
 import { getStoredStats } from '@src/shared/utils/stats-utils'
+import '@src/shared/components/stat-display'
 
 @customElement('mooot-endgame-modal')
 export class MoootEndgameModal extends LitElement {
@@ -148,38 +149,30 @@ export class MoootEndgameModal extends LitElement {
                         </div>
                     </section>
                     <section class="stats">
-                        <div class="pointedRow">
-                            <p>Partides jugades</p>
-                            <span></span>
-                            <p id="stats-games">${this.games}</p>
-                        </div>
-                        <div class="pointedRow">
-                            <p>Punts totals</p>
-                            <span></span>
-                            <p id="stats-totalPoints">${this.totalPoints}</p>
-                        </div>
-                        <div class="pointedRow">
-                            <p>Mitjana de punts</p>
-                            <span></span>
-                            <p id="stats-averagePoints">
-                                ${this.averagePoints}
-                            </p>
-                        </div>
-                        <div class="pointedRow">
-                            <p>Mitjana de temps</p>
-                            <span></span>
-                            <p id="stats-averageTime">${this.averageTime}</p>
-                        </div>
-                        <div class="pointedRow">
-                            <p>Ratxa actual</p>
-                            <span></span>
-                            <p id="stats-streak">${this.streak}</p>
-                        </div>
-                        <div class="pointedRow">
-                            <p>Ratxa màxima</p>
-                            <span></span>
-                            <p id="stats-maxStreak">${this.maxStreak}</p>
-                        </div>
+                        <stat-display
+                            key="games"
+                            name="Partides jugades"
+                        ></stat-display>
+                        <stat-display
+                            key="totalPoints"
+                            name="Punts totals"
+                        ></stat-display>
+                        <stat-display
+                            key="averagePoints"
+                            name="Mitjana de punts"
+                        ></stat-display>
+                        <stat-display
+                            key="averageTime"
+                            name="Mitjana de temps"
+                        ></stat-display>
+                        <stat-display
+                            key="streak"
+                            name="Ratxa actual"
+                        ></stat-display>
+                        <stat-display
+                            key="maxStreak"
+                            name="Ratxa màxima"
+                        ></stat-display>
                     </section>
                     <div class="modal__buttons">
                         <button

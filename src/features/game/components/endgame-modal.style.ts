@@ -87,34 +87,4 @@ export const modalStyles = css`
         width: 15px;
         height: 15px;
     }
-    .pointedRow {
-        display: flex;
-        gap: 0.2rem;
-        & p:first-child {
-            font-style: italic;
-            font-weight: 400;
-        }
-        & p:last-child {
-            font-weight: 900;
-            font-family: monospace;
-        }
-        & a {
-            font-weight: 900;
-            font-family: monospace;
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-            text-decoration: none;
-            border-bottom: 1px solid rgb(36, 36, 36);
-            border-radius: 0;
-            & img {
-                width: 15px;
-                height: 15px;
-            }
-        }
-        & > span {
-            flex: 1;
-            border-bottom: 1px dotted var(--cell-border);
-        }
-    }
 `

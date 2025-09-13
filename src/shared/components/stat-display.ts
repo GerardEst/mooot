@@ -10,9 +10,15 @@ export class StatDisplay extends LitElement {
         css`
             :host {
                 display: flex;
+                gap: 0.6rem;
+                align-items: flex-end;
             }
             p:first-child {
                 font-style: italic;
+            }
+            p:last-child {
+                font-weight: 900;
+                font-family: monospace;
             }
             span {
                 flex: 1;
