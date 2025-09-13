@@ -14,6 +14,17 @@ import '@src/shared/components/pages-menu'
 export class MoootMenu extends LitElement {
     static styles = [menu, global]
 
+    firstUpdated() {
+        this.setScrollOnMainElement()
+    }
+
+    setScrollOnMainElement() {
+        const content = this.renderRoot?.querySelector('.menu_content')
+        if (content) {
+            content.scrollTo({ left: content.clientWidth, behavior: 'instant' })
+        }
+    }
+
     open() {
         const menu = this.renderRoot?.querySelector('.menu') as HTMLElement
         menu?.classList.add('active')

@@ -61,23 +61,41 @@ export const menu = css`
         }
     }
 
-    @keyframes hide {
+    @keyframes hide-header {
         from {
-            transform: translateY(0);
+            margin-top: 0px;
         }
         to {
-            transform: translateY(-100px);
+            margin-top: -60px;
+        }
+    }
+    @keyframes hide-footer {
+        from {
+            margin-bottom: 0px;
+        }
+        to {
+            margin-bottom: -125px;
         }
     }
 
     @supports (animation-timeline: --foo) and (scroll-timeline-name: --bar) {
         .menu menu-header {
-            animation-name: hide;
+            animation-name: hide-header;
             animation-duration: 1s;
+            animation-direction: reverse;
             animation-timing-function: linear;
             animation-fill-mode: both;
             animation-timeline: --menu-x;
-            animation-range: 0% 100%;
+            animation-range: 0% 50%;
+        }
+        .menu .menu_footer {
+            animation-name: hide-footer;
+            animation-duration: 1s;
+            animation-timing-function: linear;
+            animation-direction: reverse;
+            animation-fill-mode: both;
+            animation-timeline: --menu-x;
+            animation-range: 0% 50%;
         }
     }
 `
