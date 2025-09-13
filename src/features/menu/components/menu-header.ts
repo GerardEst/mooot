@@ -16,7 +16,7 @@ class MenuHeader extends LitElement {
                 background: linear-gradient(
                     157deg,
                     rgba(255, 246, 197, 1) 31%,
-                    rgba(253, 215, 14, 1) 100%
+                    rgb(255 219 95) 100%
                 );
                 padding: var(--spacing);
                 gap: var(--spacing);

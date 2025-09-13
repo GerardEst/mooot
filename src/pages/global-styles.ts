@@ -66,6 +66,16 @@ export const global = css`
         -webkit-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
+        /* Remove blue tap highlight on mobile Safari/Chrome */
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Keep keyboard focus outlines, hide for pointer taps/clicks */
+    *:focus {
+        outline: none;
+    }
+    *:focus-visible {
+        outline: auto;
     }
 
     body {
