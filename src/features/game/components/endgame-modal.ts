@@ -16,34 +16,23 @@ export class MoootEndgameModal extends LitElement {
     @property({ type: String }) time = '00:00:00'
     @property({ type: Boolean }) active = false
     @property({ type: Number }) currentTry = 0
+
     @property({ type: String }) private modalTitle = '...'
     @property({ type: String }) private word = ''
-    @property({ type: String }) private games = '0'
-    @property({ type: String }) private totalPoints = '0'
-    @property({ type: String }) private averagePoints = '0.00'
-    @property({ type: String }) private averageTime = '00:00:00'
-    @property({ type: String }) private streak = '0'
-    @property({ type: String }) private maxStreak = '0'
     @property({ type: String }) private dicHref = '#'
 
     connectedCallback(): void {
         super.connectedCallback()
+    }
 
+    firstUpdated() {
         this.fillStats()
     }
 
-    private fillStats() {
-        this.word = words.getTodayNiceWord() || ''
+    private async fillStats() {
+        this.word = (await words.getTodayNiceWord()) || ''
         this.modalTitle = this.computeTitle(Number(this.points))
         this.dicHref = this.buildDicUrl(this.word)
-
-        const stats = getStoredStats()
-        this.games = String(stats?.games ?? 0)
-        this.totalPoints = String(stats?.totalPoints ?? 0)
-        this.averagePoints = (stats?.averagePoints ?? 0).toFixed(2)
-        this.averageTime = stats?.averageTime || '00:00:00'
-        this.streak = String(stats?.streak ?? 0)
-        this.maxStreak = String(stats?.maxStreak ?? 0)
     }
 
     private computeTitle(points: number) {

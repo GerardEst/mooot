@@ -75,14 +75,18 @@ export function getTodayWord() {
     if (todayWord) return todayWord
 
     const todayIndex = getTodayWordIndex()
+
     const wordsArray = Object.keys(allWords)
     todayWord = wordsArray[todayIndex]
 
     return todayWord
 }
 
-export function getTodayNiceWord() {
-    if (!todayWord) return
+export async function getTodayNiceWord() {
+    // When called without playing (e.g. endgame modal when reloading the page after finishing the game), we need to load the words data first
+    if (!allWords) await loadWordsData()
+    if (!todayWord) getTodayWord()
+
     return allWords[todayWord.toLowerCase()].toUpperCase()
 }
 
@@ -129,7 +133,7 @@ export function getTodayWordIndex() {
 export function checkWord(word: string) {
     const cleanWord = word.toUpperCase().trim()
 
-    if (cleanWord === getTodayWord().toUpperCase()) {
+    if (cleanWord === todayWord.toUpperCase()) {
         return 'correct'
     }
 
