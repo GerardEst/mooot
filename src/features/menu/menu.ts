@@ -13,7 +13,7 @@ import '@src/shared/components/stat-display'
 
 @customElement('mooot-menu')
 export class MoootMenu extends LitElement {
-    static styles = [menu, global]
+    static styles = [global, menu]
 
     firstUpdated() {
         this.setScrollOnMainElement()
@@ -21,19 +21,14 @@ export class MoootMenu extends LitElement {
 
     setScrollOnMainElement() {
         const content = this.renderRoot?.querySelector('.menu_content')
-        if (content) {
+        if (content instanceof HTMLElement) {
+            // Jump one full viewport width to show the second section
             content.scrollTo({ left: content.clientWidth, behavior: 'instant' })
         }
     }
 
-    open() {
-        const menu = this.renderRoot?.querySelector('.menu') as HTMLElement
-        menu?.classList.add('active')
-    }
-
     close() {
-        const menu = this.renderRoot?.querySelector('.menu') as HTMLElement
-        menu?.classList.remove('active')
+        this.dispatchEvent(new CustomEvent('closeMenu', { bubbles: true }))
     }
 
     render() {

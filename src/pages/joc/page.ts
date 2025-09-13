@@ -1,5 +1,5 @@
 import { LitElement, html } from 'lit'
-import { customElement } from 'lit/decorators.js'
+import { customElement, property } from 'lit/decorators.js'
 
 import { jocPage } from './style'
 import { global } from '@src/pages/global-styles'
@@ -12,15 +12,14 @@ import '@src/shared/components/flag'
 export class MoootJocPage extends LitElement {
     static styles = [global, jocPage]
 
-    firstUpdated(): void {
-        const root = this.renderRoot
-        const openMenuBtn = root.querySelector(
-            '#openMenu'
-        ) as HTMLElement | null
-        openMenuBtn?.addEventListener('click', () => {
-            const menu = root.querySelector('mooot-menu') as any
-            menu?.open?.()
-        })
+    @property({ type: Boolean }) menuActive = false
+
+    openMenu() {
+        this.menuActive = true
+    }
+
+    closeMenu() {
+        this.menuActive = false
     }
 
     render() {
@@ -28,12 +27,14 @@ export class MoootJocPage extends LitElement {
             <header>
                 <mooot-flag></mooot-flag>
                 <mooot-header-logo text="MOOOT"></mooot-header-logo>
-                <div id="openMenu" class="openMenuButton">
+                <div @click=${() => this.openMenu()} class="openMenuButton">
                     <img alt="Obrir menu" width="20" src="/assets/menu.svg" />
                 </div>
             </header>
             <mooot-joc-game></mooot-joc-game>
-            <mooot-menu></mooot-menu>
+            ${this.menuActive
+                ? html`<mooot-menu @closeMenu=${this.closeMenu}></mooot-menu>`
+                : ''}
         `
     }
 }
