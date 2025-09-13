@@ -1,10 +1,17 @@
-interface storedStats {
+export interface storedStats {
     games: number
     totalPoints: number
     averagePoints: number
     streak: number
     maxStreak: number
     averageTime?: string // Format: hh:mm:ss
+}
+
+export function getStoredStat(stat: keyof storedStats) {
+    const stats = getStoredStats()
+    if (!stats) return
+
+    return stats[stat as keyof storedStats]
 }
 
 export function getStoredStats() {

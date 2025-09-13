@@ -9,6 +9,7 @@ import '@src/shared/components/divider'
 import '@src/features/menu/components/menu-header'
 import '@src/shared/components/callout-creategroups'
 import '@src/shared/components/pages-menu'
+import '@src/shared/components/stat-display'
 
 @customElement('mooot-menu')
 export class MoootMenu extends LitElement {
@@ -47,7 +48,30 @@ export class MoootMenu extends LitElement {
                     </div>
                     <div id="menu-profile" class="menu_section">
                         <div class="menu_section_content">
-                            <p>Tu</p>
+                            <stat-display
+                                key="games"
+                                name="Partides jugades"
+                            ></stat-display>
+                            <stat-display
+                                key="totalPoints"
+                                name="Punts totals"
+                            ></stat-display>
+                            <stat-display
+                                key="averagePoints"
+                                name="Mitjana de punts"
+                            ></stat-display>
+                            <stat-display
+                                key="averageTime"
+                                name="Mitjana de temps"
+                            ></stat-display>
+                            <stat-display
+                                key="streak"
+                                name="Ratxa actual"
+                            ></stat-display>
+                            <stat-display
+                                key="maxStreak"
+                                name="Ratxa màxima"
+                            ></stat-display>
                         </div>
                     </div>
                     <div id="menu-leagues" class="menu_section">
