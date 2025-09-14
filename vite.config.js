@@ -36,7 +36,6 @@ export default defineConfig({
             input: {
                 main: resolve(__dirname, 'pages/index.html'),
                 joc: resolve(__dirname, 'pages/joc/index.html'),
-                trofeus: resolve(__dirname, 'pages/trofeus/index.html'),
                 contact: resolve(__dirname, 'pages/contact/index.html'),
                 legal: resolve(__dirname, 'pages/legal/index.html'),
                 'com-jugar': resolve(__dirname, 'pages/com-jugar/index.html'),
