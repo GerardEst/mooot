@@ -8,7 +8,7 @@ export class MenuLeagues extends LitElement {
     `
 
     render() {
-        return html`<p>Tops mundials</p>`
+        return html`<p><i>Properament</i></p>`
     }
 }
 
