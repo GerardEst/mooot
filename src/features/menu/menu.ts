@@ -1,7 +1,6 @@
 import { LitElement, html } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import '@src/shared/components/trophy-badge'
-import '@src/features/menu/components/user-trophies'
 import { menu } from './style'
 import { global } from '@src/core/global-styles'
 

@@ -1,6 +1,8 @@
 import { LitElement, html, css } from 'lit'
 import { customElement, state } from 'lit/decorators.js'
 import { supabase } from '@src/core/supabase'
+import { getUserId } from '@src/core/telegram'
+import { getUserTrophies } from '@src/core/api/trophies'
 // import { leagues } from '@src/conf'
 // import '@src/components/trophy-item'
 
@@ -47,68 +49,30 @@ export class TrophiesExpositor extends LitElement {
 
     connectedCallback(): void {
         super.connectedCallback()
+
         this.loadUserTrophies()
     }
 
-    private getTelegramUserId(): number | false {
-        const telegramWindow = window as any
-        const initData = telegramWindow?.Telegram?.WebApp?.initDataUnsafe
-        const userId = initData?.user?.id
-        return userId || false
-    }
-
-    private waitForTelegram(): Promise<void> {
-        return new Promise((resolve) => {
-            const telegramWindow = window as any
-            if (telegramWindow?.Telegram?.WebApp) return resolve()
-            let attempts = 0
-            const maxAttempts = 30
-            const check = () => {
-                attempts++
-                if (telegramWindow?.Telegram?.WebApp || attempts >= maxAttempts)
-                    return resolve()
-                setTimeout(check, 100)
-            }
-            setTimeout(check, 100)
-        })
-    }
-
     private async loadUserTrophies() {
-        await this.waitForTelegram()
-        const isDev = import.meta.env.ENV === 'dev'
+        const isDev = import.meta.env.DEV
         const devUserId = import.meta.env.VITE_DEV_USER_ID as string | undefined
-        const userId =
-            this.getTelegramUserId() || (isDev ? Number(devUserId) : undefined)
+        const userId = getUserId() || (isDev ? Number(devUserId) : undefined)
+
         if (!userId) return
-        const { data: trophiesChats, error } = await supabase
-            .from('trophies_chats')
-            .select('*')
-            .eq('user_id', userId)
 
-        console.log({ trophiesChats })
+        const userTrophies = await getUserTrophies(userId)
 
-        if (error) {
-            console.error(error)
-            return
-        }
+        console.log({ userTrophies })
+
         const nextActiveTrophyIds = new Set<number>()
-        for (const trophy of trophiesChats || []) {
+        for (const trophy of userTrophies || []) {
             if (typeof trophy.trophy_id === 'number')
                 nextActiveTrophyIds.add(trophy.trophy_id)
         }
         this.activeTrophyIds = nextActiveTrophyIds
     }
 
-    private renderHeader() {
-        return html`
-            <div class="header">
-                <div class="header_column">⭐️</div>
-                <div class="header_column">⚡️</div>
-            </div>
-        `
-    }
-
     render() {
-        return html` <div class="expositor">${this.renderHeader()}</div> `
+        return html` <div class="expositor"></div> `
     }
 }
