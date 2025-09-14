@@ -1,14 +1,15 @@
 import { LitElement, html, css } from 'lit-element'
-import { global } from '@src/pages/global-styles'
+import { global } from '@src/core/global-styles'
+
+import '@src/shared/components/button-mooot'
+import { property } from 'lit/decorators.js'
 
 class MenuHeader extends LitElement {
-    event = new Event('closeMenu', { bubbles: true, composed: true })
-
     static styles = [
         global,
         css`
             header {
-                --spacing: 20px;
+                --spacing: 25px;
                 position: relative;
                 display: flex;
                 flex-direction: column;
@@ -19,19 +20,38 @@ class MenuHeader extends LitElement {
                     rgb(255 219 95) 100%
                 );
                 padding: var(--spacing);
+                padding-bottom: 12px;
                 gap: var(--spacing);
-            }
-            .closeMenu {
-                position: absolute;
-                top: 0;
-                right: 0;
-                padding: var(--spacing);
+                & .sections {
+                    display: flex;
+                    justify-content: space-between;
+                }
+                & .closeMenu {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    padding: var(--spacing);
+                }
             }
         `,
     ]
 
+    @property() activeMenuSection: string = 'profile'
+
+    onClickMenuSection(section: string) {
+        this.dispatchEvent(
+            new CustomEvent('onClickMenuSection', {
+                bubbles: true,
+                composed: true,
+                detail: section,
+            })
+        )
+    }
+
     close() {
-        this.dispatchEvent(this.event)
+        this.dispatchEvent(
+            new Event('closeMenu', { bubbles: true, composed: true })
+        )
     }
     render() {
         return html` <header>
@@ -43,9 +63,21 @@ class MenuHeader extends LitElement {
                 <p class="smallText">1 - 30 de Setembre</p>
             </div>
             <div class="sections">
-                <span>Trofeus</span>
-                <span>Gerard</span>
-                <span>Lligues</span>
+                <button-mooot
+                    ?selected="${this.activeMenuSection === 'trophies'}"
+                    @button-click=${() => this.onClickMenuSection('trophies')}
+                    label="Trofeus"
+                ></button-mooot>
+                <button-mooot
+                    ?selected=${this.activeMenuSection === 'profile'}
+                    @button-click=${() => this.onClickMenuSection('profile')}
+                    label="Gerard"
+                ></button-mooot>
+                <button-mooot
+                    ?selected=${this.activeMenuSection === 'leagues'}
+                    @button-click=${() => this.onClickMenuSection('leagues')}
+                    label="Lligues"
+                ></button-mooot>
             </div>
         </header>`
     }

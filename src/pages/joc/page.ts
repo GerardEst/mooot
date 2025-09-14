@@ -2,7 +2,7 @@ import { LitElement, html } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import { jocPage } from './style'
-import { global } from '@src/pages/global-styles'
+import { global } from '@src/core/global-styles'
 import '@src/features/game/game'
 import '@src/features/menu/menu'
 import '@src/shared/components/header-logo'
@@ -12,7 +12,7 @@ import '@src/shared/components/flag'
 export class MoootJocPage extends LitElement {
     static styles = [global, jocPage]
 
-    @property({ type: Boolean }) menuActive = false
+    @property({ type: Boolean }) menuActive = true
 
     openMenu() {
         this.menuActive = true

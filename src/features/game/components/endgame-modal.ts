@@ -4,7 +4,7 @@ import * as words from '@src/features/game/services/words-service.js'
 import { getTodayTime } from '@src/shared/utils/storage-utils.js'
 import { shareResult } from '@src/shared/utils/share-utils'
 import { modalStyles } from './endgame-modal.style'
-import { global } from '@src/pages/global-styles'
+import { global } from '@src/core/global-styles'
 import { getStoredStats } from '@src/shared/utils/stats-utils'
 import '@src/shared/components/stat-display'
 

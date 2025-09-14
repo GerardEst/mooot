@@ -66,7 +66,7 @@ export const menu = css`
             margin-top: 0px;
         }
         to {
-            margin-top: -60px;
+            margin-top: -75px;
         }
     }
     @keyframes hide-footer {

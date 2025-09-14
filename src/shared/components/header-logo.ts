@@ -1,6 +1,6 @@
 import { LitElement, css, html } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
-import { global } from '@src/pages/global-styles'
+import { global } from '@src/core/global-styles'
 
 @customElement('mooot-header-logo')
 export class MoootHeaderLogo extends LitElement {
