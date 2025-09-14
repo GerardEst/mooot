@@ -46,7 +46,7 @@ export class StatDisplay extends LitElement {
         return html`
             <p>${this.name}</p>
             <span></span>
-            <p>${this.value}</p>
+            <p>${this.value || 0}</p>
         `
     }
 }
