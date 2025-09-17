@@ -21,6 +21,11 @@ export class MoootMenu extends LitElement {
 
     menuSections = ['trophies', 'profile', 'leagues']
 
+    // When navigating programmatically, hold the target index to avoid
+    // scroll events temporarily overriding the clicked active state.
+    private scrollTargetIndex: number | null = null
+    private clearTargetTimeout: number | null = null
+
     firstUpdated() {
         this.scrollOnMenuSection(1, true)
     }
@@ -42,6 +47,23 @@ export class MoootMenu extends LitElement {
         const width = content.clientWidth || 1
         const index = Math.round((content as HTMLElement).scrollLeft / width)
         const section = this.menuSections[index]
+        // If we're in a programmatic scroll, ignore intermediate indices
+        // until we reach the intended target index. This prevents flicker
+        // where click sets active, scroll resets it, and then sets again.
+        if (this.scrollTargetIndex !== null) {
+            if (index === this.scrollTargetIndex) {
+                if (section && section !== this.activeMenuSection) {
+                    this.activeMenuSection = section
+                }
+                this.scrollTargetIndex = null
+                if (this.clearTargetTimeout !== null) {
+                    clearTimeout(this.clearTargetTimeout)
+                    this.clearTargetTimeout = null
+                }
+            }
+            return
+        }
+
         if (section && section !== this.activeMenuSection) {
             this.activeMenuSection = section
         }
@@ -49,11 +71,23 @@ export class MoootMenu extends LitElement {
 
     goToMenuSection(section: string) {
         this.activeMenuSection = section
-        this.scrollOnMenuSection(
-            this.menuSections.findIndex(
-                (mappedSection) => section === mappedSection
-            )
+        const targetIndex = this.menuSections.findIndex(
+            (mappedSection) => section === mappedSection
         )
+        if (targetIndex < 0) return
+
+        // Set target index to suppress intermediate scroll updates
+        this.scrollTargetIndex = targetIndex
+        // Failsafe to clear the lock in case of interruptions
+        if (this.clearTargetTimeout !== null) {
+            clearTimeout(this.clearTargetTimeout)
+        }
+        this.clearTargetTimeout = window.setTimeout(() => {
+            this.scrollTargetIndex = null
+            this.clearTargetTimeout = null
+        }, 1000)
+
+        this.scrollOnMenuSection(targetIndex)
     }
 
     close() {
