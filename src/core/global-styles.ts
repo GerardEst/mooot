@@ -24,12 +24,9 @@ export const global = css`
 
         --button-callout: #ffe298;
 
-        --gold: #ffe29860;
-        --gold-border: #ffe298;
-        --silver: #bdd0e260;
-        --silver-border: #96a6b5;
-        --bronze: #fbd69a60;
-        --bronze-border: #e6ba73;
+        --gold: #ffcb4578;
+        --silver: #aaefff60;
+        --bronze: #b99c6e60;
 
         --button-color: var(--color-green-success);
         --button-border-color: var(--color-green-success--border);
