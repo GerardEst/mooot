@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit'
-import { customElement } from 'lit/decorators.js'
+import { customElement, property } from 'lit/decorators.js'
 
 type NavItem = { href: string; label: string }
 
@@ -7,7 +7,6 @@ const navItems: NavItem[] = [
     { href: '/joc/', label: 'Joc' },
     { href: '/com-jugar/', label: 'Com jugar' },
     { href: '/', label: 'Sobre Mooot' },
-    { href: '/contact/', label: 'Contacte' },
     { href: '/legal/', label: 'Legal' },
 ]
 
@@ -21,13 +20,14 @@ export class PagesMenu extends LitElement {
         }
         nav {
             display: flex;
-            gap: 12px;
+            gap: 16px;
             flex-wrap: wrap;
             justify-content: space-between;
+            width: fit-content;
+            margin: auto;
         }
         a {
-            color: #0366d6;
-            text-decoration: none;
+            color: var(--present-border-color);
         }
         a:hover {
             text-decoration: underline;
@@ -35,18 +35,19 @@ export class PagesMenu extends LitElement {
     `
 
     protected render() {
+        const path =
+            typeof window !== 'undefined' ? window.location.pathname : ''
+        const isJoc = path === '/joc' || path === '/joc/'
+        const items = isJoc
+            ? navItems.filter((item) => item.href !== '/joc/')
+            : navItems
+
         return html`
             <nav>
-                ${navItems.map(
+                ${items.map(
                     (item) => html`<a href=${item.href}>${item.label}</a>`
                 )}
             </nav>
         `
-    }
-}
-
-declare global {
-    interface HTMLElementTagNameMap {
-        'pages-menu': PagesMenu
     }
 }

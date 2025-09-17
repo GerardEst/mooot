@@ -46,7 +46,7 @@ export const menu = css`
             display: flex;
             flex-direction: column;
             gap: 16px;
-            padding: 16px 20px;
+            padding: 16px 10px;
         }
     }
     .motbot_trophies {
