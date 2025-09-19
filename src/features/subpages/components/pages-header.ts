@@ -6,15 +6,17 @@ export class PagesHeader extends LitElement {
     static styles = css`
         :host {
             display: block;
+            position: sticky;
+            top: 0;
+            background-color: white;
         }
         header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 12px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 20px;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
+            padding: 15px;
         }
         .left {
             display: flex;
@@ -23,7 +25,7 @@ export class PagesHeader extends LitElement {
         }
         h1 {
             margin: 0;
-            font-size: 28px;
+            font-size: 16px;
             color: #333;
         }
         a.logo {
@@ -34,12 +36,12 @@ export class PagesHeader extends LitElement {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
+            padding: 4px 12px;
+            border: 1px solid var(--present-border-color);
             border-radius: 8px;
-            color: #0366d6;
+            color: var(--present-border-color);
             text-decoration: none;
-            background: #fafafa;
+            background: white;
         }
         a.backBtn:hover {
             background: #f0f7ff;
@@ -56,25 +58,17 @@ export class PagesHeader extends LitElement {
                         <img
                             src="/assets/moootbot_M.png"
                             alt="Mooot"
-                            width="40"
-                            height="40"
+                            width="35"
+                            height="35"
                             loading="eager"
                         />
                     </a>
                     <h1>${this.title}</h1>
                 </div>
-                <a class="backBtn" href="/joc/" title="Torna al joc">
-                    <img
-                        src="/assets/backspace.svg"
-                        alt=""
-                        width="16"
-                        height="16"
-                        aria-hidden="true"
-                    />
-                    <span>Torna al joc</span>
+                <a class="backBtn" href="/joc/" title="Ves al joc">
+                    Ves al joc
                 </a>
             </header>
         `
     }
 }
-

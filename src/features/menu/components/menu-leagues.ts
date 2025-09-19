@@ -8,7 +8,7 @@ export class MenuLeagues extends LitElement {
     `
 
     render() {
-        return html`<p><i>Properament</i></p>`
+        return html`<p><i>Algun dia hi haurà coses guais aquí</i></p>`
     }
 }
 
