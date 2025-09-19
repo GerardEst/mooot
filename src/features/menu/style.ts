@@ -63,18 +63,18 @@ export const menu = css`
 
     @keyframes hide-header {
         from {
-            margin-top: 0px;
+            transform: translateY(0);
         }
         to {
-            margin-top: -75px;
+            transform: translateY(-75px);
         }
     }
     @keyframes hide-footer {
         from {
-            margin-bottom: 0px;
+            transform: translateY(0);
         }
         to {
-            margin-bottom: -125px;
+            transform: translateY(125px);
         }
     }
 
