@@ -17,8 +17,6 @@ export class PagesMenu extends LitElement {
             display: block;
             color: #666;
             font-size: 14px;
-            padding: 15px;
-            padding-top: 30px;
         }
         nav {
             display: flex;
