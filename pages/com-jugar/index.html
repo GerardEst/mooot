@@ -13,15 +13,14 @@
     <link rel="icon" href="/favicon.png" />
   </head>
   <body>
-    <div>
       <pages-header title="Com jugar"></pages-header>
-
+<main>
       
         <h2>Afegir Mooot a un xat</h2>
         <ol>
           <li>Crea un grup de Telegram amb els teus amics (o usa un d'existent).</li>
           <li>Afegeix el bot <strong>@mooot_cat_bot</strong> al grup.</li>
-          <li>Comparteix la teva partida diària de Wordle al xat. Mooot la detectarà automàticament.</li>
+          <li>Comparteix la teva partida diària de Mooot al xat. Mooot la detectarà automàticament.</li>
         </ol>
         <p>Enllaç directe: <a href="https://t.me/mooot_cat_bot?startgroup=true" rel="noopener">Afegeix Mooot al teu grup</a></p>
 
@@ -33,18 +32,18 @@
           <li>6 intents sense encertar: <strong>0 punts</strong></li>
           <li>Endevinar en 6, 5, 4, 3, 2, 1 intents: <strong>1, 2, 3, 4, 5, 6 punts</strong> respectivament</li>
         </ul>
-        <p class="smallText">La puntuació pot variar. Consulta <code>/llegenda</code> per a la taula de punts actual.</p>
-
+        
         <h2>Lligues i trofeus</h2>
         <ul>
-          <li>La lliga és mensual: del dia 1 al 30/31.</li>
-          <li>Els 3 primers reben trofeus virtuals del mes (varien segons la temàtica).</li>
+          <li>Les lligues son mensuals: del dia 1 al 30/31.</li>
+          <li>Hi ha dues classificacions diferents en cada grup, que s'actualitzen automàticament: per punts i per temps</li>
+          <li>Els 3 primers de cada classificació reben trofeus virtuals del mes (varien segons la temàtica del mes).</li>
           <li>Cada xat és la seva pròpia lliga; pots jugar a múltiples lligues en xats diferents.</li>
         </ul>
 
         <h2>Desempat</h2>
         <ul>
-          <li>En cas d'empat a punts, es pot aplicar: millor ratxa, més encerts en menys intents, o la darrera millor partida. Consulta <code>/classificacio</code> per veure l'ordre final.</li>
+          <li>En cas d'empat a punts, guanya qui té millor temps acumulat. És a dir, qui vagi més ràpit en resoldre les partides.</li>
         </ul>
 
         <h2>Comandes útils</h2>
@@ -60,11 +59,10 @@
 
         <h2>Normes i bones pràctiques</h2>
         <ul>
-          <li>Res de trampes ni solucions avançades: mantinguem el joc net.</li>
-          <li>No s’incentiven clics d’anuncis.</li>
+          <li>No fer trampes</li>
           <li>Respecte i convivència als xats: és un joc per passar-ho bé.</li>
         </ul>
-    </div>
+    </main>
     <pages-menu></pages-menu>
     <script src="/common.ts" type="module"></script>
   </body>
