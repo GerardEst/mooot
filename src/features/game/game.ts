@@ -425,9 +425,25 @@ export class MoootJocGame extends LitElement {
         )}:${String(seconds).padStart(2, '0')}`
     }
 
+    seeAd() {
+        // Rewarded interstitial
+
+        // Rewarded Popup
+
+        show_9902259('pop')
+            .then(() => {
+                alert('ea')
+            })
+            .catch((e) => {
+                // user get error during playing ad
+                // do nothing or whatever you want
+            })
+    }
+
     render() {
         return html`
             <section class="wordgrid">
+                <button @click=${() => this.seeAd()}>Ad test</button>
                 <div class="wordgrid__row" id="l1">
                     <div
                         id="l1_1"
