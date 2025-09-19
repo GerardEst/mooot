@@ -432,7 +432,9 @@ export class MoootJocGame extends LitElement {
 
         show_9902259('pop')
             .then(() => {
-                alert('ea')
+                alert(
+                    "Per tancar l'anunci, clica la creu de dalt a l'esquerra!"
+                )
             })
             .catch((e) => {
                 // user get error during playing ad
