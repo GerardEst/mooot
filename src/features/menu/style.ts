@@ -35,6 +35,8 @@ export const menu = css`
                 scroll-snap-stop: always;
                 & .menu_section_content {
                     padding: 20px;
+                    min-height: 100%;
+                    box-sizing: border-box;
                 }
             }
 
@@ -58,6 +60,17 @@ export const menu = css`
             flex: 1;
             flex-direction: column;
             gap: 0.4rem;
+        }
+    }
+
+    @keyframes amplify-height {
+        from {
+            transform: translateY(0);
+            min-height: 0;
+        }
+        to {
+            transform: translateY(-75px);
+            min-height: 100%;
         }
     }
 
@@ -87,8 +100,6 @@ export const menu = css`
             animation-fill-mode: both;
             animation-timeline: --menu-x;
             animation-range: 0% 50%;
-            /* Hint browser to optimize margin changes */
-            will-change: margin-top;
         }
         .menu .menu_footer {
             animation-name: hide-footer;
@@ -98,8 +109,15 @@ export const menu = css`
             animation-fill-mode: both;
             animation-timeline: --menu-x;
             animation-range: 0% 50%;
-            /* Hint browser to optimize margin changes */
-            will-change: margin-bottom;
+        }
+        .menu_content {
+            animation-name: amplify-height;
+            animation-duration: 1s;
+            animation-timing-function: linear;
+            animation-direction: reverse;
+            animation-fill-mode: both;
+            animation-timeline: --menu-x;
+            animation-range: 0% 50%;
         }
     }
 `
