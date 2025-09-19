@@ -425,20 +425,9 @@ export class MoootJocGame extends LitElement {
         )}:${String(seconds).padStart(2, '0')}`
     }
 
-    seeAd() {
-        // Rewarded interstitial
-
-        show_9902259().then(() => {
-            // You need to add your user reward function here, which will be executed after the user watches the ad.
-            // For more details, please refer to the detailed instructions.
-            alert('You have seen an ad!')
-        })
-    }
-
     render() {
         return html`
             <section class="wordgrid">
-                <button @click=${() => this.seeAd()}>Ad test</button>
                 <div class="wordgrid__row" id="l1">
                     <div
                         id="l1_1"
