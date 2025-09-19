@@ -4,7 +4,6 @@ import { property } from 'lit/decorators.js'
 import { global } from '@src/core/global-styles'
 
 import '@src/shared/components/button-mooot'
-import '@src/features/menu/components/modal-newGroup'
 
 class CalloutCreategroups extends LitElement {
     static styles = [
@@ -28,7 +27,6 @@ class CalloutCreategroups extends LitElement {
     ]
 
     @property({ type: String }) userName = ''
-    @property({ type: Boolean }) private modalActive = false
 
     firstUpdated(): void {
         this.userName = getUserFirstName()
@@ -39,22 +37,15 @@ class CalloutCreategroups extends LitElement {
             <div class="callout">
                 <p>
                     <strong
-                        >Psst, ${this.userName}, vols crear lligues amb els teus
-                        contactes?</strong
+                        >Psst, ${this.userName}, vols crear una lliga amb altra
+                        gent?</strong
                     >
+                    <i>Potser així guanyaràs algo</i>
                 </p>
-                <div
-                    class="callout_buttons"
-                    @button-click=${() => (this.modalActive = true)}
-                >
-                    <button-mooot label="Si!"></button-mooot>
+                <div class="callout_buttons">
+                    <button-mooot link="/com-jugar/" label="Si!"></button-mooot>
                 </div>
             </div>
-            ${this.modalActive
-                ? html`<modal-newgroup
-                      @modal-close=${() => (this.modalActive = false)}
-                  ></modal-newgroup>`
-                : null}
         `
     }
 }
