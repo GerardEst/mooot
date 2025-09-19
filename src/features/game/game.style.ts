@@ -30,6 +30,11 @@ export const game = css`
         overflow: hidden;
         position: relative;
     }
+    .wordgrid > .wordgrid__row > .wordgrid__cell.selected {
+        outline: 2px solid var(--correct-border-color);
+        outline-offset: -2px;
+        box-shadow: inset 0 0 0 1px var(--correct-border-color);
+    }
     .wordgrid > .wordgrid__row > .wordgrid__cell::after {
         content: '';
         position: absolute;

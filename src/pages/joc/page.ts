@@ -12,7 +12,7 @@ import '@src/shared/components/flag'
 export class MoootJocPage extends LitElement {
     static styles = [global, jocPage]
 
-    @property({ type: Boolean }) menuActive = true
+    @property({ type: Boolean }) menuActive = false
 
     openMenu() {
         this.menuActive = true

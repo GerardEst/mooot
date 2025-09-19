@@ -26,6 +26,7 @@ export class MoootJocGame extends LitElement {
         currentTry: 1,
         currentWord: '',
     }
+    @state() private selectedCell: { row: number; col: number } | null = null
 
     connectedCallback(): void {
         super.connectedCallback()
@@ -135,26 +136,56 @@ export class MoootJocGame extends LitElement {
 
     letterClick(letter: string) {
         if (
-            this.gameState.currentColumn === 1 &&
+            this.selectedCell &&
+            this.selectedCell.row === this.gameState.currentRow &&
+            this.gameState.currentRow > 0
+        ) {
+            const row = this.gameState.currentRow
+            const col = this.selectedCell.col
+
+            // Just in case, try to load words every time when user inputs letters directly
+            words.loadDiccData()
+            words.loadWordsData()
+
+            this.updateCell(row, col, letter)
+
+            this.recomputeCurrentWordFromRow(row)
+
+            this.selectedCell = null
+
+            this.gameState.currentColumn = this.getFirstEmptyColumn(row)
+
+            // Start timer if this was the very first letter overall
+            // TODO - Crec que treure això d'aquí
+            if (row === 1 && !localStorage.getItem('timetrial-start')) {
+                localStorage.setItem(
+                    'timetrial-start',
+                    new Date().toISOString()
+                )
+            }
+
+            return
+        }
+
+        if (
+            this.countFilled(this.gameState.currentRow) === 0 &&
             this.gameState.currentRow === 1 &&
             !localStorage.getItem('timetrial-start')
         ) {
             localStorage.setItem('timetrial-start', new Date().toISOString())
         }
-        if (this.gameState.currentColumn > 5) return
-        if (this.gameState.currentColumn === 3) {
+        const targetCol = this.getFirstEmptyColumn(this.gameState.currentRow)
+        if (targetCol > 5) return
+        if (targetCol === 3) {
             words.loadDiccData()
             words.loadWordsData()
         }
 
-        this.updateCell(
-            this.gameState.currentRow,
-            this.gameState.currentColumn,
-            letter
+        this.updateCell(this.gameState.currentRow, targetCol, letter)
+        this.recomputeCurrentWordFromRow(this.gameState.currentRow)
+        this.gameState.currentColumn = this.getFirstEmptyColumn(
+            this.gameState.currentRow
         )
-
-        this.gameState.currentWord += letter
-        this.gameState.currentColumn++
     }
 
     deleteLastLetter() {
@@ -166,7 +197,7 @@ export class MoootJocGame extends LitElement {
             this.gameState.currentColumn,
             ' '
         )
-        this.gameState.currentWord = this.gameState.currentWord.slice(0, -1)
+        this.recomputeCurrentWordFromRow(this.gameState.currentRow)
     }
 
     validateLastRow() {
@@ -174,6 +205,7 @@ export class MoootJocGame extends LitElement {
 
         const rowStatus = words.checkWord(this.gameState.currentWord)
         if (rowStatus === 'correct') {
+            this.selectedCell = null
             this.showHints(
                 this.gameState.currentWord,
                 words.getTodayWord(),
@@ -198,6 +230,7 @@ export class MoootJocGame extends LitElement {
         } else if (rowStatus === 'invalid') {
             showFeedbackToast('No és una paraula vàlida')
             this.gameState.currentColumn = 1
+            this.selectedCell = null
             this.cleanRow(this.gameState.currentRow)
         } else {
             this.showHints(
@@ -222,6 +255,7 @@ export class MoootJocGame extends LitElement {
                     this.showModal()
                 }, 1000)
             }
+            this.selectedCell = null
             this.gameState.currentColumn = 1
             this.gameState.currentRow++
             this.gameState.currentTry++
@@ -316,6 +350,50 @@ export class MoootJocGame extends LitElement {
         if (status) cell.classList.add(status)
     }
 
+    // Helpers for selective cell placement
+    private getCell(row: number, col: number): HTMLElement | null {
+        return (
+            ((this?.renderRoot as ShadowRoot)?.getElementById?.(
+                `l${row}_${col}`
+            ) as HTMLElement | null) ||
+            (document.getElementById(`l${row}_${col}`) as HTMLElement | null)
+        )
+    }
+
+    private countFilled(row: number): number {
+        let count = 0
+        for (let i = 1; i <= 5; i++) {
+            const txt = this.getCell(row, i)?.textContent || ''
+            if (txt.trim().length > 0) count++
+        }
+        return count
+    }
+
+    private getFirstEmptyColumn(row: number): number {
+        for (let i = 1; i <= 5; i++) {
+            const txt = this.getCell(row, i)?.textContent || ''
+            if (txt.trim().length === 0) return i
+        }
+        return 6
+    }
+
+    private recomputeCurrentWordFromRow(row: number) {
+        let s = ''
+        for (let i = 1; i <= 5; i++) {
+            const txt = this.getCell(row, i)?.textContent || ''
+            const t = txt.trim()
+            if (t) s += t
+        }
+        this.gameState.currentWord = s
+    }
+
+    onCellClick(row: number, col: number) {
+        if (this.gameState.currentRow <= 0) return
+        if (row !== this.gameState.currentRow) return
+
+        this.selectedCell = { row, col }
+    }
+
     fillRow(row: storedRow) {
         for (let i = 1; i <= 5; i++) {
             this.updateCell(row.row, i, row.word[i - 1])
@@ -351,46 +429,256 @@ export class MoootJocGame extends LitElement {
         return html`
             <section class="wordgrid">
                 <div class="wordgrid__row" id="l1">
-                    <div id="l1_1" class="wordgrid__cell"></div>
-                    <div id="l1_2" class="wordgrid__cell"></div>
-                    <div id="l1_3" class="wordgrid__cell"></div>
-                    <div id="l1_4" class="wordgrid__cell"></div>
-                    <div id="l1_5" class="wordgrid__cell"></div>
+                    <div
+                        id="l1_1"
+                        class="wordgrid__cell ${this.selectedCell?.row === 1 &&
+                        this.selectedCell.col === 1
+                            ? 'selected'
+                            : ''}"
+                        @click="${() => this.onCellClick(1, 1)}"
+                    ></div>
+                    <div
+                        id="l1_2"
+                        class="wordgrid__cell ${this.selectedCell?.row === 1 &&
+                        this.selectedCell.col === 2
+                            ? 'selected'
+                            : ''}"
+                        @click="${() => this.onCellClick(1, 2)}"
+                    ></div>
+                    <div
+                        id="l1_3"
+                        class="wordgrid__cell ${this.selectedCell?.row === 1 &&
+                        this.selectedCell.col === 3
+                            ? 'selected'
+                            : ''}"
+                        @click="${() => this.onCellClick(1, 3)}"
+                    ></div>
+                    <div
+                        id="l1_4"
+                        class="wordgrid__cell ${this.selectedCell?.row === 1 &&
+                        this.selectedCell.col === 4
+                            ? 'selected'
+                            : ''}"
+                        @click="${() => this.onCellClick(1, 4)}"
+                    ></div>
+                    <div
+                        id="l1_5"
+                        class="wordgrid__cell ${this.selectedCell?.row === 1 &&
+                        this.selectedCell.col === 5
+                            ? 'selected'
+                            : ''}"
+                        @click="${() => this.onCellClick(1, 5)}"
+                    ></div>
                 </div>
                 <div class="wordgrid__row" id="l2">
-                    <div id="l2_1" class="wordgrid__cell"></div>
-                    <div id="l2_2" class="wordgrid__cell"></div>
-                    <div id="l2_3" class="wordgrid__cell"></div>
-                    <div id="l2_4" class="wordgrid__cell"></div>
-                    <div id="l2_5" class="wordgrid__cell"></div>
+                    <div
+                        id="l2_1"
+                        class="wordgrid__cell ${this.selectedCell?.row === 2 &&
+                        this.selectedCell.col === 1
+                            ? 'selected'
+                            : ''}"
+                        @click="${() => this.onCellClick(2, 1)}"
+                    ></div>
+                    <div
+                        id="l2_2"
+                        class="wordgrid__cell ${this.selectedCell?.row === 2 &&
+                        this.selectedCell.col === 2
+                            ? 'selected'
+                            : ''}"
+                        @click="${() => this.onCellClick(2, 2)}"
+                    ></div>
+                    <div
+                        id="l2_3"
+                        class="wordgrid__cell ${this.selectedCell?.row === 2 &&
+                        this.selectedCell.col === 3
+                            ? 'selected'
+                            : ''}"
+                        @click="${() => this.onCellClick(2, 3)}"
+                    ></div>
+                    <div
+                        id="l2_4"
+                        class="wordgrid__cell ${this.selectedCell?.row === 2 &&
+                        this.selectedCell.col === 4
+                            ? 'selected'
+                            : ''}"
+                        @click="${() => this.onCellClick(2, 4)}"
+                    ></div>
+                    <div
+                        id="l2_5"
+                        class="wordgrid__cell ${this.selectedCell?.row === 2 &&
+                        this.selectedCell.col === 5
+                            ? 'selected'
+                            : ''}"
+                        @click="${() => this.onCellClick(2, 5)}"
+                    ></div>
                 </div>
                 <div class="wordgrid__row" id="l3">
-                    <div id="l3_1" class="wordgrid__cell"></div>
-                    <div id="l3_2" class="wordgrid__cell"></div>
-                    <div id="l3_3" class="wordgrid__cell"></div>
-                    <div id="l3_4" class="wordgrid__cell"></div>
-                    <div id="l3_5" class="wordgrid__cell"></div>
+                    <div
+                        id="l3_1"
+                        class="wordgrid__cell ${this.selectedCell?.row === 3 &&
+                        this.selectedCell.col === 1
+                            ? 'selected'
+                            : ''}"
+                        @click="${() => this.onCellClick(3, 1)}"
+                    ></div>
+                    <div
+                        id="l3_2"
+                        class="wordgrid__cell ${this.selectedCell?.row === 3 &&
+                        this.selectedCell.col === 2
+                            ? 'selected'
+                            : ''}"
+                        @click="${() => this.onCellClick(3, 2)}"
+                    ></div>
+                    <div
+                        id="l3_3"
+                        class="wordgrid__cell ${this.selectedCell?.row === 3 &&
+                        this.selectedCell.col === 3
+                            ? 'selected'
+                            : ''}"
+                        @click="${() => this.onCellClick(3, 3)}"
+                    ></div>
+                    <div
+                        id="l3_4"
+                        class="wordgrid__cell ${this.selectedCell?.row === 3 &&
+                        this.selectedCell.col === 4
+                            ? 'selected'
+                            : ''}"
+                        @click="${() => this.onCellClick(3, 4)}"
+                    ></div>
+                    <div
+                        id="l3_5"
+                        class="wordgrid__cell ${this.selectedCell?.row === 3 &&
+                        this.selectedCell.col === 5
+                            ? 'selected'
+                            : ''}"
+                        @click="${() => this.onCellClick(3, 5)}"
+                    ></div>
                 </div>
                 <div class="wordgrid__row" id="l4">
-                    <div id="l4_1" class="wordgrid__cell"></div>
-                    <div id="l4_2" class="wordgrid__cell"></div>
-                    <div id="l4_3" class="wordgrid__cell"></div>
-                    <div id="l4_4" class="wordgrid__cell"></div>
-                    <div id="l4_5" class="wordgrid__cell"></div>
+                    <div
+                        id="l4_1"
+                        class="wordgrid__cell ${this.selectedCell?.row === 4 &&
+                        this.selectedCell.col === 1
+                            ? 'selected'
+                            : ''}"
+                        @click="${() => this.onCellClick(4, 1)}"
+                    ></div>
+                    <div
+                        id="l4_2"
+                        class="wordgrid__cell ${this.selectedCell?.row === 4 &&
+                        this.selectedCell.col === 2
+                            ? 'selected'
+                            : ''}"
+                        @click="${() => this.onCellClick(4, 2)}"
+                    ></div>
+                    <div
+                        id="l4_3"
+                        class="wordgrid__cell ${this.selectedCell?.row === 4 &&
+                        this.selectedCell.col === 3
+                            ? 'selected'
+                            : ''}"
+                        @click="${() => this.onCellClick(4, 3)}"
+                    ></div>
+                    <div
+                        id="l4_4"
+                        class="wordgrid__cell ${this.selectedCell?.row === 4 &&
+                        this.selectedCell.col === 4
+                            ? 'selected'
+                            : ''}"
+                        @click="${() => this.onCellClick(4, 4)}"
+                    ></div>
+                    <div
+                        id="l4_5"
+                        class="wordgrid__cell ${this.selectedCell?.row === 4 &&
+                        this.selectedCell.col === 5
+                            ? 'selected'
+                            : ''}"
+                        @click="${() => this.onCellClick(4, 5)}"
+                    ></div>
                 </div>
                 <div class="wordgrid__row" id="l5">
-                    <div id="l5_1" class="wordgrid__cell"></div>
-                    <div id="l5_2" class="wordgrid__cell"></div>
-                    <div id="l5_3" class="wordgrid__cell"></div>
-                    <div id="l5_4" class="wordgrid__cell"></div>
-                    <div id="l5_5" class="wordgrid__cell"></div>
+                    <div
+                        id="l5_1"
+                        class="wordgrid__cell ${this.selectedCell?.row === 5 &&
+                        this.selectedCell.col === 1
+                            ? 'selected'
+                            : ''}"
+                        @click="${() => this.onCellClick(5, 1)}"
+                    ></div>
+                    <div
+                        id="l5_2"
+                        class="wordgrid__cell ${this.selectedCell?.row === 5 &&
+                        this.selectedCell.col === 2
+                            ? 'selected'
+                            : ''}"
+                        @click="${() => this.onCellClick(5, 2)}"
+                    ></div>
+                    <div
+                        id="l5_3"
+                        class="wordgrid__cell ${this.selectedCell?.row === 5 &&
+                        this.selectedCell.col === 3
+                            ? 'selected'
+                            : ''}"
+                        @click="${() => this.onCellClick(5, 3)}"
+                    ></div>
+                    <div
+                        id="l5_4"
+                        class="wordgrid__cell ${this.selectedCell?.row === 5 &&
+                        this.selectedCell.col === 4
+                            ? 'selected'
+                            : ''}"
+                        @click="${() => this.onCellClick(5, 4)}"
+                    ></div>
+                    <div
+                        id="l5_5"
+                        class="wordgrid__cell ${this.selectedCell?.row === 5 &&
+                        this.selectedCell.col === 5
+                            ? 'selected'
+                            : ''}"
+                        @click="${() => this.onCellClick(5, 5)}"
+                    ></div>
                 </div>
                 <div class="wordgrid__row" id="l6">
-                    <div id="l6_1" class="wordgrid__cell"></div>
-                    <div id="l6_2" class="wordgrid__cell"></div>
-                    <div id="l6_3" class="wordgrid__cell"></div>
-                    <div id="l6_4" class="wordgrid__cell"></div>
-                    <div id="l6_5" class="wordgrid__cell"></div>
+                    <div
+                        id="l6_1"
+                        class="wordgrid__cell ${this.selectedCell?.row === 6 &&
+                        this.selectedCell.col === 1
+                            ? 'selected'
+                            : ''}"
+                        @click="${() => this.onCellClick(6, 1)}"
+                    ></div>
+                    <div
+                        id="l6_2"
+                        class="wordgrid__cell ${this.selectedCell?.row === 6 &&
+                        this.selectedCell.col === 2
+                            ? 'selected'
+                            : ''}"
+                        @click="${() => this.onCellClick(6, 2)}"
+                    ></div>
+                    <div
+                        id="l6_3"
+                        class="wordgrid__cell ${this.selectedCell?.row === 6 &&
+                        this.selectedCell.col === 3
+                            ? 'selected'
+                            : ''}"
+                        @click="${() => this.onCellClick(6, 3)}"
+                    ></div>
+                    <div
+                        id="l6_4"
+                        class="wordgrid__cell ${this.selectedCell?.row === 6 &&
+                        this.selectedCell.col === 4
+                            ? 'selected'
+                            : ''}"
+                        @click="${() => this.onCellClick(6, 4)}"
+                    ></div>
+                    <div
+                        id="l6_5"
+                        class="wordgrid__cell ${this.selectedCell?.row === 6 &&
+                        this.selectedCell.col === 5
+                            ? 'selected'
+                            : ''}"
+                        @click="${() => this.onCellClick(6, 5)}"
+                    ></div>
                 </div>
             </section>
 
