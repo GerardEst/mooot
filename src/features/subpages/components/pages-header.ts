@@ -15,7 +15,6 @@ export class PagesHeader extends LitElement {
             align-items: center;
             justify-content: space-between;
             gap: 12px;
-            margin-bottom: 20px;
             padding: 15px;
         }
         .left {
