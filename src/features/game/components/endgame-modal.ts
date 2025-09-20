@@ -35,6 +35,12 @@ export class MoootEndgameModal extends LitElement {
         this.dicHref = this.buildDicUrl(this.word)
     }
 
+    protected updated(changed: Map<string, unknown>) {
+        if (changed.has('points')) {
+            this.modalTitle = this.computeTitle(Number(this.points))
+        }
+    }
+
     private computeTitle(points: number) {
         return points === 6
             ? '🤨 ESCANDALÓS!'
