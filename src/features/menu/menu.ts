@@ -2,7 +2,7 @@ import { LitElement, html } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import '@src/shared/components/trophy-badge'
 import { menu } from './style'
-import { global } from '@src/core/global-styles'
+import { global } from '@src/core/app-reset-styles'
 
 import '@src/shared/components/divider'
 import '@src/features/menu/components/menu-header'

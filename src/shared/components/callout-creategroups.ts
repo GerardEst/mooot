@@ -1,7 +1,7 @@
 import { getUserFirstName } from '@src/core/telegram'
 import { LitElement, html, css } from 'lit-element'
 import { property } from 'lit/decorators.js'
-import { global } from '@src/core/global-styles'
+import { global } from '@src/core/app-reset-styles'
 
 import '@src/shared/components/button-mooot'
 
@@ -11,16 +11,18 @@ class CalloutCreategroups extends LitElement {
         css`
             .callout {
                 display: flex;
-                gap: 1rem;
+                flex-direction: column;
+                gap: 0.5rem;
                 justify-content: space-between;
-                border: 2px solid #fdd70e;
                 background-color: #fff6c5;
-                border-radius: 30px;
-                padding: 5px;
-                padding-left: 15px;
-                align-items: center;
+                border-radius: 5px;
+                padding: 15px;
                 p {
+                    color: rgb(127 99 0);
                     font-size: 0.8rem;
+                }
+                .callout_buttons {
+                    margin-left: auto;
                 }
             }
         `,
@@ -39,11 +41,14 @@ class CalloutCreategroups extends LitElement {
                     <strong
                         >Psst, ${this.userName}, vols crear una lliga amb altra
                         gent?</strong
-                    >
+                    ><br />
                     <i>Potser així guanyaràs algo</i>
                 </p>
                 <div class="callout_buttons">
-                    <button-mooot link="/com-jugar/" label="Si!"></button-mooot>
+                    <button-mooot
+                        link="/com-jugar/"
+                        label="Crear una lliga!"
+                    ></button-mooot>
                 </div>
             </div>
         `

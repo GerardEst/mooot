@@ -2,7 +2,7 @@ import { LitElement, html } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import { jocPage } from './style'
-import { global } from '@src/core/global-styles'
+import { global } from '@src/core/app-reset-styles'
 import '@src/features/game/game'
 import '@src/features/menu/menu'
 import '@src/shared/components/header-logo'

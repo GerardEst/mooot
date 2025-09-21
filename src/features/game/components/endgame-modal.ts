@@ -4,8 +4,9 @@ import * as words from '@src/features/game/services/words-service.js'
 import { getTodayTime } from '@src/shared/utils/storage-utils.js'
 import { shareResult } from '@src/shared/utils/share-utils'
 import { modalStyles } from './endgame-modal.style'
-import { global } from '@src/core/global-styles'
-import { getStoredStats } from '@src/shared/utils/stats-utils'
+import { global } from '@src/core/app-reset-styles'
+
+import '@src/shared/components/button-mooot'
 import '@src/shared/components/stat-display'
 
 @customElement('mooot-endgame-modal')
@@ -103,7 +104,7 @@ export class MoootEndgameModal extends LitElement {
     render() {
         return html`
             <section class="modal modal-win ${this.active ? 'active' : ''}">
-                <div class="modal__content">
+                <div class="modal_box">
                     <div class="header">
                         <h2 id="stats-title" class="modal__title">
                             ${this.modalTitle}
@@ -116,61 +117,75 @@ export class MoootEndgameModal extends LitElement {
                             @click="${() => this.onModalCloseClick()}"
                         />
                     </div>
-                    <section class="stats">
-                        <div class="pointedRow">
-                            <p>Paraula</p>
-                            <span></span>
-                            <a
-                                id="dicLink"
-                                target="_blank"
-                                href="${this.dicHref}"
-                                ><span id="stats-word">${this.word}</span>
-                                <img
-                                    alt="Obrir en una pestanya nova"
-                                    src="/assets/open-external.svg"
-                            /></a>
+                    <section class="modal_content">
+                        <div class="stats">
+                            <div class="pointedRow">
+                                <p>Paraula</p>
+                                <span></span>
+                                <a
+                                    id="dicLink"
+                                    target="_blank"
+                                    href="${this.dicHref}"
+                                    ><span id="stats-word">${this.word}</span>
+                                    <img
+                                        alt="Obrir en una pestanya nova"
+                                        src="/assets/open-external.svg"
+                                /></a>
+                            </div>
+                            <div class="pointedRow">
+                                <p>Punts</p>
+                                <span></span>
+                                <p>
+                                    +<span id="stats-points"
+                                        >${this.points}</span
+                                    >
+                                </p>
+                            </div>
+                            <div class="pointedRow">
+                                <p>Temps</p>
+                                <span></span>
+                                <p><span id="stats-time">${this.time}</span></p>
+                            </div>
                         </div>
-                        <div class="pointedRow">
-                            <p>Punts</p>
-                            <span></span>
-                            <p>
-                                +<span id="stats-points">${this.points}</span>
-                            </p>
+                        <div class="stats">
+                            <stat-display
+                                key="games"
+                                name="Partides jugades"
+                            ></stat-display>
+                            <stat-display
+                                key="totalPoints"
+                                name="Punts totals"
+                            ></stat-display>
+                            <stat-display
+                                key="averagePoints"
+                                name="Mitjana de punts"
+                            ></stat-display>
+                            <stat-display
+                                key="averageTime"
+                                name="Mitjana de temps"
+                            ></stat-display>
+                            <stat-display
+                                key="streak"
+                                name="Ratxa actual"
+                            ></stat-display>
+                            <stat-display
+                                key="maxStreak"
+                                name="Ratxa màxima"
+                            ></stat-display>
                         </div>
-                        <div class="pointedRow">
-                            <p>Temps</p>
-                            <span></span>
-                            <p><span id="stats-time">${this.time}</span></p>
-                        </div>
-                    </section>
-                    <section class="stats">
-                        <stat-display
-                            key="games"
-                            name="Partides jugades"
-                        ></stat-display>
-                        <stat-display
-                            key="totalPoints"
-                            name="Punts totals"
-                        ></stat-display>
-                        <stat-display
-                            key="averagePoints"
-                            name="Mitjana de punts"
-                        ></stat-display>
-                        <stat-display
-                            key="averageTime"
-                            name="Mitjana de temps"
-                        ></stat-display>
-                        <stat-display
-                            key="streak"
-                            name="Ratxa actual"
-                        ></stat-display>
-                        <stat-display
-                            key="maxStreak"
-                            name="Ratxa màxima"
-                        ></stat-display>
                     </section>
                     <div class="modal__buttons">
-                        <button
+                        <button-mooot
+                            @button-click="${(e: Event) =>
+                                this.onShareHiddenClick(e)}"
+                            label="Compartir sense cubs"
+                        ></button-mooot>
+                        <button-mooot
+                            @button-click="${(e: Event) =>
+                                this.onShareClick(e)}"
+                            label="Compartir"
+                        ></button-mooot>
+                        <!-- <button
                             class="button--danger"
                             id="shareHidden"
                             @click="${(e: Event) => this.onShareHiddenClick(e)}"
@@ -184,7 +199,7 @@ export class MoootEndgameModal extends LitElement {
                         >
                             Compartir
                             <img alt="Compartir" src="/assets/share.svg" />
-                        </button>
+                        </button> -->
                     </div>
                 </div>
             </section>

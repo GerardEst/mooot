@@ -30,9 +30,8 @@ export class Keyboard extends LitElement {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                border: 1px solid #ccc;
                 border-radius: 0.2rem;
-                background-color: #f9f9f9;
+                background-color: #f3f3f3;
                 cursor: pointer;
                 transition: background-color 0.3s ease;
                 color: var(--text-color);
@@ -41,21 +40,18 @@ export class Keyboard extends LitElement {
             .keyboard > .keyboard__row > .keyboard__enter.present,
             .keyboard > .keyboard__row > .keyboard__back.present {
                 background-color: var(--present-color);
-                border: 1px solid var(--present-border-color);
                 color: var(--used-text-color);
             }
             .keyboard > .keyboard__row > .keyboard__key.correct,
             .keyboard > .keyboard__row > .keyboard__enter.correct,
             .keyboard > .keyboard__row > .keyboard__back.correct {
                 background-color: var(--correct-color);
-                border: 1px solid var(--correct-border-color);
                 color: var(--used-text-color);
             }
             .keyboard > .keyboard__row > .keyboard__key.absent,
             .keyboard > .keyboard__row > .keyboard__enter.absent,
             .keyboard > .keyboard__row > .keyboard__back.absent {
                 background-color: var(--missing-color);
-                border: 1px solid var(--missing-border-color);
                 color: white;
             }
             .keyboard > .keyboard__row > .keyboard__key > img,

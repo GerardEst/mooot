@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit-element'
-import { global } from '@src/core/global-styles'
+import { global } from '@src/core/app-reset-styles'
 
 import '@src/shared/components/button-mooot'
 import { property } from 'lit/decorators.js'
@@ -13,15 +13,18 @@ class MenuHeader extends LitElement {
                 position: relative;
                 display: flex;
                 flex-direction: column;
-                background: #fff6c5;
-                background: linear-gradient(
+                background: var(--present-color);
+                /* background: linear-gradient(
                     157deg,
                     rgba(255, 246, 197, 1) 31%,
                     rgb(255 219 95) 100%
-                );
+                ); */
                 padding: var(--spacing);
                 padding-bottom: 12px;
                 gap: var(--spacing);
+                h4 {
+                    color: rgb(127 99 0);
+                }
                 & .sections {
                     display: flex;
                     justify-content: space-between;

@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit'
-import { global } from '@src/core/global-styles'
+import { global } from '@src/core/app-reset-styles'
 import '@src/shared/components/stat-display'
 
 export class MenuStats extends LitElement {

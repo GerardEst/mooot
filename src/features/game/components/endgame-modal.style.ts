@@ -2,6 +2,8 @@ import { css } from 'lit'
 
 export const modalStyles = css`
     .modal {
+        --spacing: 1rem;
+
         position: fixed;
         display: none;
         top: 0;
@@ -18,41 +20,58 @@ export const modalStyles = css`
     .modal.active {
         display: flex;
     }
-    .modal .modal__content {
-        min-width: 300px;
+    .modal .modal_box {
         position: relative;
         background-color: white;
-        padding: 2rem;
-        padding-top: 1.7rem;
-        border-radius: 8px;
+        border-radius: 25px;
         display: flex;
         flex-direction: column;
-        gap: 1.8rem;
+        overflow: hidden;
     }
-    .modal .modal__content .header {
+    .modal .modal_box::after {
+        content: '';
+        position: absolute;
+        top: 7px;
+        left: 6px;
+        width: 95%;
+        height: 96%;
+        border: 2px dashed #e9b600;
+        border-radius: 20px;
+        pointer-events: none;
+    }
+    .modal .modal_box .header {
         display: flex;
         justify-content: space-between;
         position: relative;
+        background-color: var(--present-color);
+        padding: var(--spacing);
     }
-    .modal .modal__content .modal__content__close {
+    .modal .modal_box .modal_content {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing);
+        padding: var(--spacing);
+    }
+    .modal .modal_box .modal__content__close {
         position: absolute;
         width: 20px;
         height: 20px;
         padding: 1rem;
-        top: -1rem;
-        right: -1rem;
+        top: 0;
+        right: 0;
         cursor: pointer;
     }
-    .modal .modal__content .modal__buttons {
+    .modal .modal_box .modal__buttons {
         display: grid;
         gap: 0.5rem;
         grid-template-columns: 1fr 1fr;
+        background-color: var(--present-color);
+        padding: var(--spacing);
     }
 
     .stats {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
     }
 
     .motbot_nextleague {

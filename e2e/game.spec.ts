@@ -348,3 +348,37 @@ test('colors: duplicate handling keeps keyboard green for mixed correct/present'
     await expect(cell(page, 1, 3)).toHaveClass(/present/)
     await expect(key(page, 'A')).toHaveClass(/present/)
 })
+
+test('keyboard: correct stays green even after later absent', async ({ page }) => {
+    // Reset routes to default ABCDE and custom guesses
+    await page.unroute('**/assets/words.json').catch(() => {})
+    await page.unroute('**/assets/dicc.json').catch(() => {})
+    await page.route('**/assets/words.json', (route: any) => {
+        route.fulfill({
+            status: 200,
+            contentType: 'application/json',
+            body: JSON.stringify({ abcde: 'ABCDE' }),
+        })
+    })
+    await page.route('**/assets/dicc.json', (route: any) => {
+        route.fulfill({
+            status: 200,
+            contentType: 'application/json',
+            body: JSON.stringify(['ABCDE', 'AQQQQ', 'QAAQQ']),
+        })
+    })
+
+    await page.goto('/joc/')
+
+    // First row: make 'A' correct at position 1
+    for (const l of ['A', 'Q', 'Q', 'Q', 'Q']) await clickKey(page, l)
+    await pressEnter(page)
+    await expect(key(page, 'A')).toHaveClass(/correct/)
+
+    // Second row: use duplicates of 'A' not at the correct spot -> present + absent
+    for (const l of ['Q', 'A', 'A', 'Q', 'Q']) await clickKey(page, l)
+    await pressEnter(page)
+
+    // Keyboard should remain green for 'A'
+    await expect(key(page, 'A')).toHaveClass(/correct/)
+})

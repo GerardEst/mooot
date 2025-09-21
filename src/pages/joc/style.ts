@@ -28,6 +28,6 @@ export const jocPage = css`
         flex-direction: column;
         align-items: center;
         flex: 1;
-        padding-bottom: 50px;
+        padding-bottom: 25px;
     }
 `

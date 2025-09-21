@@ -1,7 +1,7 @@
 import { LitElement, html, css } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { getStoredStat, storedStats } from '../utils/stats-utils'
-import { global } from '@src/core/global-styles'
+import { global } from '@src/core/app-reset-styles'
 
 @customElement('stat-display')
 export class StatDisplay extends LitElement {

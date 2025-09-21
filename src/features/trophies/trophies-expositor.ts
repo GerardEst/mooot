@@ -2,7 +2,7 @@ import { LitElement, html, css } from 'lit'
 import { customElement, state } from 'lit/decorators.js'
 import { getUserId } from '@src/core/telegram'
 import { getDetailedUserTrophies } from '@src/core/api/trophies'
-import { global } from '@src/core/global-styles'
+import { global } from '@src/core/app-reset-styles'
 
 @customElement('trophies-expositor')
 export class TrophiesExpositor extends LitElement {
