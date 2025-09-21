@@ -13,7 +13,7 @@ export class MoootHeaderLogo extends LitElement {
                 gap: 4px;
             }
             .tile {
-                width: 28px;
+                width: 30px;
                 aspect-ratio: 1;
                 border-radius: 3px;
                 display: grid;

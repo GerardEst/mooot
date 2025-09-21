@@ -7,7 +7,7 @@ class ButtonMooot extends LitElement {
         global,
         css`
             button,
-            a {
+            a.button {
                 padding: 6px 15px;
                 border-radius: 5px;
                 background-color: white;
@@ -16,6 +16,17 @@ class ButtonMooot extends LitElement {
                 font-weight: 600;
                 font-size: 0.8rem;
                 font-family: 'Montserrat';
+                color: #7f6300;
+            }
+            .icon {
+                display: inline-flex;
+                margin-right: 6px;
+                line-height: 0;
+            }
+            slot[name='icon']::slotted(*) {
+                display: inline-flex;
+                margin-right: 6px;
+                line-height: 0;
             }
             button.selected,
             a.selected {
@@ -37,6 +48,8 @@ class ButtonMooot extends LitElement {
     @property() link: string | null = null
     @property({ type: Boolean }) selected: boolean = false
     @property({ type: Boolean }) fillContainer: boolean = false
+    // Optional icon. If provided, rendered before label. Alternatively, use a named slot "icon".
+    @property() icon: string | null = null
 
     onClick() {
         this.dispatchEvent(
@@ -45,18 +58,20 @@ class ButtonMooot extends LitElement {
     }
 
     render() {
-        return html`
-            ${this.link
-                ? html` <a class="button" href=${this.link}>${this.label}</a> `
-                : html`
-                      <button
-                          @click=${() => this.onClick()}
-                          class=${this.selected ? 'selected' : ''}
-                      >
-                          ${this.label}
-                      </button>
-                  `}
-        `
+        const iconTemplate = this.icon
+            ? html`<span class="icon" aria-hidden="true">${this.icon}</span>`
+            : html`<slot name="icon"></slot>`
+
+        return html`${this.link
+            ? html`<a class="button" href=${this.link}
+                >${iconTemplate}${this.label}</a
+              >`
+            : html`<button
+                  @click=${() => this.onClick()}
+                  class=${this.selected ? 'selected' : ''}
+              >
+                  ${iconTemplate}${this.label}
+              </button>`}`
     }
 }
 

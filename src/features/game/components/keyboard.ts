@@ -42,17 +42,17 @@ export class Keyboard extends LitElement {
                 background-color: var(--present-color);
                 color: var(--used-text-color);
             }
+            x .keyboard > .keyboard__row > .keyboard__key.absent,
+            .keyboard > .keyboard__row > .keyboard__enter.absent,
+            .keyboard > .keyboard__row > .keyboard__back.absent {
+                background-color: var(--missing-color);
+                color: white;
+            }
             .keyboard > .keyboard__row > .keyboard__key.correct,
             .keyboard > .keyboard__row > .keyboard__enter.correct,
             .keyboard > .keyboard__row > .keyboard__back.correct {
                 background-color: var(--correct-color);
                 color: var(--used-text-color);
-            }
-            .keyboard > .keyboard__row > .keyboard__key.absent,
-            .keyboard > .keyboard__row > .keyboard__enter.absent,
-            .keyboard > .keyboard__row > .keyboard__back.absent {
-                background-color: var(--missing-color);
-                color: white;
             }
             .keyboard > .keyboard__row > .keyboard__key > img,
             .keyboard > .keyboard__row > .keyboard__enter > img,

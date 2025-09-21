@@ -83,7 +83,7 @@ export const game = css`
         background-color: #e1dede;
         box-sizing: border-box;
         color: #b9b9b9;
-        box-shadow: inset 0px 3px 0px 0px #b9b9b9;
+        box-shadow: inset 0px 3px 0px 0px #d1d1d1;
         padding-top: 3px;
     }
 

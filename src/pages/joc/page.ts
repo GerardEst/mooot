@@ -28,7 +28,7 @@ export class MoootJocPage extends LitElement {
                 <mooot-flag></mooot-flag>
                 <mooot-header-logo text="MOOOT"></mooot-header-logo>
                 <div @click=${() => this.openMenu()} class="openMenuButton">
-                    <img alt="Obrir menu" width="20" src="/assets/menu.svg" />
+                    <img alt="Obrir menu" width="30" src="/assets/menu.svg" />
                 </div>
             </header>
             <mooot-joc-game></mooot-joc-game>
