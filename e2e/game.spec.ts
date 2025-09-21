@@ -4,7 +4,17 @@ import { test, expect } from '@playwright/test'
 const WORDS = {
     abcde: 'ABCDE',
 }
-const DIC = ['ABCDE', 'AAAAA', 'BBBBB', 'CCCCC', 'DDDDD', 'EEEEE', 'FFFFF']
+const DIC = [
+    'ABCDE',
+    'EABCD',
+    'ZZZZZ',
+    'AAAAA',
+    'BBBBB',
+    'CCCCC',
+    'DDDDD',
+    'EEEEE',
+    'FFFFF',
+]
 
 async function stubAssets(page: any) {
     await page.route('**/assets/words.json', (route: any) => {
@@ -39,6 +49,12 @@ async function pressEnter(page: any) {
 
 function cell(page: any, row: number, col: number) {
     return page.locator('mooot-joc-game').locator(`#l${row}_${col}`)
+}
+
+function key(page: any, letter: string) {
+    return page
+        .locator('mooot-keyboard')
+        .locator(`.keyboard__key[data-key="${letter}"]`)
 }
 
 test.beforeEach(async ({ page }) => {
@@ -145,7 +161,9 @@ test('six valid misses end with modal with correct info', async ({ page }) => {
     })
 })
 
-test('typing into a specific clicked cell works end-to-end', async ({ page }) => {
+test('typing into a specific clicked cell works end-to-end', async ({
+    page,
+}) => {
     await page.goto('/joc/')
 
     await test.step('place C in third cell via cell click + key', async () => {
@@ -187,7 +205,9 @@ test('typing into a specific clicked cell works end-to-end', async ({ page }) =>
     })
 })
 
-test('mix targeted cell click then sequential input completes the word', async ({ page }) => {
+test('mix targeted cell click then sequential input completes the word', async ({
+    page,
+}) => {
     await page.goto('/joc/')
 
     await test.step('place D in fourth cell via click', async () => {
@@ -219,4 +239,112 @@ test('mix targeted cell click then sequential input completes the word', async (
                 .locator('#stats-points')
         ).toHaveText('6')
     })
+})
+
+test('edge cases: selection, deletion, and enter constraints', async ({
+    page,
+}) => {
+    await page.goto('/joc/')
+
+    await test.step('cannot submit incomplete guess', async () => {
+        await clickKey(page, 'A')
+        await clickKey(page, 'B')
+        await pressEnter(page)
+        await expect(cell(page, 1, 1)).toHaveText('A')
+        await expect(cell(page, 1, 2)).toHaveText('B')
+        await expect(cell(page, 1, 3)).toHaveText('')
+        // Still on first row; next row remains empty
+        await expect(cell(page, 2, 1)).toHaveText('')
+        // Modal not shown
+        await expect(
+            page
+                .locator('mooot-joc-game')
+                .locator('mooot-endgame-modal')
+                .locator('.modal.active')
+        ).toHaveCount(0)
+    })
+
+    await test.step('cannot select a cell in a different row', async () => {
+        const cellOtherRow = page.locator('mooot-joc-game').locator('#l2_1')
+        await cellOtherRow.click()
+        await expect(cellOtherRow).not.toHaveClass(/selected/)
+    })
+
+    await test.step('cannot delete cells from other rows than current', async () => {
+        // Make the first row a full valid but wrong guess (AAAAA)
+        await page.locator('mooot-joc-game').locator('#l1_2').click()
+        await clickKey(page, 'A')
+        await page.locator('mooot-joc-game').locator('#l1_3').click()
+        await clickKey(page, 'A')
+        await page.locator('mooot-joc-game').locator('#l1_4').click()
+        await clickKey(page, 'A')
+        await page.locator('mooot-joc-game').locator('#l1_5').click()
+        await clickKey(page, 'A')
+        await pressEnter(page) // advance to row 2
+
+        // Try to delete from row 1 (not current). Should not change row 1.
+        const lastCellRow1 = page.locator('mooot-joc-game').locator('#l1_5')
+        await lastCellRow1.click()
+        await page.locator('mooot-keyboard').locator('.keyboard__back').click()
+        await expect(cell(page, 1, 5)).toHaveText('A')
+    })
+})
+
+test('colors: correct letters paint green', async ({ page }) => {
+    await page.goto('/joc/')
+    for (const l of ['A', 'B', 'C', 'D', 'E']) await clickKey(page, l)
+    await pressEnter(page)
+    for (let i = 1; i <= 5; i++)
+        await expect(cell(page, 1, i)).toHaveClass(/correct/)
+    for (const l of ['A', 'B', 'C', 'D', 'E'])
+        await expect(key(page, l)).toHaveClass(/correct/)
+})
+
+test('colors: present letters paint orange', async ({ page }) => {
+    await page.goto('/joc/')
+    for (const l of ['E', 'A', 'B', 'C', 'D']) await clickKey(page, l)
+    await pressEnter(page)
+    for (let i = 1; i <= 5; i++)
+        await expect(cell(page, 1, i)).toHaveClass(/present/)
+    for (const l of ['A', 'B', 'C', 'D', 'E']) {
+        await expect(key(page, l)).toHaveClass(/present/)
+        await expect(key(page, l)).not.toHaveClass(/correct/)
+    }
+})
+
+test('colors: absent letters paint gray', async ({ page }) => {
+    await page.goto('/joc/')
+    for (const l of ['Z', 'Z', 'Z', 'Z', 'Z']) await clickKey(page, l)
+    await pressEnter(page)
+    for (let i = 1; i <= 5; i++)
+        await expect(cell(page, 1, i)).toHaveClass(/absent/)
+    await expect(key(page, 'Z')).toHaveClass(/absent/)
+})
+
+test('colors: duplicate handling keeps keyboard green for mixed correct/present', async ({
+    page,
+}) => {
+    // Remove default routes and set new ones for duplicate scenario
+    await page.unroute('**/assets/words.json')
+    await page.unroute('**/assets/dicc.json')
+    await page.route('**/assets/words.json', (route: any) => {
+        route.fulfill({
+            status: 200,
+            contentType: 'application/json',
+            body: JSON.stringify({ aabcd: 'AABCD' }),
+        })
+    })
+    await page.route('**/assets/dicc.json', (route: any) => {
+        route.fulfill({
+            status: 200,
+            contentType: 'application/json',
+            body: JSON.stringify(['AABCD', 'ABADE', 'ABCDE', 'EABCD', 'ZZZZZ']),
+        })
+    })
+    await page.goto('/joc/')
+    for (const l of ['A', 'B', 'A', 'D', 'E']) await clickKey(page, l)
+    await pressEnter(page)
+    await expect(cell(page, 1, 1)).toHaveClass(/correct/)
+    await expect(cell(page, 1, 3)).toHaveClass(/present/)
+    await expect(key(page, 'A')).toHaveClass(/present/)
 })
