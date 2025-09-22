@@ -10,65 +10,65 @@ export const AWARDS = {
         {
             id: 50,
             name: "Zeus d'or",
-            emoji: '🥇🧔🏼',
+            emoji: '🧔🏼',
         },
         {
             id: 51,
             name: 'Tro de plata',
-            emoji: '🥈⛈️',
+            emoji: '⛈️',
         },
         {
             id: 52,
             name: 'Patac de bronze',
-            emoji: '🥉☂️',
+            emoji: '☂️',
         },
 
         // Lliga del meló
         {
             id: 60,
             name: 'Meló amb pernil',
-            emoji: '🥇🍈',
+            emoji: '🍈',
         },
         {
             id: 61,
             name: 'Meló groc de plata',
-            emoji: '🥈🍈',
+            emoji: '🍈',
         },
         {
             id: 62,
             name: 'Coco de bronze',
-            emoji: '🥉🥥',
+            emoji: '🥥',
         },
         // Lliga Seca
         {
             id: 70,
             name: "Camell d'or",
-            emoji: '🥇🐫',
+            emoji: '🐫',
         },
         {
             id: 71,
             name: 'Cactus de plata',
-            emoji: '🥈🌵',
+            emoji: '🌵',
         },
         {
             id: 72,
             name: 'Grill de bronze',
-            emoji: '🥉🦗',
+            emoji: '🦗',
         },
         {
             id: 75,
             name: "Guepard d'or",
-            emoji: '🥇🐆',
+            emoji: '🐆',
         },
         {
             id: 76,
             name: 'Rinoceront de plata',
-            emoji: '🥈🦏',
+            emoji: '🦏',
         },
         {
             id: 77,
             name: 'Porquet de bronze',
-            emoji: '🥉🐖',
+            emoji: '🐖',
         },
         {
             id: 79,
@@ -79,32 +79,32 @@ export const AWARDS = {
         {
             id: 80,
             name: "Ratafia d'or",
-            emoji: '🥇🥃',
+            emoji: '🥃',
         },
         {
             id: 81,
             name: 'Birra de plata',
-            emoji: '🥈🍺',
+            emoji: '🍺',
         },
         {
             id: 82,
             name: 'Cubata de bronze',
-            emoji: '🥉🍹',
+            emoji: '🍹',
         },
         {
             id: 85,
             name: "Traca d'or",
-            emoji: '🥇🧨',
+            emoji: '🧨',
         },
         {
             id: 86,
             name: 'Fanalet de plata',
-            emoji: '🥈🌷',
+            emoji: '🌷',
         },
         {
             id: 87,
             name: 'Pogo de bronze',
-            emoji: '🥉💥',
+            emoji: '💥',
         },
         {
             id: 89,
@@ -115,32 +115,32 @@ export const AWARDS = {
         {
             id: 90,
             name: "Segador d'or",
-            emoji: '🥇🌾',
+            emoji: '🌾',
         },
         {
             id: 91,
             name: 'Gegant de plata',
-            emoji: '🥈👫🏻',
+            emoji: '👫🏻',
         },
         {
             id: 92,
             name: 'Caganer de bronze',
-            emoji: '🥉💩',
+            emoji: '💩',
         },
         {
             id: 95,
             name: "Anxaneta d'or",
-            emoji: '🥇🖐🏼',
+            emoji: '🖐🏼',
         },
         {
             id: 96,
             name: 'Sardana de plata',
-            emoji: '🥈🤝🏼',
+            emoji: '🤝🏼',
         },
         {
             id: 97,
             name: 'Gralla de bronze',
-            emoji: '🥉🪈',
+            emoji: '🪈',
         },
         {
             id: 99,
@@ -153,32 +153,32 @@ export const AWARDS = {
         {
             id: 80,
             name: 'Combinado de oro',
-            emoji: '🥇🥃',
+            emoji: '🥃',
         },
         {
             id: 81,
             name: 'Coctel de plata',
-            emoji: '🥈🍹',
+            emoji: '🍹',
         },
         {
             id: 82,
             name: 'Cerveza de bronce',
-            emoji: '🥉🍺',
+            emoji: '🍺',
         },
         {
             id: 85,
             name: 'Traca de oro',
-            emoji: '🥇🧨',
+            emoji: '🧨',
         },
         {
             id: 86,
             name: 'Baile de plata',
-            emoji: '🥈🌷',
+            emoji: '🌷',
         },
         {
             id: 87,
             name: 'Pogo de bronce',
-            emoji: '🥉💥',
+            emoji: '💥',
         },
         {
             id: 89,
@@ -189,32 +189,32 @@ export const AWARDS = {
         {
             id: 90,
             name: 'Doctorado',
-            emoji: '🥇📜',
+            emoji: '📜',
         },
         {
             id: 91,
             name: 'Máster',
-            emoji: '🥈📜',
+            emoji: '📜',
         },
         {
             id: 92,
             name: 'Grado',
-            emoji: '🥉📜',
+            emoji: '📜',
         },
         {
             id: 95,
             name: '',
-            emoji: '🥇',
+            emoji: '',
         },
         {
             id: 96,
             name: '',
-            emoji: '🥈',
+            emoji: '',
         },
         {
             id: 97,
             name: '',
-            emoji: '🥉',
+            emoji: '',
         },
         {
             id: 99,
@@ -227,32 +227,32 @@ export const AWARDS = {
         {
             id: 80,
             name: 'Gold Sunset',
-            emoji: '🥇☀️',
+            emoji: '☀️',
         },
         {
             id: 81,
             name: 'Silver Oasis',
-            emoji: '🥈🏝️',
+            emoji: '🏝️',
         },
         {
             id: 82,
             name: 'Bronze Dune',
-            emoji: '🥉🏜️',
+            emoji: '🏜️',
         },
         {
             id: 85,
             name: 'Gold Cheeta',
-            emoji: '🥇🐆',
+            emoji: '🐆',
         },
         {
             id: 86,
             name: 'Silver Rhino',
-            emoji: '🥈🦏',
+            emoji: '🦏',
         },
         {
             id: 87,
             name: 'Bronze Camel',
-            emoji: '🥉🐫',
+            emoji: '🐫',
         },
         {
             id: 89,
@@ -263,32 +263,32 @@ export const AWARDS = {
         {
             id: 90,
             name: 'Doctoral degree',
-            emoji: '🥇📜',
+            emoji: '📜',
         },
         {
             id: 91,
             name: "Master's degree",
-            emoji: '🥈📜',
+            emoji: '📜',
         },
         {
             id: 92,
             name: "Bachelor's degree",
-            emoji: '🥉📜',
+            emoji: '📜',
         },
         {
             id: 95,
             name: '',
-            emoji: '🥇',
+            emoji: '',
         },
         {
             id: 96,
             name: '',
-            emoji: '🥈',
+            emoji: '',
         },
         {
             id: 97,
             name: '',
-            emoji: '🥉',
+            emoji: '',
         },
         {
             id: 99,

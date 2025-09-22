@@ -39,7 +39,11 @@ export const menu = css`
                     box-sizing: border-box;
                 }
             }
-
+            & #menu-trophies {
+                & .menu_section_content {
+                    padding: 10px;
+                }
+            }
             & callout-creategroups {
                 margin-top: auto;
             }
