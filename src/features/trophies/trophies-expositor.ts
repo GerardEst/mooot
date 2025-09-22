@@ -10,7 +10,8 @@ export class TrophiesExpositor extends LitElement {
         global,
         css`
             :host {
-                display: block;
+                display: flex;
+                height: 100%;
             }
             .expositor {
                 display: flex;
@@ -19,6 +20,7 @@ export class TrophiesExpositor extends LitElement {
                 gap: 0.5rem;
                 padding: 30px;
                 border-radius: 14px;
+                width: 100%;
                 background-color: var(--present-color);
                 box-shadow: inset 0 0 3px 4px #00000017;
                 &:before {

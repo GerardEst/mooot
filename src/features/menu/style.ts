@@ -37,6 +37,7 @@ export const menu = css`
                 & .menu_section_content {
                     padding: 20px;
                     min-height: 100%;
+                    height: 100%;
                     box-sizing: border-box;
                 }
             }
