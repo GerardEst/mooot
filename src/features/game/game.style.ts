@@ -33,9 +33,8 @@ export const game = css`
         padding-top: 3px;
     }
     .wordgrid > .wordgrid__row > .wordgrid__cell.selected {
-        outline: 2px solid var(--correct-border-color);
-        outline-offset: -2px;
-        box-shadow: inset 0 0 0 1px var(--correct-border-color);
+        box-shadow: inset 0 0 10px 2px #63b54d;
+        background-color: #d6ffcb;
     }
     .wordgrid > .wordgrid__row > .wordgrid__cell::after {
         content: '';
@@ -65,7 +64,7 @@ export const game = css`
         color: #4d684a;
         box-sizing: border-box;
         padding-bottom: 2px;
-        box-shadow: inset 0 -3px #c9edc8;
+        box-shadow: inset 0 -3px #c9edc8, inset 0 5px 20px #ffffffb8;
         background-color: var(--color-green-success);
     }
     .wordgrid > .wordgrid__row > .wordgrid__cell.correct.hard-reveal {
@@ -76,14 +75,14 @@ export const game = css`
         background-color: var(--present-color);
         box-sizing: border-box;
         color: #e9b600;
-        box-shadow: inset 0px -3px 0px 0px #e9b600;
+        box-shadow: inset 0px -3px 0px 0px #e9b600, inset 0 5px 20px #ffffffb8;
         padding-bottom: 2px;
     }
     .wordgrid > .wordgrid__row > .wordgrid__cell.absent {
         background-color: #e1dede;
         box-sizing: border-box;
         color: #b9b9b9;
-        box-shadow: inset 0px 3px 0px 0px #d1d1d1;
+        box-shadow: inset 0px 3px 0px 0px #a9a9a9, inset 0px 5px 10px #b5b5b5;
         padding-top: 3px;
     }
 
