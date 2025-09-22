@@ -1,0 +1,23 @@
+{
+	"Mooot Lit Button": {
+		"prefix": "lit-basic-component",
+		"scope": "typescript, javascript",
+		"description": "Insert a Lit component skeleton for Mooot",
+		"body": [
+			"import { LitElement, html, css } from 'lit'",
+			"",
+			"export class ${1:ButtonMooot} extends LitElement {",
+			"  static styles = css`",
+			"    :host { display: inline-block; }",
+			"  `",
+			"",
+			"  render() {",
+			"    return html`<button class=\"mooot\">${2:Label}</button>`",
+			"  }",
+			"}",
+			"",
+			"customElements.define('${3:button-mooot}', ${1:ButtonMooot})",
+			""
+		]
+	}
+}

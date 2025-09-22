@@ -1,0 +1,109 @@
+/* Make custom properties available in both document and shadow roots */
+:host,
+:root {
+  --cell: #f9f9f9;
+  --cell-border: #ccc;
+
+  --correct-color: var(--color-green-success);
+  --correct-border-color: var(--color-green-success--border);
+  --present-color: #ffe99a;
+  --present-border-color: #fdc264;
+  --missing-color: #848484;
+  --missing-border-color: #3a3a3a;
+  --text-color: #333333;
+  --used-text-color: var(--text-color);
+
+  --color-red-warning: #ffe4e4;
+  --color-red-warning--border: #ffb5b5;
+  --color-green-success: #dbffd9;
+  --color-green-success-shine: #ecffeb;
+  --color-green-success--border: #68c563;
+
+  --button-callout: #ffe298;
+
+  --gold: #ffcb4578;
+  --silver: #aaefff60;
+  --bronze: #b99c6e60;
+
+  --button-color: var(--color-green-success);
+  --button-border-color: var(--color-green-success--border);
+
+  --button-danger-color: var(--present-color);
+  --button-danger-border-color: var(--present-border-color);
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html,
+body {
+  font-family: sans-serif;
+  margin: 0;
+  min-height: 100dvh;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: 'Montserrat', sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+a {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+}
+
+main{
+  padding: 0 15px;
+}
+
+h1 {
+  font-size: 28px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+}
+
+h2 {
+  margin-top: 24px;
+  font-size: 22px;
+}
+
+h3 {
+  margin-top: 18px;
+  font-size: 18px;
+}
+
+a {
+  color: #0366d6;
+}
+
+.smallText {
+  font-size: 0.8rem;
+  color: var(--text-color);
+  font-style: italic;
+}
+
+code {
+  background: #f6f8fa;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+pages-menu{
+  padding: 40px 0;
+  margin-top: auto;
+}
+
+mooot-joc-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+}

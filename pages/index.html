@@ -1,299 +1,57 @@
 <!DOCTYPE html>
-<html lang="ca" prefix="og: http://ogp.me/ns#">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<html lang="ca">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/global.css" />
+    <title>Mooot</title>
+    <meta name="description" content="Què és Mooot, qui el manté, la missió i com contactar." />
+    <link rel="icon" href="/favicon.png" />
+  </head>
+  <body>
+    <pages-header title="Sobre Mooot"></pages-header>
+    <main>
+      <br>
+      <p>Mooot és un joc de paraules tipus Wordle, en català, pensat especialment per ser gaudit en grup.
+      <br><br>
+      Neix de la voluntat de donar emoció i sentit a fer diariament la paraula del dia i compartir-la, 
+      per tant s'adapta a aquesta manera de jugar i compartir per afegir-hi un munt d'extres sense cap esforç per part dels jugadors:
+      <ul>
+        <li>Puntuacions</li>  
+        <li>Classificació per punts</li>
+        <li>Classificació per temps</li>
+        <li>Top mundial de jugadors</li>
+        <li>Trofeus mensuals als millors jugadors de cada grup</li>
+        <li>Jugar contra personatges de la cultura catalana</li>
+        <li>Links al diccionari de les paraules diaries</li>
+      </ul>
+      <br>
+      Tot això sense registres a cap plataforma per part de l'usuari i gratuitament, simplement afegint Mooot a un grup comú de Telegram.
+      <br>
+      
+      <h2>Com començar a jugar</h2>
+      <ol>
+        <li>Crea un grup de Telegram amb qui vulguis competir.</li>
+        <li>Afegeix el bot <strong>@mooot_cat_bot</strong> al grup.<br><i>Afegir un bot és igual de fàcil que afegir una persona, busca @mooot_cat_bot i selecciona'l quan aparegui</i></li>
+        <li>Comparteix la teva partida diària de Mooot al xat. Mooot la detectarà automàticament i farà la seva feina.</li>
+      </ol>
+      <p>O afegeix mooot_cat_bot a un grup existent: <br><a href="https://t.me/mooot_cat_bot?startgroup=true" rel="noopener">Afegeix Mooot al teu grup</a></p>
 
-        <meta
-            http-equiv="Cache-Control"
-            content="no-cache, no-store, must-revalidate"
-        />
-        <meta http-equiv="Pragma" content="no-cache" />
-        <meta http-equiv="Expires" content="0" />
-
-        <!-- SEO Meta Tags -->
-        <title>
-            Mooot - Bot de Telegram per competir al wordle en català entre amics
-        </title>
-        <meta
-            name="description"
-            content="Transforma el teu grup de Telegram en una competició de wordle en català amb classificacions mensuals, premis, personatges famosos catalans i molt més. Afegeix Mooot ara!"
-        />
-        <meta
-            name="keywords"
-            content="wordle, bot telegram, joc paraules català, competició amics, lliga mensual, cultura catalana, telegram bot, mooot"
-        />
-        <meta name="author" content="Mooot" />
-        <meta
-            name="robots"
-            content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
-        />
-        <meta name="language" content="Catalan" />
-        <meta name="geo.region" content="ES-CT" />
-        <meta name="geo.placename" content="Catalunya" />
-
-        <link rel="canonical" href="https://mooot.cat" />
-        <style>
-            body {
-                margin: 0;
-                padding: 0;
-                background: #fff;
-            }
-            header {
-                & h1 {
-                    margin: 0;
-                    font-size: 24px;
-                    padding: 0;
-                    border: none;
-                }
-            }
-            h1,
-            h2,
-            h3 {
-                color: #333;
-                margin-top: 30px;
-                margin-bottom: 15px;
-            }
-            h1 {
-                font-size: 28px;
-                border-bottom: 2px solid #eee;
-                padding-bottom: 10px;
-            }
-            h2 {
-                font-size: 24px;
-            }
-            h3 {
-                font-size: 20px;
-            }
-            code {
-                background: #f6f8fa;
-                padding: 3px 6px;
-                border-radius: 3px;
-                font-family: 'Monaco', 'Menlo', monospace;
-                font-size: 14px;
-                color: #e83e8c;
-            }
-            ul,
-            ol {
-                padding-left: 20px;
-            }
-            li {
-                margin-bottom: 8px;
-            }
-            a {
-                color: #0366d6;
-            }
-        </style>
-
-        <link rel="icon" href="./favicon.png" />
-    </head>
-    <body>
-        <div
-            style="
-                max-width: 800px;
-                margin: 0 auto;
-                padding: 20px;
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI',
-                    Roboto, sans-serif;
-                line-height: 1.6;
-                color: #333;
-            "
-        >
-            <header
-                style="
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    border-bottom: 1px solid #eee;
-                    padding-bottom: 20px;
-                    margin-bottom: 40px;
-                "
-            >
-                <div style="display: flex; align-items: center; gap: 10px">
-                    <img
-                        width="40"
-                        height="40"
-                        src="/assets/moootbot_M.png"
-                        alt="Logotip de Mooot - Bot de Telegram per al joc Mooot"
-                        loading="eager"
-                    />
-                    <h1>Mooot</h1>
-                </div>
-            </header>
-
-            <main role="main" itemscope itemtype="https://schema.org/WebPage">
-                <h1 id="que-es-mooot">Què és Mooot</h1>
-                <p style="font-size: 18px; color: #666; margin-bottom: 20px">
-                    Competeix en lligues mensuals de wordle en català entre amics.
-                </p>
-                <p>
-                    Aquest bot de Telegram transforma qualsevol grup en una
-                    competició de wordle en català, amb una classificació mensual actualitzada diariament,
-                    premis pels millors jugadors, personatges convidats de la
-                    cultura catalana i molt més.
-                </p>
-
-                <h2 id="funcionament">Com funciona</h2>
-
-                <h3 id="afegir-xat-existent">
-                    Opció 1: Afegir a un xat existent
-                </h3>
-                <p>
-                    Clica el següent enllaç per afegir Mooot directament al
-                    teu grup de Telegram:
-                </p>
-                <p>
-                    <a
-                        href="https://t.me/mooot_cat_bot?startgroup=true"
-                        style="
-                            background: #28a745;
-                            color: white;
-                            padding: 12px 20px;
-                            border-radius: 6px;
-                            text-decoration: none;
-                            display: inline-block;
-                        "
-                        title="Afegeix Mooot al teu grup de Telegram"
-                        rel="noopener"
-                        >Afegeix mooot a un xat</a
-                    >
-                </p>
-
-                <h3 id="crear-nou-grup">Opció 2: Crear un nou grup</h3>
-                <ol>
-                    <li>
-                        Crea un grup de Telegram amb la gent amb la que vols
-                        compartir les partides.
-                    </li>
-                    <li>
-                        Afegeix el bot <strong>"mooot_cat_bot"</strong>
-                        <em>(Afegir un membre → buscar "mooot_cat_bot")</em>
-                    </li>
-                </ol>
-
-                <blockquote
-                    style="
-                        background: #f8f9fa;
-                        border-left: 4px solid #007bff;
-                        padding: 15px;
-                        margin: 20px 0;
-                        border-radius: 0 4px 4px 0;
-                    "
-                >
-                    El bot us saludarà amb les instruccions i començarà a treballar a la sombra, convertint el grup
-                    en una lliga i afegint les següents funcionalitats:
-                </blockquote>
-
-                <h2 id="funcionalitats">
-                    Funcionalitats principals
-                </h2>
-
-                <h3 id="classificacio-mensual">
-                    🏆 Classificació mensual dels jugadors
-                </h3>
-                <p>
-                    Sempre que un membre del xat hi comparteixi la seva partida,
-                    se li dona una puntuació que pot anar del 0 (si no ha trobat
-                    la paraula) al 6 (si l'ha trobat al primer intent).
-                    D'aquesta manera es genera una classificació amb tots els
-                    membres del xat. Cada final de mes es reparteixen premis als
-                    membres que hagin quedat al top 3 i es comença una nova
-                    lliga amb les puntuacions a 0.
-                </p>
-                <p><code>/classificacio</code> - Consulta la classificació</p>
-
-                <h3 id="sistema-premis">
-                    🥇 Sistema de premis i trofeus virtuals
-                </h3>
-                <p>
-                    L'últim dia del mes es reparteixen trofeus als tres millors
-                    jugadors. Els trofeus varien depenent de la lliga actual,
-                    amb referencies a la cultura catalana, i son independents
-                    entre les diferents lligues - és a dir, en cas de participar
-                    en varies lligues, els trofeus només els tens dins el xat de
-                    la lliga on els hagis guanyat.
-                </p>
-                <p><code>/premis</code> - Consulta els trofeus del xat</p>
-
-                <h3 id="extres-famosos">🎭 Personatges famosos catalans</h3>
-                <p>
-                    Es poden afegir personatges famosos que jugaran autònomament
-                    cada dia i faran més o menys puntuació depenent de la seva
-                    habilitat - Jacint Verdaguer té una habilitat de 8/10 i serà
-                    molt difícil de guanyar, mentre que en Rovelló quedarà
-                    sempre cap a baix de la classificació perquè al cap i a la
-                    fi és un gos.
-                </p>
-                <p>
-                    <code>/afegir-personatge</code> - Afegeix personatges a la
-                    partida
-                </p>
-                <p>
-                    <code>/eliminar-personatge</code> - Elimina personatges de
-                    la partida
-                </p>
-
-                <h3 id="top-mundial">🌍 Rànquing mundial</h3>
-                <p>
-                    En qualsevol moment es pot consultar el top 3 de la lliga
-                    actual entre tots els participants de tots els xats.
-                </p>
-                <p><code>/top</code> - Mostra el top 3 mundial</p>
-
-                <h3 id="reaccions-automatiques">😊 Reaccions automàtiques</h3>
-                <p>
-                    Quan es comparteix una partida, el bot reacciona amb un
-                    emoji al missatge que varia depenent de lo bona o dolenta
-                    que sigui la partida per donar confirmació visual de que la
-                    partida s'ha registrat correctament.
-                </p>
-
-                <h2 id="comandes-disponibles">
-                    Comandes disponibles de Mooot
-                </h2>
-                <ul>
-                    <li>
-                        <code>/classificacio</code> - Mostra la classificació de
-                        la lliga actual
-                    </li>
-                    <li><code>/llegenda</code> - Mostra la taula de punts</li>
-                    <li>
-                        <code>/afegir-personatge</code> - Opcions per afegir
-                        personatges a la partida
-                    </li>
-                    <li>
-                        <code>/eliminar-personatge</code> - Opcions per eliminar
-                        un personatge de la partida
-                    </li>
-                    <li>
-                        <code>/premis</code> - Consulta els trofeus virtuals
-                        guanyats i els que estan en joc
-                    </li>
-                    <li>
-                        <code>/top</code> - Mostra el top 3 de jugadors de totes
-                        les lligues
-                    </li>
-                    <li>
-                        <code>/instruccions</code> - Mostra tota la info i funcionalitats del bot
-                    </li>
-                </ul>
-
-                <!-- <h2 id="privacitat">Ús de dades i privacitat</h2>
-
-                <h3 id="permisos-necessaris">Permisos necessaris</h3>
-                <p>
-                    Al afegir Mooot a un grup, se li dona accés a tots els
-                    missatges que es comparteixin a partir d'aquell moment. Si
-                    no fos així, no podria reaccionar ni guardar les partides
-                    que se li comparteixen.
-                </p>
-
-                <h3 id="compromis-privacitat">Compromís de privacitat</h3>
-                <p>
-                    No es consulta ni es guarda cap missatge que no sigui una
-                    partida compartida o una comanda del bot.
-                </p> -->
-            </main>
-        </div>
-    </body>
-</html>
+      <h2>Qui sóc</h2>
+      <p>Mooot està mantingut per un autor independent. Si vols col·laborar, fer suggeriments o reportar incidències, contacta’m a <a href="mailto:gesteve.12@gmail.com">gesteve.12@gmail.com</a> o via Telegram a <a href="https://t.me/GerardEsteve" target="_blank" rel="noopener">@GerardEsteve</a>.</p>
+      <br>
+      <h2>Agraïments</h2>
+      <p class="smallText">
+        Basat en el joc
+        <a href="https://www.nytimes.com/games/wordle/index.html">Wordle</a>
+        de <a href="https://www.nytco.com/">TNYT</a>
+      </p>
+      <p class="smallText">
+        Llistat de paraules extret del
+        <a href="https://diccionari.totescrable.cat/">DISC</a>
+      </p>
+    </main>
+    <pages-menu></pages-menu>
+    <script src="/common.ts" type="module"></script>
+  </body>
+  </html>
