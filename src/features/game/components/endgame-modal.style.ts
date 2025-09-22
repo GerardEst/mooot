@@ -2,7 +2,7 @@ import { css } from 'lit'
 
 export const modalStyles = css`
     .modal {
-        --spacing: 1rem;
+        --spacing: 1.4rem;
 
         position: fixed;
         display: none;
@@ -16,6 +16,9 @@ export const modalStyles = css`
         gap: 1rem;
         padding: 20px;
         box-sizing: border-box;
+        h2 {
+            color: #7f6300;
+        }
     }
     .modal.active {
         display: flex;
@@ -45,6 +48,7 @@ export const modalStyles = css`
         position: relative;
         background-color: var(--present-color);
         padding: var(--spacing);
+        padding-bottom: 0.7rem;
     }
     .modal .modal_box .modal_content {
         display: flex;
@@ -67,6 +71,7 @@ export const modalStyles = css`
         grid-template-columns: 1fr 1fr;
         background-color: var(--present-color);
         padding: var(--spacing);
+        padding-top: 0.9rem;
     }
 
     .stats {
@@ -124,8 +129,7 @@ export const modalStyles = css`
             align-items: center;
             gap: 0.3rem;
             text-decoration: none;
-            border-bottom: 1px solid rgb(36, 36, 36);
-            border-radius: 0;
+            color: #7f6300;
             & img {
                 width: 15px;
                 height: 15px;

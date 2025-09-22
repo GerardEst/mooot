@@ -179,11 +179,15 @@ export class MoootEndgameModal extends LitElement {
                             @button-click="${(e: Event) =>
                                 this.onShareHiddenClick(e)}"
                             label="Compartir sense cubs"
+                            ?fillContainer=${true}
+                            borders="5px 5px 5px 14px"
                         ></button-mooot>
                         <button-mooot
                             @button-click="${(e: Event) =>
                                 this.onShareClick(e)}"
                             label="Compartir"
+                            ?fillContainer=${true}
+                            borders="5px 5px 14px 5px"
                         ></button-mooot>
                         <!-- <button
                             class="button--danger"

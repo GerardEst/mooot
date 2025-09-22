@@ -1,6 +1,7 @@
 import { LitElement, html, css } from 'lit-element'
 import { global } from '@src/core/app-reset-styles'
 import { property } from 'lit/decorators.js'
+import { classMap } from 'lit/directives/class-map.js'
 
 class ButtonMooot extends LitElement {
     static styles = [
@@ -46,6 +47,7 @@ class ButtonMooot extends LitElement {
 
     @property() label: string = ''
     @property() link: string | null = null
+    @property() borders: string | null = null
     @property({ type: Boolean }) selected: boolean = false
     @property({ type: Boolean }) fillContainer: boolean = false
     // Optional icon. If provided, rendered before label. Alternatively, use a named slot "icon".
@@ -58,17 +60,22 @@ class ButtonMooot extends LitElement {
     }
 
     render() {
+        const classes = {
+            selected: this.selected,
+            fillContainer: this.fillContainer,
+        }
         const iconTemplate = this.icon
             ? html`<span class="icon" aria-hidden="true">${this.icon}</span>`
             : html`<slot name="icon"></slot>`
 
         return html`${this.link
             ? html`<a class="button" href=${this.link}
-                >${iconTemplate}${this.label}</a
+                  >${iconTemplate}${this.label}</a
               >`
             : html`<button
                   @click=${() => this.onClick()}
-                  class=${this.selected ? 'selected' : ''}
+                  class=${classMap(classes)}
+                  style=${this.borders ? `border-radius: ${this.borders}` : ''}
               >
                   ${iconTemplate}${this.label}
               </button>`}`
