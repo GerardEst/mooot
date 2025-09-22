@@ -61,8 +61,8 @@ export const modalStyles = css`
         width: 20px;
         height: 20px;
         padding: 1rem;
-        top: 0;
-        right: 0;
+        top: 13px;
+        right: 10px;
         cursor: pointer;
     }
     .modal .modal_box .modal__buttons {
