@@ -22,7 +22,8 @@ export class StatDisplay extends LitElement {
             }
             span {
                 flex: 1;
-                border-bottom: 1px dotted gray;
+                border-bottom: 1px dotted var(--cell-border);
+                margin-bottom: 5px;
             }
         `,
     ]

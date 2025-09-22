@@ -6,6 +6,7 @@ import { shareResult } from '@src/shared/utils/share-utils'
 import { modalStyles } from './endgame-modal.style'
 import { global } from '@src/core/app-reset-styles'
 
+import loadingUrl from '@src/shared/icons/loading.svg'
 import '@src/shared/components/button-mooot'
 import '@src/shared/components/stat-display'
 
@@ -21,6 +22,9 @@ export class MoootEndgameModal extends LitElement {
     @property({ type: String }) private modalTitle = '...'
     @property({ type: String }) private word = ''
     @property({ type: String }) private dicHref = '#'
+
+    @property({ type: Boolean }) private sharing = false
+    @property({ type: Boolean }) private sharingOpen = false
 
     connectedCallback(): void {
         super.connectedCallback()
@@ -68,10 +72,8 @@ export class MoootEndgameModal extends LitElement {
         )
     }
 
-    private onShareClick = async (e: Event) => {
-        const target = e.currentTarget as HTMLElement | null
-        const buttonImg = target?.querySelector('img') || undefined
-        buttonImg?.setAttribute('src', '/assets/loading.svg')
+    private onShareClick = async () => {
+        this.sharingOpen = true
 
         await shareResult(
             words.getTodayWordIndex(),
@@ -80,14 +82,12 @@ export class MoootEndgameModal extends LitElement {
         )
 
         setTimeout(() => {
-            buttonImg?.setAttribute('src', '/assets/share.svg')
+            this.sharingOpen = false
         }, 1000)
     }
 
-    private onShareHiddenClick = async (e: Event) => {
-        const target = e.currentTarget as HTMLElement | null
-        const buttonImg = target?.querySelector('img') || undefined
-        buttonImg?.setAttribute('src', '/assets/loading.svg')
+    private onShareHiddenClick = async () => {
+        this.sharing = true
 
         await shareResult(
             words.getTodayWordIndex(),
@@ -97,7 +97,7 @@ export class MoootEndgameModal extends LitElement {
         )
 
         setTimeout(() => {
-            buttonImg?.setAttribute('src', '/assets/hidden_eye.svg')
+            this.sharing = false
         }, 1000)
     }
 
@@ -177,33 +177,35 @@ export class MoootEndgameModal extends LitElement {
                     <div class="modal__buttons">
                         <button-mooot
                             @button-click="${(e: Event) =>
-                                this.onShareHiddenClick(e)}"
+                                this.onShareHiddenClick()}"
                             label="Compartir sense cubs"
                             ?fillContainer=${true}
                             borders="5px 5px 5px 14px"
-                        ></button-mooot>
+                        >
+                            <img
+                                slot="icon"
+                                alt="Ocult"
+                                width="12"
+                                src="${this.sharing
+                                    ? '/assets/loading.svg'
+                                    : '/assets/hidden_eye.svg'}"
+                            />
+                        </button-mooot>
                         <button-mooot
-                            @button-click="${(e: Event) =>
-                                this.onShareClick(e)}"
+                            @button-click="${(e: Event) => this.onShareClick()}"
                             label="Compartir"
                             ?fillContainer=${true}
                             borders="5px 5px 14px 5px"
-                        ></button-mooot>
-                        <!-- <button
-                            class="button--danger"
-                            id="shareHidden"
-                            @click="${(e: Event) => this.onShareHiddenClick(e)}"
                         >
-                            Compartir sense cubs
-                            <img alt="Ocult" src="/assets/hidden_eye.svg" />
-                        </button>
-                        <button
-                            id="share"
-                            @click="${(e: Event) => this.onShareClick(e)}"
-                        >
-                            Compartir
-                            <img alt="Compartir" src="/assets/share.svg" />
-                        </button> -->
+                            <img
+                                slot="icon"
+                                alt="Compartir"
+                                width="12"
+                                src="${this.sharingOpen
+                                    ? '/assets/loading.svg'
+                                    : '/assets/share.svg'}"
+                            />
+                        </button-mooot>
                     </div>
                 </div>
             </section>

@@ -18,6 +18,9 @@ class ButtonMooot extends LitElement {
                 font-size: 0.8rem;
                 font-family: 'Montserrat';
                 color: #7f6300;
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
             .icon {
                 display: inline-flex;

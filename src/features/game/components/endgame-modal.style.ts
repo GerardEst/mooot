@@ -138,6 +138,7 @@ export const modalStyles = css`
         & > span {
             flex: 1;
             border-bottom: 1px dotted var(--cell-border);
+            margin-bottom: 5px;
         }
     }
 `
