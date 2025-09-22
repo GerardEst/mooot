@@ -11,6 +11,7 @@ import './components/keyboard'
 import './components/endgame-modal'
 import { showFeedback as showFeedbackToast } from './services/feedback-service'
 import type { Keyboard } from './components/keyboard'
+import { computeStatuses } from '@src/shared/utils/hints-utils'
 
 @customElement('mooot-joc-game')
 export class MoootJocGame extends LitElement {
@@ -274,30 +275,7 @@ export class MoootJocGame extends LitElement {
         animate: boolean = true
     ) {
         const guessLetters = guess.toUpperCase().split('')
-        const targetLetters = target.toUpperCase().split('')
-
-        const statuses: Array<'correct' | 'present' | 'absent'> = new Array(5)
-
-        const remaining: Record<string, number> = {}
-        for (let i = 0; i < 5; i++) {
-            if (guessLetters[i] === targetLetters[i]) {
-                statuses[i] = 'correct'
-            } else {
-                const t = targetLetters[i]
-                remaining[t] = (remaining[t] || 0) + 1
-            }
-        }
-
-        for (let i = 0; i < 5; i++) {
-            if (statuses[i] === 'correct') continue
-            const g = guessLetters[i]
-            if (remaining[g] > 0) {
-                statuses[i] = 'present'
-                remaining[g] -= 1
-            } else {
-                statuses[i] = 'absent'
-            }
-        }
+        const statuses = computeStatuses(guess, target)
 
         const baseDelay = 40
 

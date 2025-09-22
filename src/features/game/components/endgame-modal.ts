@@ -6,7 +6,6 @@ import { shareResult } from '@src/shared/utils/share-utils'
 import { modalStyles } from './endgame-modal.style'
 import { global } from '@src/core/app-reset-styles'
 
-import loadingUrl from '@src/shared/icons/loading.svg'
 import '@src/shared/components/button-mooot'
 import '@src/shared/components/stat-display'
 

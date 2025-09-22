@@ -1,27 +1,38 @@
 import { supalog } from '@src/core/logs'
+import type { storedRow } from '@src/shared/utils/storage-utils'
+import * as words from '@src/features/game/services/words-service.js'
+import { computeStatuses } from '@src/shared/utils/hints-utils'
 
-function buildResultPattern(tries: number) {
-    let result = ''
-    for (let i = 1; i <= tries; i++) {
-        const row: string[] = []
-
-        for (let j = 1; j <= 5; j++) {
-            const cell = document.querySelector(`#l${i}_${j}`)
-            if (!cell) continue
-
-            if (cell.classList.contains('correct')) {
-                row.push('🟩')
-            } else if (cell.classList.contains('present')) {
-                row.push('🟨')
-            } else {
-                row.push('⬜️')
-            }
-        }
-        result += row.join('') + '\n'
+function readStoredRows(): storedRow[] {
+    try {
+        const raw = localStorage.getItem('moootGameData')
+        if (!raw) return []
+        const rows: storedRow[] = JSON.parse(raw)
+        // Ensure ascending order by row index just in case
+        return rows.sort((a, b) => a.row - b.row)
+    } catch {
+        return []
     }
+}
 
-    console.log(result)
+function statusesToEmoji(statuses: ReturnType<typeof computeStatuses>): string {
+    return statuses
+        .map((s) => (s === 'correct' ? '🟩' : s === 'present' ? '🟨' : '⬜️'))
+        .join('')
+}
 
+function buildResultPatternFromRows(
+    rows: storedRow[],
+    tries: number,
+    target: string
+) {
+    let result = ''
+    const count = Math.min(rows.length, tries === 7 ? 6 : tries)
+    for (let i = 0; i < count; i++) {
+        const guess = rows[i].word || ''
+        const pattern = statusesToEmoji(computeStatuses(guess, target))
+        result += pattern + '\n'
+    }
     return result
 }
 
@@ -32,6 +43,9 @@ export async function shareResult(
     hidden = false
 ) {
     try {
+        // Ensure words data is loaded so we can compute the grid purely
+        await words.loadWordsData()
+
         // Get the current user ID from Telegram
         const userId = window.Telegram.WebApp.initDataUnsafe?.user?.id
 
@@ -42,7 +56,13 @@ export async function shareResult(
 
         const shareTitle = `#mooot ${wordIndex}`
         const shareTries = tries === 7 ? 'X/6' : tries + '/6'
-        const resultPattern = `${buildResultPattern(tries)} \n`
+        const storedRows = readStoredRows()
+        const target = words.getTodayWord()
+        const resultPattern = `${buildResultPatternFromRows(
+            storedRows,
+            tries,
+            target
+        )} \n`
         const resultText = `${shareTitle}\n🎯 ${shareTries}\n⏳ ${time}\n\n${
             hidden ? 'Quadrícula oculta 🫥 \n' : resultPattern
         }`
