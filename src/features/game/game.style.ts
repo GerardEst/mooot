@@ -33,8 +33,8 @@ export const game = css`
         padding-top: 3px;
     }
     .wordgrid > .wordgrid__row > .wordgrid__cell.selected {
-        box-shadow: inset 0 0 10px 2px #63b54d;
-        background-color: #d6ffcb;
+        box-shadow: inset 0 0 10px 2px #898989;
+        background-color: #d3d3d3;
     }
     .wordgrid > .wordgrid__row > .wordgrid__cell::after {
         content: '';
