@@ -8,7 +8,7 @@ export const menu = css`
         top: 0;
         left: 0;
         width: 100%;
-        height: 100vh;
+        height: calc(100% - 1px);
         background-color: white;
         timeline-scope: --menu-x;
         &.active {
@@ -18,6 +18,7 @@ export const menu = css`
             flex: 1;
             display: flex;
             overflow-x: auto;
+            min-height: calc(100% + -60px);
             scroll-snap-type: x mandatory;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
@@ -49,10 +50,14 @@ export const menu = css`
             }
         }
         & .menu_footer {
+            position: absolute;
+            bottom: 0;
             display: flex;
             flex-direction: column;
             gap: 16px;
             padding: 16px 10px;
+            width: 100%;
+            box-sizing: border-box;
         }
     }
     .motbot_trophies {
@@ -70,11 +75,11 @@ export const menu = css`
     @keyframes amplify-height {
         from {
             transform: translateY(0);
-            min-height: 0;
+            /* min-height: 0; */
         }
         to {
             transform: translateY(-75px);
-            min-height: 100%;
+            /* min-height: 100%; */
         }
     }
 
@@ -91,7 +96,7 @@ export const menu = css`
             transform: translateY(0);
         }
         to {
-            transform: translateY(125px);
+            transform: translateY(182px);
         }
     }
 
