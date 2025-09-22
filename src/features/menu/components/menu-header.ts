@@ -74,7 +74,7 @@ class MenuHeader extends LitElement {
                 <button-mooot
                     ?selected=${this.activeMenuSection === 'profile'}
                     @button-click=${() => this.onClickMenuSection('profile')}
-                    label="Gerard"
+                    label="Perfil"
                 ></button-mooot>
                 <button-mooot
                     ?selected=${this.activeMenuSection === 'leagues'}
