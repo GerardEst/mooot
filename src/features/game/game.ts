@@ -445,7 +445,7 @@ export class MoootJocGame extends LitElement {
     render() {
         return html`
             <section class="wordgrid">
-                <button @click=${() => this.seeAd()}>Ad test</button>
+                <!-- <button @click=${() => this.seeAd()}>Ad test</button> -->
                 <div class="wordgrid__row" id="l1">
                     <div
                         id="l1_1"
