@@ -42,7 +42,7 @@ export class Keyboard extends LitElement {
                 background-color: var(--present-color);
                 color: var(--used-text-color);
             }
-            x .keyboard > .keyboard__row > .keyboard__key.absent,
+            .keyboard > .keyboard__row > .keyboard__key.absent,
             .keyboard > .keyboard__row > .keyboard__enter.absent,
             .keyboard > .keyboard__row > .keyboard__back.absent {
                 background-color: var(--missing-color);
