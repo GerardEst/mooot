@@ -147,6 +147,42 @@ export const AWARDS = {
             name: 'Una barretina',
             emoji: '🔺',
         },
+        // Lliga Castanyera
+        {
+            id: 100,
+            name: " d'or",
+            emoji: '🌾',
+        },
+        {
+            id: 101,
+            name: ' de plata',
+            emoji: '👫🏻',
+        },
+        {
+            id: 102,
+            name: ' de bronze',
+            emoji: '💩',
+        },
+        {
+            id: 105,
+            name: " d'or",
+            emoji: '🖐🏼',
+        },
+        {
+            id: 106,
+            name: ' de plata',
+            emoji: '🤝🏼',
+        },
+        {
+            id: 107,
+            name: ' de bronze',
+            emoji: '🪈',
+        },
+        {
+            id: 109,
+            name: 'Una castanya',
+            emoji: '🌰',
+        },
     ],
     es: [
         // Liga Mayor
