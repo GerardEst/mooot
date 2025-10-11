@@ -1,3 +1,5 @@
+import { formatTime } from './time-utils'
+
 export interface storedRow {
     row: number
     word: string
@@ -39,8 +41,7 @@ export function checkCleanLocalStorage(localDate: string) {
     if (date.toDateString() !== today.toDateString()) {
         console.warn('Saved data is not from today, clearing')
         localStorage.removeItem('moootGameData')
-        localStorage.removeItem('timetrial-start')
-        localStorage.removeItem('todayTime')
+        localStorage.removeItem('mooot:game:chrono')
 
         return true
     }
@@ -75,10 +76,20 @@ export function cleanGameboard() {
 }
 
 export function getTodayTime() {
-    const time = localStorage.getItem('todayTime')
-    if (time && time !== '-') {
-        return time
-    }
+    try {
+        const chronoRaw = localStorage.getItem('mooot:game:chrono')
+        if (!chronoRaw) return '00:00:00'
 
-    return '00:00:00'
+        const payload = JSON.parse(chronoRaw) as {
+            elapsed?: unknown
+        }
+
+        if (typeof payload.elapsed !== 'number' || payload.elapsed <= 0) {
+            return '00:00:00'
+        }
+
+        return formatTime(payload.elapsed)
+    } catch {
+        return '00:00:00'
+    }
 }

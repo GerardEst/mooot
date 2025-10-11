@@ -167,6 +167,10 @@ export const game = css`
         }
     }
 
+    mooot-chrono{
+        margin-left: auto;
+    }
+
     mooot-keyboard {
         width: 100%;
     }

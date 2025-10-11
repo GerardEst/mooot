@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit'
 import { customElement, query, state } from 'lit/decorators.js'
 import * as words from '@src/features/game/services/words-service.js'
-import { runStorageCheck } from '@src/shared/utils/storage-utils.js'
+import { getTodayTime, runStorageCheck } from '@src/shared/utils/storage-utils.js'
 import { saveToLocalStorage } from '@src/shared/utils/storage-utils.js'
 import type { storedRow } from '@src/shared/utils/storage-utils.js'
 import { updateStoredStats } from '@src/shared/utils/stats-utils'
@@ -9,15 +9,19 @@ import { game } from './game.style'
 import { global } from '@src/core/app-reset-styles'
 import './components/keyboard'
 import './components/endgame-modal'
+import './components/chrono'
 import { showFeedback as showFeedbackToast } from './services/feedback-service'
 import type { Keyboard } from './components/keyboard'
 import { computeStatuses } from '@src/shared/utils/hints-utils'
+import type { MoootChrono } from './components/chrono'
+import { formatTime } from '@src/shared/utils/time-utils'
 
 @customElement('mooot-joc-game')
 export class MoootJocGame extends LitElement {
     static styles = [global, game]
 
     @query('mooot-keyboard') private keyboardEl?: Keyboard
+    @query('mooot-chrono') private chronoEl?: MoootChrono
     @state() private modalActive = false
     @state() private points = '0'
     @state() private time = '00:00:00'
@@ -79,16 +83,12 @@ export class MoootJocGame extends LitElement {
         storedGame.forEach((row: storedRow) => this.fillRow(row))
 
         const playerWon =
-            this.gameState.currentTry <= 6 &&
-            storedGame.at(-1).word.toUpperCase() ===
-                words.getTodayWord().toUpperCase()
+            this.gameState.currentTry <= 6 && storedGame.at(-1).word.toUpperCase() === words.getTodayWord().toUpperCase()
 
         const playerLost =
-            this.gameState.currentTry === 6 &&
-            storedGame.at(-1).word.toUpperCase() !==
-                words.getTodayWord().toUpperCase()
+            this.gameState.currentTry === 6 && storedGame.at(-1).word.toUpperCase() !== words.getTodayWord().toUpperCase()
 
-        const time = localStorage.getItem('todayTime') || null
+        const time = getTodayTime() || null
 
         if (playerWon) {
             this.fillModalStats(7 - this.gameState.currentTry, time)
@@ -156,13 +156,8 @@ export class MoootJocGame extends LitElement {
 
             this.gameState.currentColumn = this.getFirstEmptyColumn(row)
 
-            // Start timer if this was the very first letter overall
-            // TODO - Crec que treure això d'aquí
-            if (row === 1 && !localStorage.getItem('timetrial-start')) {
-                localStorage.setItem(
-                    'timetrial-start',
-                    new Date().toISOString()
-                )
+            if (row === 1) {
+                this.chronoEl?.start()
             }
 
             return
@@ -170,10 +165,9 @@ export class MoootJocGame extends LitElement {
 
         if (
             this.countFilled(this.gameState.currentRow) === 0 &&
-            this.gameState.currentRow === 1 &&
-            !localStorage.getItem('timetrial-start')
+            this.gameState.currentRow === 1
         ) {
-            localStorage.setItem('timetrial-start', new Date().toISOString())
+            this.chronoEl?.start()
         }
         const targetCol = this.getFirstEmptyColumn(this.gameState.currentRow)
         if (targetCol > 5) return
@@ -217,9 +211,8 @@ export class MoootJocGame extends LitElement {
                 this.gameState.currentRow
             )
 
-            const time = this.calculateTime()
-            localStorage.removeItem('timetrial-start')
-            localStorage.setItem('todayTime', time)
+            this.chronoEl?.stop()
+            const time = formatTime(this.chronoEl?.elapsedMs ?? 0)
 
             updateStoredStats(7 - this.gameState.currentTry, time)
             this.fillModalStats(7 - this.gameState.currentTry, time)
@@ -245,9 +238,8 @@ export class MoootJocGame extends LitElement {
             )
 
             if (this.gameState.currentRow >= 6) {
-                const time = this.calculateTime()
-                localStorage.removeItem('timetrial-start')
-                localStorage.setItem('todayTime', time)
+                this.chronoEl?.stop()
+                const time = formatTime(this.chronoEl?.elapsedMs ?? 0)
 
                 updateStoredStats(0, time)
                 this.fillModalStats(0, time)
@@ -384,85 +376,67 @@ export class MoootJocGame extends LitElement {
         this.setCurrentWord('')
     }
 
-    calculateTime(): string {
-        // Get the time from the start to now, in HH:MM:SS format
-        const startTime = localStorage.getItem('timetrial-start')
-        if (!startTime) return '00:00:00'
-
-        const startDate = new Date(startTime)
-        const endDate = new Date()
-
-        const diff = endDate.getTime() - startDate.getTime()
-        const seconds = Math.floor((diff / 1000) % 60)
-        const minutes = Math.floor((diff / (1000 * 60)) % 60)
-        const hours = Math.floor(diff / (1000 * 60 * 60))
-
-        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(
-            2,
-            '0'
-        )}:${String(seconds).padStart(2, '0')}`
-    }
-
     seeAd() {
         // Rewarded interstitial
 
         // Rewarded Popup
 
-        show_9902259('pop')
-            .then(() => {
-                alert(
-                    "Per tancar l'anunci, clica la creu de dalt a l'esquerra!"
-                )
-            })
-            .catch((e) => {
-                // user get error during playing ad
-                // do nothing or whatever you want
-            })
+        // show_9902259('pop')
+        //     .then(() => {
+        //         alert(
+        //             "Per tancar l'anunci, clica la creu de dalt a l'esquerra!"
+        //         )
+        //     })
+        //     .catch((e) => {
+        //         // user get error during playing ad
+        //         // do nothing or whatever you want
+        //     })
     }
 
     render() {
         return html`
             <section class="wordgrid">
+                <mooot-chrono></mooot-chrono>
                 <!-- <button @click=${() => this.seeAd()}>Ad test</button> -->
                 <div class="wordgrid__row" id="l1">
                     <div
                         id="l1_1"
                         class="wordgrid__cell ${this.selectedCell?.row === 1 &&
-                        this.selectedCell.col === 1
-                            ? 'selected'
-                            : ''}"
+                this.selectedCell.col === 1
+                ? 'selected'
+                : ''}"
                         @click="${() => this.onCellClick(1, 1)}"
                     ></div>
                     <div
                         id="l1_2"
                         class="wordgrid__cell ${this.selectedCell?.row === 1 &&
-                        this.selectedCell.col === 2
-                            ? 'selected'
-                            : ''}"
+                this.selectedCell.col === 2
+                ? 'selected'
+                : ''}"
                         @click="${() => this.onCellClick(1, 2)}"
                     ></div>
                     <div
                         id="l1_3"
                         class="wordgrid__cell ${this.selectedCell?.row === 1 &&
-                        this.selectedCell.col === 3
-                            ? 'selected'
-                            : ''}"
+                this.selectedCell.col === 3
+                ? 'selected'
+                : ''}"
                         @click="${() => this.onCellClick(1, 3)}"
                     ></div>
                     <div
                         id="l1_4"
                         class="wordgrid__cell ${this.selectedCell?.row === 1 &&
-                        this.selectedCell.col === 4
-                            ? 'selected'
-                            : ''}"
+                this.selectedCell.col === 4
+                ? 'selected'
+                : ''}"
                         @click="${() => this.onCellClick(1, 4)}"
                     ></div>
                     <div
                         id="l1_5"
                         class="wordgrid__cell ${this.selectedCell?.row === 1 &&
-                        this.selectedCell.col === 5
-                            ? 'selected'
-                            : ''}"
+                this.selectedCell.col === 5
+                ? 'selected'
+                : ''}"
                         @click="${() => this.onCellClick(1, 5)}"
                     ></div>
                 </div>
@@ -470,41 +444,41 @@ export class MoootJocGame extends LitElement {
                     <div
                         id="l2_1"
                         class="wordgrid__cell ${this.selectedCell?.row === 2 &&
-                        this.selectedCell.col === 1
-                            ? 'selected'
-                            : ''}"
+                this.selectedCell.col === 1
+                ? 'selected'
+                : ''}"
                         @click="${() => this.onCellClick(2, 1)}"
                     ></div>
                     <div
                         id="l2_2"
                         class="wordgrid__cell ${this.selectedCell?.row === 2 &&
-                        this.selectedCell.col === 2
-                            ? 'selected'
-                            : ''}"
+                this.selectedCell.col === 2
+                ? 'selected'
+                : ''}"
                         @click="${() => this.onCellClick(2, 2)}"
                     ></div>
                     <div
                         id="l2_3"
                         class="wordgrid__cell ${this.selectedCell?.row === 2 &&
-                        this.selectedCell.col === 3
-                            ? 'selected'
-                            : ''}"
+                this.selectedCell.col === 3
+                ? 'selected'
+                : ''}"
                         @click="${() => this.onCellClick(2, 3)}"
                     ></div>
                     <div
                         id="l2_4"
                         class="wordgrid__cell ${this.selectedCell?.row === 2 &&
-                        this.selectedCell.col === 4
-                            ? 'selected'
-                            : ''}"
+                this.selectedCell.col === 4
+                ? 'selected'
+                : ''}"
                         @click="${() => this.onCellClick(2, 4)}"
                     ></div>
                     <div
                         id="l2_5"
                         class="wordgrid__cell ${this.selectedCell?.row === 2 &&
-                        this.selectedCell.col === 5
-                            ? 'selected'
-                            : ''}"
+                this.selectedCell.col === 5
+                ? 'selected'
+                : ''}"
                         @click="${() => this.onCellClick(2, 5)}"
                     ></div>
                 </div>
@@ -512,41 +486,41 @@ export class MoootJocGame extends LitElement {
                     <div
                         id="l3_1"
                         class="wordgrid__cell ${this.selectedCell?.row === 3 &&
-                        this.selectedCell.col === 1
-                            ? 'selected'
-                            : ''}"
+                this.selectedCell.col === 1
+                ? 'selected'
+                : ''}"
                         @click="${() => this.onCellClick(3, 1)}"
                     ></div>
                     <div
                         id="l3_2"
                         class="wordgrid__cell ${this.selectedCell?.row === 3 &&
-                        this.selectedCell.col === 2
-                            ? 'selected'
-                            : ''}"
+                this.selectedCell.col === 2
+                ? 'selected'
+                : ''}"
                         @click="${() => this.onCellClick(3, 2)}"
                     ></div>
                     <div
                         id="l3_3"
                         class="wordgrid__cell ${this.selectedCell?.row === 3 &&
-                        this.selectedCell.col === 3
-                            ? 'selected'
-                            : ''}"
+                this.selectedCell.col === 3
+                ? 'selected'
+                : ''}"
                         @click="${() => this.onCellClick(3, 3)}"
                     ></div>
                     <div
                         id="l3_4"
                         class="wordgrid__cell ${this.selectedCell?.row === 3 &&
-                        this.selectedCell.col === 4
-                            ? 'selected'
-                            : ''}"
+                this.selectedCell.col === 4
+                ? 'selected'
+                : ''}"
                         @click="${() => this.onCellClick(3, 4)}"
                     ></div>
                     <div
                         id="l3_5"
                         class="wordgrid__cell ${this.selectedCell?.row === 3 &&
-                        this.selectedCell.col === 5
-                            ? 'selected'
-                            : ''}"
+                this.selectedCell.col === 5
+                ? 'selected'
+                : ''}"
                         @click="${() => this.onCellClick(3, 5)}"
                     ></div>
                 </div>
@@ -554,41 +528,41 @@ export class MoootJocGame extends LitElement {
                     <div
                         id="l4_1"
                         class="wordgrid__cell ${this.selectedCell?.row === 4 &&
-                        this.selectedCell.col === 1
-                            ? 'selected'
-                            : ''}"
+                this.selectedCell.col === 1
+                ? 'selected'
+                : ''}"
                         @click="${() => this.onCellClick(4, 1)}"
                     ></div>
                     <div
                         id="l4_2"
                         class="wordgrid__cell ${this.selectedCell?.row === 4 &&
-                        this.selectedCell.col === 2
-                            ? 'selected'
-                            : ''}"
+                this.selectedCell.col === 2
+                ? 'selected'
+                : ''}"
                         @click="${() => this.onCellClick(4, 2)}"
                     ></div>
                     <div
                         id="l4_3"
                         class="wordgrid__cell ${this.selectedCell?.row === 4 &&
-                        this.selectedCell.col === 3
-                            ? 'selected'
-                            : ''}"
+                this.selectedCell.col === 3
+                ? 'selected'
+                : ''}"
                         @click="${() => this.onCellClick(4, 3)}"
                     ></div>
                     <div
                         id="l4_4"
                         class="wordgrid__cell ${this.selectedCell?.row === 4 &&
-                        this.selectedCell.col === 4
-                            ? 'selected'
-                            : ''}"
+                this.selectedCell.col === 4
+                ? 'selected'
+                : ''}"
                         @click="${() => this.onCellClick(4, 4)}"
                     ></div>
                     <div
                         id="l4_5"
                         class="wordgrid__cell ${this.selectedCell?.row === 4 &&
-                        this.selectedCell.col === 5
-                            ? 'selected'
-                            : ''}"
+                this.selectedCell.col === 5
+                ? 'selected'
+                : ''}"
                         @click="${() => this.onCellClick(4, 5)}"
                     ></div>
                 </div>
@@ -596,41 +570,41 @@ export class MoootJocGame extends LitElement {
                     <div
                         id="l5_1"
                         class="wordgrid__cell ${this.selectedCell?.row === 5 &&
-                        this.selectedCell.col === 1
-                            ? 'selected'
-                            : ''}"
+                this.selectedCell.col === 1
+                ? 'selected'
+                : ''}"
                         @click="${() => this.onCellClick(5, 1)}"
                     ></div>
                     <div
                         id="l5_2"
                         class="wordgrid__cell ${this.selectedCell?.row === 5 &&
-                        this.selectedCell.col === 2
-                            ? 'selected'
-                            : ''}"
+                this.selectedCell.col === 2
+                ? 'selected'
+                : ''}"
                         @click="${() => this.onCellClick(5, 2)}"
                     ></div>
                     <div
                         id="l5_3"
                         class="wordgrid__cell ${this.selectedCell?.row === 5 &&
-                        this.selectedCell.col === 3
-                            ? 'selected'
-                            : ''}"
+                this.selectedCell.col === 3
+                ? 'selected'
+                : ''}"
                         @click="${() => this.onCellClick(5, 3)}"
                     ></div>
                     <div
                         id="l5_4"
                         class="wordgrid__cell ${this.selectedCell?.row === 5 &&
-                        this.selectedCell.col === 4
-                            ? 'selected'
-                            : ''}"
+                this.selectedCell.col === 4
+                ? 'selected'
+                : ''}"
                         @click="${() => this.onCellClick(5, 4)}"
                     ></div>
                     <div
                         id="l5_5"
                         class="wordgrid__cell ${this.selectedCell?.row === 5 &&
-                        this.selectedCell.col === 5
-                            ? 'selected'
-                            : ''}"
+                this.selectedCell.col === 5
+                ? 'selected'
+                : ''}"
                         @click="${() => this.onCellClick(5, 5)}"
                     ></div>
                 </div>
@@ -638,41 +612,41 @@ export class MoootJocGame extends LitElement {
                     <div
                         id="l6_1"
                         class="wordgrid__cell ${this.selectedCell?.row === 6 &&
-                        this.selectedCell.col === 1
-                            ? 'selected'
-                            : ''}"
+                this.selectedCell.col === 1
+                ? 'selected'
+                : ''}"
                         @click="${() => this.onCellClick(6, 1)}"
                     ></div>
                     <div
                         id="l6_2"
                         class="wordgrid__cell ${this.selectedCell?.row === 6 &&
-                        this.selectedCell.col === 2
-                            ? 'selected'
-                            : ''}"
+                this.selectedCell.col === 2
+                ? 'selected'
+                : ''}"
                         @click="${() => this.onCellClick(6, 2)}"
                     ></div>
                     <div
                         id="l6_3"
                         class="wordgrid__cell ${this.selectedCell?.row === 6 &&
-                        this.selectedCell.col === 3
-                            ? 'selected'
-                            : ''}"
+                this.selectedCell.col === 3
+                ? 'selected'
+                : ''}"
                         @click="${() => this.onCellClick(6, 3)}"
                     ></div>
                     <div
                         id="l6_4"
                         class="wordgrid__cell ${this.selectedCell?.row === 6 &&
-                        this.selectedCell.col === 4
-                            ? 'selected'
-                            : ''}"
+                this.selectedCell.col === 4
+                ? 'selected'
+                : ''}"
                         @click="${() => this.onCellClick(6, 4)}"
                     ></div>
                     <div
                         id="l6_5"
                         class="wordgrid__cell ${this.selectedCell?.row === 6 &&
-                        this.selectedCell.col === 5
-                            ? 'selected'
-                            : ''}"
+                this.selectedCell.col === 5
+                ? 'selected'
+                : ''}"
                         @click="${() => this.onCellClick(6, 5)}"
                     ></div>
                 </div>
