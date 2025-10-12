@@ -28,7 +28,7 @@ export class MoootChrono extends LitElement {
                 border-radius: 5px;
                 justify-content: space-between;
                 box-shadow: inset 0 0 7px 0px rgba(0, 0, 0, 0.2);
-                padding: 5px 22px 3px 18px;
+                padding: 7px 22px 5px 18px;
                 font-variant-numeric: tabular-nums;
                 box-shadow: rgb(173 127 52) 0px 3px 0px 0px inset, rgb(173 127 52) 0px 5px 10px inset;
                 overflow: hidden;
@@ -39,7 +39,7 @@ export class MoootChrono extends LitElement {
                     width: 100%;
                     height: 100%;
                     background-color: rgb(159 149 101 / 60%);
-                    transition: left 1s ease-in-out;
+                    transition: left 1s cubic-bezier(0.85, 0, 0.15, 1);
                     backdrop-filter: blur(2.6px);
                     border-radius: 5px;
                     border-left: 1px solid #7b4b4bb0;
@@ -52,7 +52,7 @@ export class MoootChrono extends LitElement {
                         position: absolute;
                         border-radius: 10px;
                         width: 6px;
-                        height: 19px;
+                        height: 22px;
                         background-color: #fff4cb;
                         box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
                         left: 6px;
