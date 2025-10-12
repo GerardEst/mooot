@@ -17,31 +17,56 @@ export class MoootChrono extends LitElement {
         global,
         css`
             .chrono {
+                display: flex;
+                position: relative;
+                gap: 5px;
+                align-items: center;
+                font-family: Montserrat;
+                font-size: 1rem;
+                background: #ffefc8;
+                border: 0px solid #b17b22;
+                border-radius: 5px;
+                justify-content: space-between;
+                box-shadow: inset 0 0 7px 0px rgba(0, 0, 0, 0.2);
+                padding: 5px 22px 3px 18px;
+                font-variant-numeric: tabular-nums;
+                box-shadow: rgb(173 127 52) 0px 3px 0px 0px inset, rgb(173 127 52) 0px 5px 10px inset;
+                overflow: hidden;
+                & .buttonCover{
+                    position: absolute;
+                    top: 0;
+                    left: -1px;
+                    width: 100%;
+                    height: 100%;
+                    background-color: rgb(159 149 101 / 60%);
+                    transition: left 1s ease-in-out;
+                    backdrop-filter: blur(2.6px);
+                    border-radius: 5px;
+                    border-left: 1px solid #7b4b4bb0;
                     display: flex;
-                    gap: 5px;
-                    align-items: flex-end;
-                    align-items: center;
-                    font-family: 'Montserrat';
-                    font-size: 1rem;
-                    background: var(--button-callout);
-                    justify-content: space-between;
-                    border: none;
-                    border-radius: 27px;
-                    justify-content: space-between;
-                    padding: 2px;
-                    padding-left: 13px;
-                    font-variant-numeric: tabular-nums;
-                & img.toggleHide{
-                    background: var(--present-color);
-                    border-radius: 20px;
-                    padding: 3px;
-                    border: 1px solid var(--present-border-color);
+                    justify-content: flex-end;
+                    padding-right: 7px;
+                    box-sizing: border-box;
+                    &:after{
+                        content: "";
+                        position: absolute;
+                        border-radius: 10px;
+                        width: 6px;
+                        height: 19px;
+                        background-color: #fff4cb;
+                        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+                        left: 6px;
+                        top: 4px;
+                        border-radius: 5px;
+                    }
+                    &.opened{
+                        left: 83%;
+                    }
                 }
-                & p.visible{
-                    filter: blur(0)    
-                }
-                & p.blurry{
-                    filter: blur(4px)    
+                & p{
+                    font-weight: 700;
+                    color: #ad7f34;
+                    font-family: monospace;
                 }
             }
         `,
@@ -106,16 +131,18 @@ export class MoootChrono extends LitElement {
                 @click=${this.toggleVisibility}
                 aria-pressed=${this.isVisible ? 'true' : 'false'}
             >
-                <p class="${this.isVisible ? 'visible' : 'blurry'}">
+                <div class="buttonCover ${this.isVisible ? 'opened' : 'closed'}">
+                    <img
+                        class="toggleHide"
+                        slot="icon"
+                        alt="Configurar cronometre"
+                        width="20"
+                        src="/assets/crono.svg"
+                    />
+                </div>
+                <p>
                     ${formatTime(this.elapsedMs)}
                 </p>
-                <img
-                    class="toggleHide"
-                    slot="icon"
-                    alt="Configurar cronometre"
-                    width="25"
-                    src="/assets/hidden_eye.svg"
-                />
             </button>
         `
     }
