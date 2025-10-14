@@ -17,7 +17,7 @@ const DIC = [
 ]
 
 async function stubAssets(page: any) {
-    await page.route('**/assets/words.json', (route: any) => {
+    await page.route('**/assets/words-leagues.json', (route: any) => {
         route.fulfill({
             status: 200,
             contentType: 'application/json',
@@ -325,9 +325,9 @@ test('colors: duplicate handling keeps keyboard green for mixed correct/present'
     page,
 }) => {
     // Remove default routes and set new ones for duplicate scenario
-    await page.unroute('**/assets/words.json')
+    await page.unroute('**/assets/words-leagues.json')
     await page.unroute('**/assets/dicc.json')
-    await page.route('**/assets/words.json', (route: any) => {
+    await page.route('**/assets/words-leagues.json', (route: any) => {
         route.fulfill({
             status: 200,
             contentType: 'application/json',
@@ -351,9 +351,9 @@ test('colors: duplicate handling keeps keyboard green for mixed correct/present'
 
 test('keyboard: correct stays green even after later absent', async ({ page }) => {
     // Reset routes to default ABCDE and custom guesses
-    await page.unroute('**/assets/words.json').catch(() => {})
-    await page.unroute('**/assets/dicc.json').catch(() => {})
-    await page.route('**/assets/words.json', (route: any) => {
+    await page.unroute('**/assets/words-leagues.json').catch(() => { })
+    await page.unroute('**/assets/dicc.json').catch(() => { })
+    await page.route('**/assets/words-leagues.json', (route: any) => {
         route.fulfill({
             status: 200,
             contentType: 'application/json',

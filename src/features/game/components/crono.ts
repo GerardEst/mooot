@@ -3,20 +3,20 @@ import { customElement, property, state } from 'lit/decorators.js'
 import { global } from '@src/core/app-reset-styles'
 import { formatTime } from '@src/shared/utils/time-utils'
 
-const CHRONO_STORAGE_KEY = 'mooot:game:chrono'
+const CRONO_STORAGE_KEY = 'mooot:game:crono'
 
-type ChronoStoragePayload = {
+type CronoStoragePayload = {
     startAt: number | null
     running: boolean
     elapsed: number
 }
 
-@customElement('mooot-chrono')
-export class MoootChrono extends LitElement {
+@customElement('mooot-crono')
+export class MoootCrono extends LitElement {
     static styles = [
         global,
         css`
-            .chrono {
+            .crono {
                 display: flex;
                 position: relative;
                 gap: 5px;
@@ -36,7 +36,7 @@ export class MoootChrono extends LitElement {
                     position: absolute;
                     top: 0;
                     left: -1px;
-                    width: 100%;
+                    width: calc(100% + 2px);
                     height: 100%;
                     background-color: rgb(159 149 101 / 60%);
                     transition: left 1s cubic-bezier(0.85, 0, 0.15, 1);
@@ -60,7 +60,7 @@ export class MoootChrono extends LitElement {
                         border-radius: 5px;
                     }
                     &.opened{
-                        left: 83%;
+                        left: 80%;
                     }
                 }
                 & p{
@@ -76,7 +76,7 @@ export class MoootChrono extends LitElement {
     public elapsedMs = 0
 
     @state()
-    private isVisible = true
+    private isVisible = false
 
     private running = false
     private hasStarted = false
@@ -127,7 +127,7 @@ export class MoootChrono extends LitElement {
         return html`
             <button
                 type="button"
-                class="chrono"
+                class="crono"
                 @click=${this.toggleVisibility}
                 aria-pressed=${this.isVisible ? 'true' : 'false'}
             >
@@ -207,12 +207,12 @@ export class MoootChrono extends LitElement {
         }
     }
 
-    private saveTimeToLocalStorage(payload: ChronoStoragePayload) {
-        window.localStorage.setItem(CHRONO_STORAGE_KEY, JSON.stringify(payload))
+    private saveTimeToLocalStorage(payload: CronoStoragePayload) {
+        window.localStorage.setItem(CRONO_STORAGE_KEY, JSON.stringify(payload))
     }
 
-    private readStorage(): ChronoStoragePayload | null {
-        const raw = window.localStorage.getItem(CHRONO_STORAGE_KEY)
+    private readStorage(): CronoStoragePayload | null {
+        const raw = window.localStorage.getItem(CRONO_STORAGE_KEY)
         if (!raw) return null
 
         return JSON.parse(raw)

@@ -167,7 +167,7 @@ export const game = css`
         }
     }
 
-    mooot-chrono{
+    mooot-crono{
         margin-left: auto;
     }
 

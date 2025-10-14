@@ -2,6 +2,7 @@ import { supalog } from '@src/core/logs'
 import type { storedRow } from '@src/shared/utils/storage-utils'
 import * as words from '@src/features/game/services/words-service.js'
 import { computeStatuses } from '@src/shared/utils/hints-utils'
+import { isFromTelegram } from '@src/core/telegram'
 
 function readStoredRows(): storedRow[] {
     try {
@@ -44,7 +45,7 @@ export async function shareResult(
 ) {
     try {
         // Ensure words data is loaded so we can compute the grid purely
-        await words.loadWordsData()
+        await words.loadWordsData({ inLeagues: isFromTelegram() })
 
         // Get the current user ID from Telegram
         const userId = window.Telegram.WebApp.initDataUnsafe?.user?.id
@@ -63,9 +64,8 @@ export async function shareResult(
             tries,
             target
         )} \n`
-        const resultText = `${shareTitle}\n🎯 ${shareTries}\n⏳ ${time}\n\n${
-            hidden ? 'Quadrícula oculta 🫥 \n' : resultPattern
-        }`
+        const resultText = `${shareTitle}\n🎯 ${shareTries}\n⏳ ${time}\n\n${hidden ? 'Quadrícula oculta 🫥 \n' : resultPattern
+            }`
 
         // Prepare the request body
         const requestBody = {

@@ -9,19 +9,20 @@ import { game } from './game.style'
 import { global } from '@src/core/app-reset-styles'
 import './components/keyboard'
 import './components/endgame-modal'
-import './components/chrono'
+import './components/crono'
 import { showFeedback as showFeedbackToast } from './services/feedback-service'
 import type { Keyboard } from './components/keyboard'
 import { computeStatuses } from '@src/shared/utils/hints-utils'
-import type { MoootChrono } from './components/chrono'
+import type { MoootCrono } from './components/crono.ts'
 import { formatTime } from '@src/shared/utils/time-utils'
+import { isFromTelegram } from '@src/core/telegram.ts'
 
 @customElement('mooot-joc-game')
 export class MoootJocGame extends LitElement {
     static styles = [global, game]
 
     @query('mooot-keyboard') private keyboardEl?: Keyboard
-    @query('mooot-chrono') private chronoEl?: MoootChrono
+    @query('mooot-crono') private cronoEl?: MoootCrono
     @state() private modalActive = false
     @state() private points = '0'
     @state() private time = '00:00:00'
@@ -77,7 +78,7 @@ export class MoootJocGame extends LitElement {
         const storedGame = JSON.parse(storedGameData)
 
         // We need the words data from the beginning
-        await words.loadWordsData()
+        await words.loadWordsData({ inLeagues: isFromTelegram() })
 
         // We fill each row of the gameboard
         storedGame.forEach((row: storedRow) => this.fillRow(row))
@@ -146,7 +147,9 @@ export class MoootJocGame extends LitElement {
 
             // Just in case, try to load words every time when user inputs letters directly
             words.loadDiccData()
-            words.loadWordsData()
+
+            // We load different wordlist for telegram (leagues) and normal browser (casual games)
+            words.loadWordsData({ inLeagues: isFromTelegram() })
 
             this.updateCell(row, col, letter)
 
@@ -157,7 +160,7 @@ export class MoootJocGame extends LitElement {
             this.gameState.currentColumn = this.getFirstEmptyColumn(row)
 
             if (row === 1) {
-                this.chronoEl?.start()
+                this.cronoEl?.start()
             }
 
             return
@@ -167,13 +170,13 @@ export class MoootJocGame extends LitElement {
             this.countFilled(this.gameState.currentRow) === 0 &&
             this.gameState.currentRow === 1
         ) {
-            this.chronoEl?.start()
+            this.cronoEl?.start()
         }
         const targetCol = this.getFirstEmptyColumn(this.gameState.currentRow)
         if (targetCol > 5) return
         if (targetCol === 3) {
             words.loadDiccData()
-            words.loadWordsData()
+            words.loadWordsData({ inLeagues: isFromTelegram() })
         }
 
         this.updateCell(this.gameState.currentRow, targetCol, letter)
@@ -211,8 +214,8 @@ export class MoootJocGame extends LitElement {
                 this.gameState.currentRow
             )
 
-            this.chronoEl?.stop()
-            const time = formatTime(this.chronoEl?.elapsedMs ?? 0)
+            this.cronoEl?.stop()
+            const time = formatTime(this.cronoEl?.elapsedMs ?? 0)
 
             updateStoredStats(7 - this.gameState.currentTry)
             this.fillModalStats(7 - this.gameState.currentTry, time)
@@ -238,8 +241,8 @@ export class MoootJocGame extends LitElement {
             )
 
             if (this.gameState.currentRow >= 6) {
-                this.chronoEl?.stop()
-                const time = formatTime(this.chronoEl?.elapsedMs ?? 0)
+                this.cronoEl?.stop()
+                const time = formatTime(this.cronoEl?.elapsedMs ?? 0)
 
                 updateStoredStats(0)
                 this.fillModalStats(0, time)
@@ -396,7 +399,7 @@ export class MoootJocGame extends LitElement {
     render() {
         return html`
             <section class="wordgrid">
-                <mooot-chrono></mooot-chrono>
+                <mooot-crono></mooot-crono>
                 <!-- <button @click=${() => this.seeAd()}>Ad test</button> -->
                 <div class="wordgrid__row" id="l1">
                     <div

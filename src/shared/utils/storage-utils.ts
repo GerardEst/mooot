@@ -41,7 +41,7 @@ export function checkCleanLocalStorage(localDate: string) {
     if (date.toDateString() !== today.toDateString()) {
         console.warn('Saved data is not from today, clearing')
         localStorage.removeItem('moootGameData')
-        localStorage.removeItem('mooot:game:chrono')
+        localStorage.removeItem('mooot:game:crono')
 
         return true
     }
@@ -71,16 +71,16 @@ export function cleanGameboard() {
 
     // Clean keyboard
     root.querySelectorAll?.('.keyboard__key').forEach((key) => {
-        ;(key as HTMLElement).classList.remove('correct', 'present', 'absent')
+        ; (key as HTMLElement).classList.remove('correct', 'present', 'absent')
     })
 }
 
 export function getTodayTime() {
     try {
-        const chronoRaw = localStorage.getItem('mooot:game:chrono')
-        if (!chronoRaw) return '00:00:00'
+        const cronoRaw = localStorage.getItem('mooot:game:crono')
+        if (!cronoRaw) return '00:00:00'
 
-        const payload = JSON.parse(chronoRaw) as {
+        const payload = JSON.parse(cronoRaw) as {
             elapsed?: unknown
         }
 

@@ -1,9 +1,13 @@
+import { isFromTelegram } from "@src/core/telegram"
+
 let dicc: any
 let diccPromise: Promise<Set<string>> | null = null
 let allWords: { [key: string]: string }
 let wordsPromise: Promise<{ [key: string]: string }> | null = null
 let todayWord: string
 let todayWordIndex: number
+
+interface loadWordsFunction { inLeagues: boolean }
 
 export async function loadDiccData() {
     if (dicc) {
@@ -37,7 +41,7 @@ export async function fetchDictionary() {
     return dicc
 }
 
-export async function loadWordsData() {
+export async function loadWordsData({ inLeagues }: loadWordsFunction) {
     if (allWords) {
         console.log('Words already loaded')
         return
@@ -45,16 +49,19 @@ export async function loadWordsData() {
 
     // Prevent multiple simultaneous requests
     if (!wordsPromise) {
-        wordsPromise = fetchWords()
+        wordsPromise = fetchWords({ inLeagues })
     }
 
     return await wordsPromise
 }
 
-export async function fetchWords() {
+export async function fetchWords({ inLeagues }: loadWordsFunction) {
     console.log('Fetching all the possible words')
 
-    const wordsFetch = await fetch('/assets/words.json')
+    const wordsFetch = inLeagues ?
+        await fetch('/assets/words-leagues.json') :
+        await fetch('/assets/words-casual.json')
+
     allWords = await wordsFetch.json()
 
     return allWords
@@ -84,7 +91,7 @@ export function getTodayWord() {
 
 export async function getTodayNiceWord() {
     // When called without playing (e.g. endgame modal when reloading the page after finishing the game), we need to load the words data first
-    if (!allWords) await loadWordsData()
+    if (!allWords) await loadWordsData({ inLeagues: isFromTelegram() })
     if (!todayWord) getTodayWord()
 
     return allWords[todayWord.toLowerCase()].toUpperCase()
@@ -118,7 +125,7 @@ export function getTodayWordIndex() {
     const millisecondsPerDay = 24 * 60 * 60 * 1000
     const daysElapsed = Math.floor(
         (normalizedCurrentDate.getTime() - normalizedStartDate.getTime()) /
-            millisecondsPerDay
+        millisecondsPerDay
     )
 
     // Handle negative days (before start date) by returning 0
