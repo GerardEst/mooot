@@ -214,7 +214,7 @@ export class MoootJocGame extends LitElement {
             this.chronoEl?.stop()
             const time = formatTime(this.chronoEl?.elapsedMs ?? 0)
 
-            updateStoredStats(7 - this.gameState.currentTry, time)
+            updateStoredStats(7 - this.gameState.currentTry)
             this.fillModalStats(7 - this.gameState.currentTry, time)
 
             this.gameState.currentRow = 0
@@ -241,7 +241,7 @@ export class MoootJocGame extends LitElement {
                 this.chronoEl?.stop()
                 const time = formatTime(this.chronoEl?.elapsedMs ?? 0)
 
-                updateStoredStats(0, time)
+                updateStoredStats(0)
                 this.fillModalStats(0, time)
 
                 setTimeout(() => {

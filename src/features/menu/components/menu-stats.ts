@@ -28,10 +28,6 @@ export class MenuStats extends LitElement {
                 key="averagePoints"
                 name="Mitjana de punts"
             ></stat-display>
-            <stat-display
-                key="averageTime"
-                name="Mitjana de temps"
-            ></stat-display>
             <stat-display key="streak" name="Ratxa actual"></stat-display>
             <stat-display key="maxStreak" name="Ratxa màxima"></stat-display>
         </div>`

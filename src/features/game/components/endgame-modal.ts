@@ -49,16 +49,16 @@ export class MoootEndgameModal extends LitElement {
         return points === 6
             ? '🤨 ESCANDALÓS!'
             : points === 5
-            ? '🏆 Increíble!'
-            : points === 4
-            ? '🤯 Impressionant!'
-            : points === 3
-            ? '😎 Molt bé!'
-            : points === 2
-            ? '😐 Fet!'
-            : points === 1
-            ? '😭 Pels pèls!'
-            : '💩 Vaja...'
+                ? '🏆 Increíble!'
+                : points === 4
+                    ? '🤯 Impressionant!'
+                    : points === 3
+                        ? '😎 Molt bé!'
+                        : points === 2
+                            ? '😐 Fet!'
+                            : points === 1
+                                ? '😭 Pels pèls!'
+                                : '💩 Vaja...'
     }
 
     private buildDicUrl(word: string) {
@@ -160,10 +160,6 @@ export class MoootEndgameModal extends LitElement {
                                 name="Mitjana de punts"
                             ></stat-display>
                             <stat-display
-                                key="averageTime"
-                                name="Mitjana de temps"
-                            ></stat-display>
-                            <stat-display
                                 key="streak"
                                 name="Ratxa actual"
                             ></stat-display>
@@ -176,7 +172,7 @@ export class MoootEndgameModal extends LitElement {
                     <div class="modal__buttons">
                         <button-mooot
                             @button-click="${(e: Event) =>
-                                this.onShareHiddenClick()}"
+                this.onShareHiddenClick()}"
                             label="Compartir sense cubs"
                             ?fillContainer=${true}
                             borders="5px 5px 5px 14px"
@@ -186,8 +182,8 @@ export class MoootEndgameModal extends LitElement {
                                 alt="Ocult"
                                 width="12"
                                 src="${this.sharing
-                                    ? '/assets/loading.svg'
-                                    : '/assets/hidden_eye.svg'}"
+                ? '/assets/loading.svg'
+                : '/assets/hidden_eye.svg'}"
                             />
                         </button-mooot>
                         <button-mooot
@@ -201,8 +197,8 @@ export class MoootEndgameModal extends LitElement {
                                 alt="Compartir"
                                 width="12"
                                 src="${this.sharingOpen
-                                    ? '/assets/loading.svg'
-                                    : '/assets/share.svg'}"
+                ? '/assets/loading.svg'
+                : '/assets/share.svg'}"
                             />
                         </button-mooot>
                     </div>
