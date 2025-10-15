@@ -5,7 +5,7 @@ export function formatTime(milliseconds: number): string {
     const seconds = totalSeconds % 60
 
     if (hours > 0) {
-        return `${hours}:${pad(minutes)}:${pad(seconds)}`
+        return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
     }
 
     return `${pad(minutes)}:${pad(seconds)}`
