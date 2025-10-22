@@ -11,7 +11,29 @@ export async function getUserTrophies(userId: number) {
 
         if (error) throw error
 
-        return trophiesChats
+        // Order trophies by last digit of ID (1 is gold, 2 is silver, 3 is bronze)
+        const orderedTrophies = [...trophiesChats].sort((a, b) => {
+            const getLastDigit = (value: unknown) => {
+                const numericId = Number.parseInt(String(value), 10)
+                return Number.isNaN(numericId) ? 0 : numericId % 10
+            }
+
+            const lastDigitA = getLastDigit(a.trophy_id)
+            const lastDigitB = getLastDigit(b.trophy_id)
+
+            if (lastDigitA === lastDigitB) {
+                const numericA = Number.parseInt(String(a.trophy_id), 10)
+                const numericB = Number.parseInt(String(b.trophy_id), 10)
+                if (!Number.isNaN(numericA) && !Number.isNaN(numericB)) {
+                    return numericA - numericB
+                }
+                return String(a.trophy_id).localeCompare(String(b.trophy_id))
+            }
+
+            return lastDigitA - lastDigitB
+        })
+
+        return orderedTrophies
     } catch (error) {
         console.error(error)
     }

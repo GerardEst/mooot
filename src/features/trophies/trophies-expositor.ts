@@ -18,7 +18,7 @@ export class TrophiesExpositor extends LitElement {
                 position: relative;
                 flex-direction: column;
                 gap: 0.5rem;
-                padding: 30px;
+                padding: 15px;
                 border-radius: 14px;
                 width: 100%;
                 background-color: var(--present-color);
@@ -35,6 +35,7 @@ export class TrophiesExpositor extends LitElement {
                     border-radius: 8px;
                     box-shadow: inset 0 4px 19px 0 #0000004a,
                         0 0 4px 0px #0000002e;
+                    pointer-events: none;
                 }
                 &:after {
                     content: '';
@@ -48,6 +49,15 @@ export class TrophiesExpositor extends LitElement {
                     border-radius: 8px;
                     z-index: 1;
                     border-top: 2px solid #ffffff8f;
+                    pointer-events: none;
+                }
+                & .expositorContent{
+                    overflow: scroll;
+                    display: flex;
+                    position: relative;
+                    flex-direction: column;
+                    gap: 0.5rem;
+                    padding: 15px;
                 }
             }
             .league_emoji {
@@ -61,6 +71,7 @@ export class TrophiesExpositor extends LitElement {
                 border-top: 2px solid #ffffff87;
                 box-shadow: 0 5px 4px 0px #0000002e;
                 position: relative;
+                min-height: 50px;
                 &:before {
                     content: '🥇';
                     position: absolute;
@@ -156,19 +167,21 @@ export class TrophiesExpositor extends LitElement {
     render() {
         return html`
             <div class="expositor">
+                <div class="expositorContent">
                 ${this.userTrophies.map((trophy) => {
-                    const category =
-                        trophy.id.toString().at(-1) === '0'
-                            ? 'gold'
-                            : trophy.id.toString().at(-1) === '1'
-                            ? 'silver'
-                            : 'bronze'
+            const category =
+                trophy.id.toString().at(-1) === '0'
+                    ? 'gold'
+                    : trophy.id.toString().at(-1) === '1'
+                        ? 'silver'
+                        : 'bronze'
 
-                    return html` <div class="league_emoji ${category}">
+            return html` <div class="league_emoji ${category}">
                         <span>${trophy.emoji}</span>
                         <p>${trophy.name}</p>
                     </div>`
-                })}
+        })}
+                </div>
             </div>
         `
     }
