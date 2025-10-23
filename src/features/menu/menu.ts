@@ -60,13 +60,14 @@ export class MoootMenu extends LitElement {
                     this.clearTargetTimeout = null
                 }
             }
+            supalog.feature('feature_menu', 'scroll to ' + this.activeMenuSection)
             return
         }
 
         if (section && section !== this.activeMenuSection) {
             this.activeMenuSection = section
         }
-        supalog.feature('feature_menu', 'scroll to ' + this.activeMenuSection)
+
     }
 
     goToMenuSection(section: string) {
