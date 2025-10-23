@@ -2,6 +2,7 @@ import { LitElement, css, html } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 import { global } from '@src/core/app-reset-styles'
 import { formatTime } from '@src/shared/utils/time-utils'
+import { supalog } from '@src/core/api/logs'
 
 const CRONO_STORAGE_KEY = 'mooot:game:crono'
 
@@ -149,6 +150,8 @@ export class MoootCrono extends LitElement {
 
     private toggleVisibility = () => {
         this.isVisible = !this.isVisible
+
+        supalog.feature('feature_crono', this.isVisible ? 'opened' : 'closed')
     }
 
     private startTick() {

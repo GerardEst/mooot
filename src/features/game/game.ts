@@ -16,6 +16,7 @@ import { computeStatuses } from '@src/shared/utils/hints-utils'
 import type { MoootCrono } from './components/crono.ts'
 import { formatTime } from '@src/shared/utils/time-utils'
 import { isFromTelegram } from '@src/core/telegram.ts'
+import { supalog } from '@src/core/api/logs.ts'
 
 @customElement('mooot-joc-game')
 export class MoootJocGame extends LitElement {
@@ -365,6 +366,8 @@ export class MoootJocGame extends LitElement {
         if (row !== this.gameState.currentRow) return
 
         this.selectedCell = { row, col }
+
+        supalog.feature('feature_tapToWrite')
     }
 
     fillRow(row: storedRow) {

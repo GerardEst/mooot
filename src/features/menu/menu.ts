@@ -12,6 +12,7 @@ import '@src/shared/components/stat-display'
 import '@src/features/trophies/trophies-expositor'
 import '@src/features/menu/components/menu-stats'
 import '@src/features/menu/components/menu-leagues'
+import { supalog } from '@src/core/api/logs'
 
 @customElement('mooot-menu')
 export class MoootMenu extends LitElement {
@@ -27,6 +28,7 @@ export class MoootMenu extends LitElement {
     private clearTargetTimeout: number | null = null
 
     firstUpdated() {
+        supalog.feature('feature_menu', 'User opened the menu')
         this.scrollOnMenuSection(1, true)
     }
 
@@ -38,6 +40,7 @@ export class MoootMenu extends LitElement {
                 left: index * content.clientWidth,
                 behavior: instant ? 'instant' : 'smooth',
             })
+            supalog.feature('feature_menu', 'User scrolled to page ' + index)
         }
     }
 
@@ -47,9 +50,6 @@ export class MoootMenu extends LitElement {
         const width = content.clientWidth || 1
         const index = Math.round((content as HTMLElement).scrollLeft / width)
         const section = this.menuSections[index]
-        // If we're in a programmatic scroll, ignore intermediate indices
-        // until we reach the intended target index. This prevents flicker
-        // where click sets active, scroll resets it, and then sets again.
         if (this.scrollTargetIndex !== null) {
             if (index === this.scrollTargetIndex) {
                 if (section && section !== this.activeMenuSection) {
@@ -76,9 +76,8 @@ export class MoootMenu extends LitElement {
         )
         if (targetIndex < 0) return
 
-        // Set target index to suppress intermediate scroll updates
         this.scrollTargetIndex = targetIndex
-        // Failsafe to clear the lock in case of interruptions
+
         if (this.clearTargetTimeout !== null) {
             clearTimeout(this.clearTargetTimeout)
         }
@@ -99,7 +98,7 @@ export class MoootMenu extends LitElement {
             <section class="menu active">
                 <menu-header
                     @onClickMenuSection=${(e: CustomEvent) =>
-                        this.goToMenuSection(e.detail)}
+                this.goToMenuSection(e.detail)}
                     .activeMenuSection=${this.activeMenuSection}
                     @closeMenu=${() => this.close()}
                 ></menu-header>

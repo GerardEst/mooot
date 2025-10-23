@@ -1,4 +1,4 @@
-import { supalog } from '@src/core/logs'
+import { supalog } from '@src/core/api/logs'
 import type { storedRow } from '@src/shared/utils/storage-utils'
 import * as words from '@src/features/game/services/words-service.js'
 import { computeStatuses } from '@src/shared/utils/hints-utils'
@@ -55,6 +55,10 @@ export async function shareResult(
             return
         }
 
+        // TODO - Aquí hauria d'afegir els trofeus o algo, en contes del titol i tal
+        // després buscar una altra manera per detectar que és el joc i no un missatge normal
+        // de fet podria aprofitar per detectar que és enviat a través del back per evitar 
+        // que es puguin fer trampes copiant i enganxant
         const shareTitle = `#mooot ${wordIndex}`
         const shareTries = tries === 7 ? 'X/6' : tries + '/6'
         const storedRows = readStoredRows()
@@ -97,11 +101,7 @@ export async function shareResult(
 
         return true
     } catch (error: any) {
-        supalog({
-            message: error.message || 'Error sharing game',
-            details: error.details || error,
-            userId: window.Telegram.WebApp.initDataUnsafe?.user?.id,
-        })
+        supalog.error('error', error.message, error.details || error,)
 
         return false
     }

@@ -2,6 +2,7 @@ import { LitElement, html, css } from 'lit-element'
 import { global } from '@src/core/app-reset-styles'
 import { property } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
+import { supalog } from '@src/core/api/logs'
 
 class ButtonMooot extends LitElement {
     static styles = [
@@ -62,6 +63,10 @@ class ButtonMooot extends LitElement {
         )
     }
 
+    logClick(label: string) {
+        supalog.buttonClick(label)
+    }
+
     render() {
         const classes = {
             selected: this.selected,
@@ -72,11 +77,14 @@ class ButtonMooot extends LitElement {
             : html`<slot name="icon"></slot>`
 
         return html`${this.link
-            ? html`<a class="button" href=${this.link}
+            ? html`<a class="button" @click=${() => this.logClick(this.label)} href=${this.link}
                   >${iconTemplate}${this.label}</a
               >`
             : html`<button
-                  @click=${() => this.onClick()}
+                  @click=${() => {
+                    this.onClick()
+                    this.logClick(this.label)
+                }}
                   class=${classMap(classes)}
                   style=${this.borders ? `border-radius: ${this.borders}` : ''}
               >
