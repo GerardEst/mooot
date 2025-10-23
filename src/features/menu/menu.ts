@@ -53,7 +53,6 @@ export class MoootMenu extends LitElement {
             if (index === this.scrollTargetIndex) {
                 if (section && section !== this.activeMenuSection) {
                     this.activeMenuSection = section
-                    supalog.feature('feature_menu', 'User scrolled to page ' + this.activeMenuSection)
                 }
                 this.scrollTargetIndex = null
                 if (this.clearTargetTimeout !== null) {
@@ -67,6 +66,7 @@ export class MoootMenu extends LitElement {
         if (section && section !== this.activeMenuSection) {
             this.activeMenuSection = section
         }
+        supalog.feature('feature_menu', 'scroll to ' + this.activeMenuSection)
     }
 
     goToMenuSection(section: string) {
