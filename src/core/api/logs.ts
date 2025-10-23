@@ -25,8 +25,8 @@ async function logToDatabase({
             .insert([
                 {
                     type,
-                    error: message,
                     details: { userName: getUserFirstName(), ...details },
+                    message,
                     user_id: getUserId(),
                 },
             ])
