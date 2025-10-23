@@ -59,8 +59,8 @@ export class MoootMenu extends LitElement {
                     clearTimeout(this.clearTargetTimeout)
                     this.clearTargetTimeout = null
                 }
+                supalog.feature('feature_menu', 'scroll to ' + this.activeMenuSection)
             }
-            supalog.feature('feature_menu', 'scroll to ' + this.activeMenuSection)
             return
         }
 
