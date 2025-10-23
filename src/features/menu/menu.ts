@@ -40,7 +40,6 @@ export class MoootMenu extends LitElement {
                 left: index * content.clientWidth,
                 behavior: instant ? 'instant' : 'smooth',
             })
-            supalog.feature('feature_menu', 'User scrolled to page ' + index)
         }
     }
 
@@ -54,6 +53,7 @@ export class MoootMenu extends LitElement {
             if (index === this.scrollTargetIndex) {
                 if (section && section !== this.activeMenuSection) {
                     this.activeMenuSection = section
+                    supalog.feature('feature_menu', 'User scrolled to page ' + this.activeMenuSection)
                 }
                 this.scrollTargetIndex = null
                 if (this.clearTargetTimeout !== null) {
