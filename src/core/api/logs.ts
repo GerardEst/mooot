@@ -56,8 +56,8 @@ async function logToDatabase({
 }
 
 export const supalog = {
-    feature: (message: LoggableFeatures, details?: Object) => {
-        logToDatabase({ type: 'feature', message, details })
+    feature: (feature: LoggableFeatures, details?: string) => {
+        logToDatabase({ type: 'feature', message: feature, details: { details } })
     },
     error: (message: string, details?: Object) => {
         logToDatabase({ type: 'error', message, details })
