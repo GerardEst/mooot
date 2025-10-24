@@ -2,22 +2,36 @@ import { supabase } from '@src/core/supabase'
 import { getUserFirstName, getUserId } from '../telegram'
 
 interface Log {
-    type: string | LoggableFeatures
+    type: string | LoggableFeatures | UserOutsider
     message?: string
     details?: object
     userId?: number
 }
+
+// TODO - Implementar observabilitat d'usuaris que marxen i tornen 
+type UserOutsider =
+    | 'user_leaves_without_ending'
+    | 'user_returns'
 
 type LoggableFeatures =
     | 'feature_crono'
     | 'feature_menu'
     | 'feature_tapToWrite'
 
+let tapToWriteHasBeenLogged = false
+
 async function logToDatabase({
     type,
     message,
     details,
 }: Log) {
+    // Si es tapToWrite, volem loguejar només un cop per cada conjunt d'accions
+    // Es a dir, si l'usuari activa un altre log i després torna a fer servir tapToWrite,
+    // tornem a loguejar-lo. Així no tenim 50 events quan algú juga però veiem si fa altres
+    // coses pel mig
+    if (type === 'feature_tapToWrite' && tapToWriteHasBeenLogged) return
+    tapToWriteHasBeenLogged = type === 'feature_tapToWrite'
+
     try {
         const { error } = await supabase
             .schema('analytics')
@@ -42,11 +56,11 @@ async function logToDatabase({
 }
 
 export const supalog = {
-    feature: (type: LoggableFeatures, message?: string, details?: Object) => {
-        logToDatabase({ type, message, details })
+    feature: (message: LoggableFeatures, details?: Object) => {
+        logToDatabase({ type: 'feature', message, details })
     },
-    error: (type: string, message: string, details?: Object) => {
-        logToDatabase({ type, message, details })
+    error: (message: string, details?: Object) => {
+        logToDatabase({ type: 'error', message, details })
     },
     buttonClick: (buttonLabel: string) => {
         logToDatabase({ type: 'buttonClick', message: buttonLabel })
