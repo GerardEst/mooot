@@ -30,7 +30,7 @@ async function logToDatabase({
     // tornem a loguejar-lo. Així no tenim 50 events quan algú juga però veiem si fa altres
     // coses pel mig
     if (message === 'feature_tapToWrite' && tapToWriteHasBeenLogged) return
-    tapToWriteHasBeenLogged = type === 'feature_tapToWrite'
+    tapToWriteHasBeenLogged = message === 'feature_tapToWrite'
 
     try {
         const { error } = await supabase
