@@ -29,7 +29,7 @@ async function logToDatabase({
     // Es a dir, si l'usuari activa un altre log i després torna a fer servir tapToWrite,
     // tornem a loguejar-lo. Així no tenim 50 events quan algú juga però veiem si fa altres
     // coses pel mig
-    if (type === 'feature_tapToWrite' && tapToWriteHasBeenLogged) return
+    if (message === 'feature_tapToWrite' && tapToWriteHasBeenLogged) return
     tapToWriteHasBeenLogged = type === 'feature_tapToWrite'
 
     try {
