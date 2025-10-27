@@ -13,6 +13,7 @@ import '@src/features/trophies/trophies-expositor'
 import '@src/features/menu/components/menu-stats'
 import '@src/features/menu/components/menu-leagues'
 import { supalog } from '@src/core/api/logs'
+import { telegramDisableClosingOnSwipe, telegramEnableClosingOnSwipe } from '@src/core/telegram'
 
 @customElement('mooot-menu')
 export class MoootMenu extends LitElement {
@@ -26,6 +27,18 @@ export class MoootMenu extends LitElement {
     // scroll events temporarily overriding the clicked active state.
     private scrollTargetIndex: number | null = null
     private clearTargetTimeout: number | null = null
+
+    connectedCallback(): void {
+        super.connectedCallback()
+
+        telegramDisableClosingOnSwipe()
+    }
+
+    disconnectedCallback(): void {
+        super.disconnectedCallback()
+
+        telegramEnableClosingOnSwipe()
+    }
 
     firstUpdated() {
         supalog.feature('feature_menu', 'User opened the menu')

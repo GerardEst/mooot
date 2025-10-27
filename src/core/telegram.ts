@@ -4,6 +4,20 @@ declare global {
     }
 }
 
+export function telegramDisableClosingOnSwipe() {
+    if (window?.Telegram?.WebApp) {
+        window.Telegram.WebApp.ready()
+        window.Telegram.WebApp.disableVerticalSwipes()
+    }
+}
+
+export function telegramEnableClosingOnSwipe() {
+    if (window?.Telegram?.WebApp) {
+        window.Telegram.WebApp.ready()
+        window.Telegram.WebApp.enableVerticalSwipes()
+    }
+}
+
 export function isFromTelegram() {
     const initData = window?.Telegram?.WebApp?.initDataUnsafe
     const isFromTelegram = initData && (initData.user || initData.chat_type)
