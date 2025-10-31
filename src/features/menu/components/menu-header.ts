@@ -62,7 +62,7 @@ class MenuHeader extends LitElement {
                 <img alt="Tancar menu" width="20" src="/assets/close.svg" />
             </div>
             <div>
-                <h4>🌰 Lliga Castanyera</h4>
+                <h4>🍯 Lliga Artesanal</h4>
                 <p class="smallText">1 - 31 d'Octubre</p>
             </div>
             <div class="sections">

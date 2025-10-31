@@ -150,38 +150,74 @@ export const AWARDS = {
         // Lliga Castanyera
         {
             id: 100,
-            name: " d'or",
-            emoji: '🌾',
+            name: "Castanya d'or",
+            emoji: "🌰",
         },
         {
             id: 101,
-            name: ' de plata',
-            emoji: '👫🏻',
+            name: "Panellet de plata",
+            emoji: "🥜",
         },
         {
             id: 102,
-            name: ' de bronze',
-            emoji: '💩',
+            name: "Moniato de bronze",
+            emoji: "🍠",
         },
         {
             id: 105,
-            name: " d'or",
-            emoji: '🖐🏼',
+            name: "Rovelló d'or",
+            emoji: "🍄‍🟫",
         },
         {
             id: 106,
-            name: ' de plata',
-            emoji: '🤝🏼',
+            name: "Pinetell de plata",
+            emoji: "🍄‍🟫",
         },
         {
             id: 107,
-            name: ' de bronze',
-            emoji: '🪈',
+            name: "Camagroc de bronze",
+            emoji: "🍄‍🟫",
         },
         {
             id: 109,
-            name: 'Una castanya',
-            emoji: '🌰',
+            name: "Una fulla seca",
+            emoji: "🍁",
+        },
+        // Lliga Artesanal
+        {
+            id: 110,
+            name: "Embotits artesanals",
+            emoji: "🥩",
+        },
+        {
+            id: 111,
+            name: "Pot de mel artesanal",
+            emoji: "🍯",
+        },
+        {
+            id: 112,
+            name: "Formatge artesanal",
+            emoji: "🧀",
+        },
+        {
+            id: 115,
+            name: "Armadura medieval",
+            emoji: "⚔️",
+        },
+        {
+            id: 116,
+            name: "Pastilla de sabó artesanal",
+            emoji: "🧼",
+        },
+        {
+            id: 117,
+            name: "Terrissa de ceràmica",
+            emoji: "🏺",
+        },
+        {
+            id: 119,
+            name: "Una secallona",
+            emoji: "🥨",
         },
     ],
     es: [
