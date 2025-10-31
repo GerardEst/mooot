@@ -63,7 +63,7 @@ class MenuHeader extends LitElement {
             </div>
             <div>
                 <h4>🍯 Lliga Artesanal</h4>
-                <p class="smallText">1 - 31 d'Octubre</p>
+                <p class="smallText">1 - 30 de Novembre</p>
             </div>
             <div class="sections">
                 <button-mooot
