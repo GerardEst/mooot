@@ -68,7 +68,7 @@ export async function shareResult(
             tries,
             target
         )} \n`
-        const resultText = `🎯 ${shareTries}\n⏳ ${time}\n\n${hidden ?? resultPattern}\n${shareFooter}`
+        const resultText = `🎯 ${shareTries}\n⏳ ${time}\n\n${hidden ? shareFooter : `${resultPattern}\n${shareFooter}`}`
 
         // Prepare the request body
         const requestBody = {
