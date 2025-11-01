@@ -55,10 +55,6 @@ export async function shareResult(
             return
         }
 
-        // TODO - Aquí hauria d'afegir els trofeus o algo, en contes del titol i tal
-        // després buscar una altra manera per detectar que és el joc i no un missatge normal
-        // de fet podria aprofitar per detectar que és enviat a través del back per evitar 
-        // que es puguin fer trampes copiant i enganxant
         const shareFooter = `#mooot ${wordIndex}`
         const shareTries = tries === 7 ? 'X/6' : tries + '/6'
         const storedRows = readStoredRows()
@@ -67,7 +63,7 @@ export async function shareResult(
             storedRows,
             tries,
             target
-        )} \n`
+        )}`
         const resultText = `🎯 ${shareTries}\n⏳ ${time}\n\n${hidden ? shareFooter : `${resultPattern}\n${shareFooter}`}`
 
         // Prepare the request body
