@@ -59,7 +59,7 @@ export async function shareResult(
         // després buscar una altra manera per detectar que és el joc i no un missatge normal
         // de fet podria aprofitar per detectar que és enviat a través del back per evitar 
         // que es puguin fer trampes copiant i enganxant
-        const shareTitle = `#mooot ${wordIndex}`
+        const shareFooter = `#mooot ${wordIndex}`
         const shareTries = tries === 7 ? 'X/6' : tries + '/6'
         const storedRows = readStoredRows()
         const target = words.getTodayWord()
@@ -68,7 +68,7 @@ export async function shareResult(
             tries,
             target
         )} \n`
-        const resultText = `🎯 ${shareTries}\n⏳ ${time}\n\n${hidden ? '' : resultPattern}\n\n${shareTitle}`
+        const resultText = `🎯 ${shareTries}\n⏳ ${time}\n\n${hidden ?? resultPattern}\n${shareFooter}`
 
         // Prepare the request body
         const requestBody = {
