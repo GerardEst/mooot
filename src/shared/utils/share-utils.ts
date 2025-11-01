@@ -68,8 +68,7 @@ export async function shareResult(
             tries,
             target
         )} \n`
-        const resultText = `${shareTitle}\n🎯 ${shareTries}\n⏳ ${time}\n\n${hidden ? 'Quadrícula oculta 🫥 \n' : resultPattern
-            }`
+        const resultText = `🎯 ${shareTries}\n⏳ ${time}\n\n${hidden ? '' : resultPattern}\n\n${shareTitle}`
 
         // Prepare the request body
         const requestBody = {
@@ -101,7 +100,7 @@ export async function shareResult(
 
         return true
     } catch (error: any) {
-        supalog.error('error', error.message, error.details || error,)
+        supalog.error(error.message, error.details || error,)
 
         return false
     }
