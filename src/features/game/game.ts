@@ -6,7 +6,7 @@ import { saveToLocalStorage } from '@src/shared/utils/storage-utils.js'
 import type { storedRow } from '@src/shared/utils/storage-utils.js'
 import { updateStoredStats } from '@src/shared/utils/stats-utils'
 import { game } from './game.style'
-import { getCurrentMonthKey, loadMonthStyle } from './monthStyles'
+import { loadMonthStyle } from './monthStyles'
 import { global } from '@src/core/app-reset-styles'
 import './components/keyboard'
 import './components/endgame-modal'
@@ -21,7 +21,7 @@ import { supalog } from '@src/core/api/logs.ts'
 
 @customElement('mooot-joc-game')
 export class MoootJocGame extends LitElement {
-    static styles = [global, game, loadMonthStyle(getCurrentMonthKey())]
+    static styles = [global, game, loadMonthStyle()]
 
     @query('mooot-keyboard') private keyboardEl?: Keyboard
     @query('mooot-crono') private cronoEl?: MoootCrono

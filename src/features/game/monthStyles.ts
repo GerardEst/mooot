@@ -18,10 +18,10 @@ const stylesByKey = Object.entries(modules).reduce<
     return acc
 }, {})
 
-export const loadMonthStyle = (key: string): CSSResultGroup =>
-    stylesByKey[key] ?? css``
-
-export const getCurrentMonthKey = (): string => {
+const getCurrentMonthKey = (): string => {
     const month = new Date().getMonth() + 1
     return `game-league${String(month).padStart(2, '0')}`
 }
+
+export const loadMonthStyle = (): CSSResultGroup =>
+    stylesByKey[getCurrentMonthKey()] ?? css``
