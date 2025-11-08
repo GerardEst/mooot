@@ -1,6 +1,5 @@
 import { css } from 'lit'
 
-// Game styles moved from the previous components/game/style.ts
 export const game = css`
     /* Word grid */
     .wordgrid {
