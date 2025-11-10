@@ -1,5 +1,5 @@
 import { supabase } from '@src/core/supabase'
-import { getUserFirstName, getUserId } from '../telegram'
+import { getUserFirstName, getUserId } from '@src/core/telegram'
 
 interface Log {
     type: string | LoggableFeatures | UserOutsider

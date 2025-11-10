@@ -1,7 +1,7 @@
 import { saveUserCollectible } from "@src/core/api/collectibles";
 
-type Cell = 0 | 1 | 2 | 3;
-type Row = [Cell, Cell, Cell, Cell, Cell];
+type Rarity = 0 | 1 | 2 | 3;
+type Row = [Rarity, Rarity, Rarity, Rarity, Rarity];
 type CollectiblesMatrix = [Row, Row, Row, Row, Row, Row];
 
 export let collectiblesMatrix: CollectiblesMatrix = [
@@ -15,7 +15,9 @@ export let collectiblesMatrix: CollectiblesMatrix = [
 
 
 // TODO - Activar animació o avís de coleccionable, si s'escau
-// OK TODO - Guardar a la db. Pensar estructura
+// OK - Generar premis a latzar
+// TODO - Valorar si tothom igual o no
+// OK - Guardar a la db. Pensar estructura
 // TODO - Afegir al menú? - cambiar apartat lligues? O potser posar directament a la principal, amb un 7/20 veure més
 // OK edge cases: quan tanques i tornes a entrar, no ha de tornar a donarte els aconseguits
 // OK edge cases: la paraula final ha de donar tambe coleccionables
@@ -23,16 +25,26 @@ export let collectiblesMatrix: CollectiblesMatrix = [
 // TODO - Modal explicativa primera vegada
 
 export function loadCollectibles() {
-    // Crea matriu aleatoria
-    // De moment 0, 1 comuns, 2 raro, 3 mitic
-    collectiblesMatrix = [
-        [0, 0, 1, 0, 0],
-        [0, 0, 0, 2, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 3, 0, 0, 0],
-        [0, 0, 0, 0, 0]
-    ]
+    let collectibles = []
+    const amountOfCollectiblesToday = Math.ceil(Math.random() * 3)
+    for (let i = 0; i < amountOfCollectiblesToday; i++) {
+        const baseRand = Math.random()
+        const collectibleRarity = baseRand <= 0.5 ? 1 : baseRand <= 0.85 ? 2 : 3 as Rarity
+
+        const getCollectiblePosition = () => {
+            const position = [Math.ceil(Math.random() * 6), Math.ceil(Math.random() * 5)]
+            if (collectibles.find(collectible => collectible.position === position)) {
+                getCollectiblePosition()
+            }
+            return position
+        }
+
+        collectibles.push({ rarity: collectibleRarity, position: getCollectiblePosition() })
+    }
+
+    for (let collectible of collectibles) {
+        collectiblesMatrix[collectible.position[0]][collectible.position[1]] = collectible.rarity
+    }
 }
 
 export function checkCollectiblesOnRow(row: number, statuses: any) {
