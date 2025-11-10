@@ -29,7 +29,10 @@ export function getUserFirstName() {
 }
 
 export function getUserId(): number | false {
+    const isDev = import.meta.env.DEV
+    const devUserId = import.meta.env.VITE_DEV_USER_ID as string | undefined
+
     const initData = window?.Telegram?.WebApp?.initDataUnsafe
     const userId = initData?.user?.id
-    return userId || false
+    return userId || (isDev ? Number(devUserId) : undefined)
 }

@@ -30,6 +30,15 @@ export const game = css`
         box-sizing: border-box;
         color: #717171;
         padding-top: 3px;
+        &.collectible_1{
+            background-color: #222222;
+        }
+        &.collectible_2{
+            background-color: #32e0ff;
+        }
+        &.collectible_3{
+            background-color: #ff5e00;
+        }
     }
     .wordgrid > .wordgrid__row > .wordgrid__cell.selected {
         box-shadow: inset 0 0 10px 2px #898989;

@@ -151,9 +151,7 @@ export class TrophiesExpositor extends LitElement {
     }
 
     private async loadUserTrophies() {
-        const isDev = import.meta.env.DEV
-        const devUserId = import.meta.env.VITE_DEV_USER_ID as string | undefined
-        const userId = getUserId() || (isDev ? Number(devUserId) : undefined)
+        const userId = getUserId()
         if (!userId) return
 
         const userTrophies = await getDetailedUserTrophies(userId)

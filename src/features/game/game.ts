@@ -18,6 +18,10 @@ import type { MoootCrono } from './components/crono.ts'
 import { formatTime } from '@src/shared/utils/time-utils'
 import { isFromTelegram } from '@src/core/telegram.ts'
 import { supalog } from '@src/core/api/logs.ts'
+import { checkCollectiblesOnRow, collectiblesMatrix, loadCollectibles } from './services/collectibles-service.ts'
+
+type Row = [string, string, string, string, string];
+type GameMatrix = [Row, Row, Row, Row, Row, Row];
 
 @customElement('mooot-joc-game')
 export class MoootJocGame extends LitElement {
@@ -36,6 +40,17 @@ export class MoootJocGame extends LitElement {
     }
     @state() private selectedCell: { row: number; col: number } | null = null
 
+    // De moment, aquesta matriu només serveix per dibuixar la quadrícula amb el map del template,
+    // no guarda estat ni res. Tot i que no estaria mal.
+    @state() private gameMatrix: GameMatrix = [
+        ['', '', '', '', ''],
+        ['', '', '', '', ''],
+        ['', '', '', '', ''],
+        ['', '', '', '', ''],
+        ['', '', '', '', ''],
+        ['', '', '', '', '']
+    ]
+
     connectedCallback(): void {
         super.connectedCallback()
 
@@ -43,6 +58,8 @@ export class MoootJocGame extends LitElement {
         document.addEventListener('visibilitychange', () => {
             if (!document.hidden) runStorageCheck()
         })
+
+        loadCollectibles()
     }
 
     setCurrentRow(to: number) {
@@ -203,14 +220,19 @@ export class MoootJocGame extends LitElement {
     validateLastRow() {
         if (this.gameState.currentWord.length !== 5) return
 
+        const statuses = computeStatuses(this.gameState.currentWord, words.getTodayWord())
         const rowStatus = words.checkWord(this.gameState.currentWord)
+
         if (rowStatus === 'correct') {
             this.selectedCell = null
             this.showHints(
                 this.gameState.currentWord,
-                words.getTodayWord(),
+                statuses,
                 this.gameState.currentRow
             )
+
+            const collectibles = checkCollectiblesOnRow(this.gameState.currentRow, statuses)
+
             saveToLocalStorage(
                 this.gameState.currentWord,
                 this.gameState.currentRow
@@ -234,9 +256,12 @@ export class MoootJocGame extends LitElement {
         } else {
             this.showHints(
                 this.gameState.currentWord,
-                words.getTodayWord(),
+                statuses,
                 this.gameState.currentRow
             )
+
+            const collectibles = checkCollectiblesOnRow(this.gameState.currentRow, statuses)
+
             saveToLocalStorage(
                 this.gameState.currentWord,
                 this.gameState.currentRow
@@ -258,6 +283,7 @@ export class MoootJocGame extends LitElement {
             this.gameState.currentRow++
             this.gameState.currentTry++
         }
+
         this.gameState.currentWord = ''
     }
 
@@ -267,12 +293,11 @@ export class MoootJocGame extends LitElement {
 
     showHints(
         guess: string,
-        target: string,
+        statuses: any,
         row: number,
         animate: boolean = true
     ) {
         const guessLetters = guess.toUpperCase().split('')
-        const statuses = computeStatuses(guess, target)
 
         const baseDelay = 40
 
@@ -375,7 +400,8 @@ export class MoootJocGame extends LitElement {
         for (let i = 1; i <= 5; i++) {
             this.updateCell(row.row, i, row.word[i - 1])
         }
-        this.showHints(row.word, words.getTodayWord(), row.row, false)
+        const statuses = computeStatuses(row.word, words.getTodayWord())
+        this.showHints(row.word, statuses, row.row, false)
 
         this.setCurrentRow(row.row)
         this.setCurrentTry(row.row)
@@ -383,282 +409,24 @@ export class MoootJocGame extends LitElement {
         this.setCurrentWord('')
     }
 
-    seeAd() {
-        // Rewarded interstitial
-
-        // Rewarded Popup
-
-        // show_9902259('pop')
-        //     .then(() => {
-        //         alert(
-        //             "Per tancar l'anunci, clica la creu de dalt a l'esquerra!"
-        //         )
-        //     })
-        //     .catch((e) => {
-        //         // user get error during playing ad
-        //         // do nothing or whatever you want
-        //     })
-    }
-
     render() {
         return html`
             <section class="wordgrid">
                 <mooot-crono></mooot-crono>
-                <!-- <button @click=${() => this.seeAd()}>Ad test</button> -->
-                <div class="wordgrid__row" id="l1">
-                    <div
-                        id="l1_1"
-                        class="wordgrid__cell ${this.selectedCell?.row === 1 &&
-                this.selectedCell.col === 1
-                ? 'selected'
-                : ''}"
-                        @click="${() => this.onCellClick(1, 1)}"
-                    ></div>
-                    <div
-                        id="l1_2"
-                        class="wordgrid__cell ${this.selectedCell?.row === 1 &&
-                this.selectedCell.col === 2
-                ? 'selected'
-                : ''}"
-                        @click="${() => this.onCellClick(1, 2)}"
-                    ></div>
-                    <div
-                        id="l1_3"
-                        class="wordgrid__cell ${this.selectedCell?.row === 1 &&
-                this.selectedCell.col === 3
-                ? 'selected'
-                : ''}"
-                        @click="${() => this.onCellClick(1, 3)}"
-                    ></div>
-                    <div
-                        id="l1_4"
-                        class="wordgrid__cell ${this.selectedCell?.row === 1 &&
-                this.selectedCell.col === 4
-                ? 'selected'
-                : ''}"
-                        @click="${() => this.onCellClick(1, 4)}"
-                    ></div>
-                    <div
-                        id="l1_5"
-                        class="wordgrid__cell ${this.selectedCell?.row === 1 &&
-                this.selectedCell.col === 5
-                ? 'selected'
-                : ''}"
-                        @click="${() => this.onCellClick(1, 5)}"
-                    ></div>
-                </div>
-                <div class="wordgrid__row" id="l2">
-                    <div
-                        id="l2_1"
-                        class="wordgrid__cell ${this.selectedCell?.row === 2 &&
-                this.selectedCell.col === 1
-                ? 'selected'
-                : ''}"
-                        @click="${() => this.onCellClick(2, 1)}"
-                    ></div>
-                    <div
-                        id="l2_2"
-                        class="wordgrid__cell ${this.selectedCell?.row === 2 &&
-                this.selectedCell.col === 2
-                ? 'selected'
-                : ''}"
-                        @click="${() => this.onCellClick(2, 2)}"
-                    ></div>
-                    <div
-                        id="l2_3"
-                        class="wordgrid__cell ${this.selectedCell?.row === 2 &&
-                this.selectedCell.col === 3
-                ? 'selected'
-                : ''}"
-                        @click="${() => this.onCellClick(2, 3)}"
-                    ></div>
-                    <div
-                        id="l2_4"
-                        class="wordgrid__cell ${this.selectedCell?.row === 2 &&
-                this.selectedCell.col === 4
-                ? 'selected'
-                : ''}"
-                        @click="${() => this.onCellClick(2, 4)}"
-                    ></div>
-                    <div
-                        id="l2_5"
-                        class="wordgrid__cell ${this.selectedCell?.row === 2 &&
-                this.selectedCell.col === 5
-                ? 'selected'
-                : ''}"
-                        @click="${() => this.onCellClick(2, 5)}"
-                    ></div>
-                </div>
-                <div class="wordgrid__row" id="l3">
-                    <div
-                        id="l3_1"
-                        class="wordgrid__cell ${this.selectedCell?.row === 3 &&
-                this.selectedCell.col === 1
-                ? 'selected'
-                : ''}"
-                        @click="${() => this.onCellClick(3, 1)}"
-                    ></div>
-                    <div
-                        id="l3_2"
-                        class="wordgrid__cell ${this.selectedCell?.row === 3 &&
-                this.selectedCell.col === 2
-                ? 'selected'
-                : ''}"
-                        @click="${() => this.onCellClick(3, 2)}"
-                    ></div>
-                    <div
-                        id="l3_3"
-                        class="wordgrid__cell ${this.selectedCell?.row === 3 &&
-                this.selectedCell.col === 3
-                ? 'selected'
-                : ''}"
-                        @click="${() => this.onCellClick(3, 3)}"
-                    ></div>
-                    <div
-                        id="l3_4"
-                        class="wordgrid__cell ${this.selectedCell?.row === 3 &&
-                this.selectedCell.col === 4
-                ? 'selected'
-                : ''}"
-                        @click="${() => this.onCellClick(3, 4)}"
-                    ></div>
-                    <div
-                        id="l3_5"
-                        class="wordgrid__cell ${this.selectedCell?.row === 3 &&
-                this.selectedCell.col === 5
-                ? 'selected'
-                : ''}"
-                        @click="${() => this.onCellClick(3, 5)}"
-                    ></div>
-                </div>
-                <div class="wordgrid__row" id="l4">
-                    <div
-                        id="l4_1"
-                        class="wordgrid__cell ${this.selectedCell?.row === 4 &&
-                this.selectedCell.col === 1
-                ? 'selected'
-                : ''}"
-                        @click="${() => this.onCellClick(4, 1)}"
-                    ></div>
-                    <div
-                        id="l4_2"
-                        class="wordgrid__cell ${this.selectedCell?.row === 4 &&
-                this.selectedCell.col === 2
-                ? 'selected'
-                : ''}"
-                        @click="${() => this.onCellClick(4, 2)}"
-                    ></div>
-                    <div
-                        id="l4_3"
-                        class="wordgrid__cell ${this.selectedCell?.row === 4 &&
-                this.selectedCell.col === 3
-                ? 'selected'
-                : ''}"
-                        @click="${() => this.onCellClick(4, 3)}"
-                    ></div>
-                    <div
-                        id="l4_4"
-                        class="wordgrid__cell ${this.selectedCell?.row === 4 &&
-                this.selectedCell.col === 4
-                ? 'selected'
-                : ''}"
-                        @click="${() => this.onCellClick(4, 4)}"
-                    ></div>
-                    <div
-                        id="l4_5"
-                        class="wordgrid__cell ${this.selectedCell?.row === 4 &&
-                this.selectedCell.col === 5
-                ? 'selected'
-                : ''}"
-                        @click="${() => this.onCellClick(4, 5)}"
-                    ></div>
-                </div>
-                <div class="wordgrid__row" id="l5">
-                    <div
-                        id="l5_1"
-                        class="wordgrid__cell ${this.selectedCell?.row === 5 &&
-                this.selectedCell.col === 1
-                ? 'selected'
-                : ''}"
-                        @click="${() => this.onCellClick(5, 1)}"
-                    ></div>
-                    <div
-                        id="l5_2"
-                        class="wordgrid__cell ${this.selectedCell?.row === 5 &&
-                this.selectedCell.col === 2
-                ? 'selected'
-                : ''}"
-                        @click="${() => this.onCellClick(5, 2)}"
-                    ></div>
-                    <div
-                        id="l5_3"
-                        class="wordgrid__cell ${this.selectedCell?.row === 5 &&
-                this.selectedCell.col === 3
-                ? 'selected'
-                : ''}"
-                        @click="${() => this.onCellClick(5, 3)}"
-                    ></div>
-                    <div
-                        id="l5_4"
-                        class="wordgrid__cell ${this.selectedCell?.row === 5 &&
-                this.selectedCell.col === 4
-                ? 'selected'
-                : ''}"
-                        @click="${() => this.onCellClick(5, 4)}"
-                    ></div>
-                    <div
-                        id="l5_5"
-                        class="wordgrid__cell ${this.selectedCell?.row === 5 &&
-                this.selectedCell.col === 5
-                ? 'selected'
-                : ''}"
-                        @click="${() => this.onCellClick(5, 5)}"
-                    ></div>
-                </div>
-                <div class="wordgrid__row" id="l6">
-                    <div
-                        id="l6_1"
-                        class="wordgrid__cell ${this.selectedCell?.row === 6 &&
-                this.selectedCell.col === 1
-                ? 'selected'
-                : ''}"
-                        @click="${() => this.onCellClick(6, 1)}"
-                    ></div>
-                    <div
-                        id="l6_2"
-                        class="wordgrid__cell ${this.selectedCell?.row === 6 &&
-                this.selectedCell.col === 2
-                ? 'selected'
-                : ''}"
-                        @click="${() => this.onCellClick(6, 2)}"
-                    ></div>
-                    <div
-                        id="l6_3"
-                        class="wordgrid__cell ${this.selectedCell?.row === 6 &&
-                this.selectedCell.col === 3
-                ? 'selected'
-                : ''}"
-                        @click="${() => this.onCellClick(6, 3)}"
-                    ></div>
-                    <div
-                        id="l6_4"
-                        class="wordgrid__cell ${this.selectedCell?.row === 6 &&
-                this.selectedCell.col === 4
-                ? 'selected'
-                : ''}"
-                        @click="${() => this.onCellClick(6, 4)}"
-                    ></div>
-                    <div
-                        id="l6_5"
-                        class="wordgrid__cell ${this.selectedCell?.row === 6 &&
-                this.selectedCell.col === 5
-                ? 'selected'
-                : ''}"
-                        @click="${() => this.onCellClick(6, 5)}"
-                    ></div>
-                </div>
-            </section>
 
+                ${this.gameMatrix.map((row, rowIndex) => html`
+                    <div class="wordgrid__row" id="l1">
+                    ${row.map((cell, cellIndex) => html`
+                        <div 
+                            id="${`l${rowIndex + 1}_${cellIndex + 1}`}"
+                            class="wordgrid__cell ${this.selectedCell?.row === rowIndex + 1 && this.selectedCell.col === cellIndex + 1 ? 'selected' : ''} ${'collectible_' + collectiblesMatrix[rowIndex][cellIndex]}"
+                            @click="${() => this.onCellClick(rowIndex + 1, cellIndex + 1)}"
+                        ></div>`
+        )}
+                    </div>`
+        )}
+            </section>
+            
             <mooot-keyboard
                 @letter-clicked="${(e: CustomEvent) => this.onLetterClick(e)}"
                 @back-clicked="${() => this.onBackClick()}"
