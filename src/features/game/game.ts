@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit'
 import { customElement, query, state } from 'lit/decorators.js'
 import * as words from '@src/features/game/services/words-service.js'
-import { getTodayTime, runStorageCheck } from '@src/shared/utils/storage-utils.js'
+import { getTodayTime, runStorageCheck, saveCollectiblesToLocalStorage } from '@src/shared/utils/storage-utils.js'
 import { saveToLocalStorage } from '@src/shared/utils/storage-utils.js'
 import type { storedRow } from '@src/shared/utils/storage-utils.js'
 import { updateStoredStats } from '@src/shared/utils/stats-utils'
@@ -16,9 +16,9 @@ import type { Keyboard } from './components/keyboard'
 import { computeStatuses } from '@src/shared/utils/hints-utils'
 import type { MoootCrono } from './components/crono.ts'
 import { formatTime } from '@src/shared/utils/time-utils'
-import { isFromTelegram } from '@src/core/telegram.ts'
+import { getUserId, isFromTelegram } from '@src/core/telegram.ts'
 import { supalog } from '@src/core/api/logs.ts'
-import { checkCollectiblesOnRow, collectiblesMatrix, loadCollectibles } from './services/collectibles-service.ts'
+import { FlagsController } from '@src/features/game/services/collectibles-controller.ts'
 
 type Row = [string, string, string, string, string];
 type GameMatrix = [Row, Row, Row, Row, Row, Row];
@@ -26,6 +26,7 @@ type GameMatrix = [Row, Row, Row, Row, Row, Row];
 @customElement('mooot-joc-game')
 export class MoootJocGame extends LitElement {
     static styles = [global, game, loadMonthStyle()]
+    private flags = new FlagsController(this, getUserId());
 
     @query('mooot-keyboard') private keyboardEl?: Keyboard
     @query('mooot-crono') private cronoEl?: MoootCrono
@@ -58,8 +59,6 @@ export class MoootJocGame extends LitElement {
         document.addEventListener('visibilitychange', () => {
             if (!document.hidden) runStorageCheck()
         })
-
-        loadCollectibles()
     }
 
     setCurrentRow(to: number) {
@@ -85,6 +84,7 @@ export class MoootJocGame extends LitElement {
 
     protected firstUpdated(): void {
         this.loadStoredGame()
+        this.flags.loadStoredCollectibles()
     }
 
     async loadStoredGame() {
@@ -231,7 +231,9 @@ export class MoootJocGame extends LitElement {
                 this.gameState.currentRow
             )
 
-            const collectibles = checkCollectiblesOnRow(this.gameState.currentRow, statuses)
+            if (this.flags.activeTestingFeatures) {
+                this.flags.checkCollectiblesOnRow(this.gameState.currentRow, statuses)
+            }
 
             saveToLocalStorage(
                 this.gameState.currentWord,
@@ -260,7 +262,9 @@ export class MoootJocGame extends LitElement {
                 this.gameState.currentRow
             )
 
-            const collectibles = checkCollectiblesOnRow(this.gameState.currentRow, statuses)
+            if (this.flags.activeTestingFeatures) {
+                this.flags.checkCollectiblesOnRow(this.gameState.currentRow, statuses)
+            }
 
             saveToLocalStorage(
                 this.gameState.currentWord,
@@ -412,6 +416,9 @@ export class MoootJocGame extends LitElement {
     render() {
         return html`
             <section class="wordgrid">
+                ${this.flags.activeTestingFeatures && this.flags.userCollectibles.map((collectible: number) => html`
+                    <span>${collectible}</span>    
+                `)}
                 <mooot-crono></mooot-crono>
 
                 ${this.gameMatrix.map((row, rowIndex) => html`
@@ -419,7 +426,10 @@ export class MoootJocGame extends LitElement {
                     ${row.map((cell, cellIndex) => html`
                         <div 
                             id="${`l${rowIndex + 1}_${cellIndex + 1}`}"
-                            class="wordgrid__cell ${this.selectedCell?.row === rowIndex + 1 && this.selectedCell.col === cellIndex + 1 ? 'selected' : ''} ${'collectible_' + collectiblesMatrix[rowIndex][cellIndex]}"
+                            class="
+                                wordgrid__cell 
+                                ${this.selectedCell?.row === rowIndex + 1 && this.selectedCell.col === cellIndex + 1 ? 'selected' : ''} 
+                                ${(this.flags.activeTestingFeatures && this.flags.collectiblesMatrix[rowIndex][cellIndex]) ? 'collectible collectible_' + this.flags.collectiblesMatrix[rowIndex][cellIndex] : ''}"
                             @click="${() => this.onCellClick(rowIndex + 1, cellIndex + 1)}"
                         ></div>`
         )}

@@ -8,10 +8,13 @@ import { global } from '@src/core/app-reset-styles'
 
 import '@src/shared/components/button-mooot'
 import '@src/shared/components/stat-display'
+import { FlagsController } from '../services/collectibles-controller'
+import { getUserId } from '@src/core/telegram'
 
 @customElement('mooot-endgame-modal')
 export class MoootEndgameModal extends LitElement {
     static styles = [global, modalStyles]
+    private flags = new FlagsController(this, getUserId());
 
     @property({ type: String }) points = '0'
     @property({ type: String }) time = '00:00:00'
@@ -169,6 +172,11 @@ export class MoootEndgameModal extends LitElement {
                             ></stat-display>
                         </div>
                     </section>
+                    ${this.flags.activeTestingFeatures ? html`
+                        <section>${this.flags.userCollectibles.map((collectible: number) =>
+            collectible
+        )}</section>    
+                    `: null}
                     <div class="modal__buttons">
                         <button-mooot
                             @button-click="${(e: Event) =>

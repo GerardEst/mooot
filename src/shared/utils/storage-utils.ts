@@ -24,6 +24,10 @@ export function saveToLocalStorage(word: string, row: number) {
     }
 }
 
+export function saveCollectiblesToLocalStorage(collectibles: number[]) {
+    localStorage.setItem('mooot:game:collectibles', JSON.stringify(collectibles))
+}
+
 export function runStorageCheck() {
     const storedGame = localStorage.getItem('moootGameData')
     if (storedGame) {
@@ -42,6 +46,7 @@ export function checkCleanLocalStorage(localDate: string) {
         console.warn('Saved data is not from today, clearing')
         localStorage.removeItem('moootGameData')
         localStorage.removeItem('mooot:game:crono')
+        localStorage.removeItem('mooot:game:collectibles')
 
         return true
     }

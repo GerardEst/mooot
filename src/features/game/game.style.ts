@@ -30,14 +30,17 @@ export const game = css`
         box-sizing: border-box;
         color: #717171;
         padding-top: 3px;
+        &.collectible{
+            background: #ededed url('/assets/present.svg') no-repeat center/30px;
+        }
         &.collectible_1{
-            background-color: #222222;
+            background-color: #cccccc;
         }
         &.collectible_2{
-            background-color: #32e0ff;
+            background-color: #818181;
         }
         &.collectible_3{
-            background-color: #ff5e00;
+            background-color: #444444;
         }
     }
     .wordgrid > .wordgrid__row > .wordgrid__cell.selected {
@@ -74,6 +77,9 @@ export const game = css`
         padding-bottom: 2px;
         box-shadow: inset 0 -3px #c9edc8, inset 0 5px 20px #ffffffb8;
         background-color: var(--color-green-success);
+        &.collectible{
+            background: #ededed url('/assets/present-open.svg') no-repeat center/30px;
+        }
     }
     .wordgrid > .wordgrid__row > .wordgrid__cell.correct.hard-reveal {
         animation: cell-scale-big-pop 600ms var(--ease-smooth) both,
