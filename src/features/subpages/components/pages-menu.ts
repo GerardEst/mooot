@@ -4,7 +4,7 @@ import { customElement, property } from 'lit/decorators.js'
 type NavItem = { href: string; label: string }
 
 const navItems: NavItem[] = [
-    { href: '/joc/', label: 'Joc' },
+    { href: '/', label: 'Joc' },
     { href: '/com-jugar/', label: 'Com jugar' },
     { href: '/sobre/', label: 'Sobre Mooot' },
     { href: '/legal/', label: 'Legal' },
