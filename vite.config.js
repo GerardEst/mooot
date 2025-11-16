@@ -34,6 +34,7 @@ export default defineConfig({
         emptyOutDir: true,
         rollupOptions: {
             input: {
+                main: resolve(__dirname, 'pages/index.html'),
                 legal: resolve(__dirname, 'pages/legal/index.html'),
                 sobre: resolve(__dirname, 'pages/sobre/index.html'),
                 'com-jugar': resolve(__dirname, 'pages/com-jugar/index.html'),
