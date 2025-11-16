@@ -6,7 +6,7 @@ type NavItem = { href: string; label: string }
 const navItems: NavItem[] = [
     { href: '/joc/', label: 'Joc' },
     { href: '/com-jugar/', label: 'Com jugar' },
-    { href: '/', label: 'Sobre Mooot' },
+    { href: '/sobre/', label: 'Sobre Mooot' },
     { href: '/legal/', label: 'Legal' },
 ]
 
@@ -45,8 +45,8 @@ export class PagesMenu extends LitElement {
         return html`
             <nav>
                 ${items.map(
-                    (item) => html`<a href=${item.href}>${item.label}</a>`
-                )}
+            (item) => html`<a href=${item.href}>${item.label}</a>`
+        )}
             </nav>
         `
     }

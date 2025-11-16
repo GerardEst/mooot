@@ -17,7 +17,7 @@ export default defineConfig({
     test: {
         environment: 'jsdom',
         setupFiles: ['./test-setup.ts'],
-        globals: true, // Allows using describe, it, expect without imports
+        globals: true,
         coverage: {
             reporter: ['text', 'html'],
             exclude: [
@@ -34,9 +34,10 @@ export default defineConfig({
         emptyOutDir: true,
         rollupOptions: {
             input: {
-                main: resolve(__dirname, 'pages/index.html'),
+                main: resolve(__dirname, 'pages/joc/index.html'),
                 joc: resolve(__dirname, 'pages/joc/index.html'),
                 legal: resolve(__dirname, 'pages/legal/index.html'),
+                sobre: resolve(__dirname, 'pages/index.html'),
                 'com-jugar': resolve(__dirname, 'pages/com-jugar/index.html'),
             },
         },
