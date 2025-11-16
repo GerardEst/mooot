@@ -14,3 +14,7 @@ export function formatTime(milliseconds: number): string {
 function pad(value: number): string {
     return value.toString().padStart(2, '0')
 }
+
+export function getCurrentMonth(): number {
+    return new Date().getMonth() + 1
+}

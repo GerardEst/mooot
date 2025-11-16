@@ -10,7 +10,7 @@ import '@src/shared/components/button-mooot'
 import '@src/shared/components/stat-display'
 import '@src/shared/components/collectible'
 
-import { CollectiblesController } from '../services/collectibles-controller'
+import { CollectiblesController, Collectible } from '../services/collectibles-controller'
 
 @customElement('mooot-endgame-modal')
 export class MoootEndgameModal extends LitElement {
@@ -39,9 +39,12 @@ export class MoootEndgameModal extends LitElement {
         this.dicHref = this.buildDicUrl(this.word)
     }
 
-    protected updated(changed: Map<string, unknown>) {
+    protected async updated(changed: Map<string, unknown>) {
         if (changed.has('points')) {
             this.modalTitle = this.computeTitle(Number(this.points))
+        }
+        if (changed.has('active') && this.active && this.collectibles.activeTestingFeatures) {
+            await this.collectibles.grantCollectiblesToUser()
         }
     }
 
@@ -170,8 +173,8 @@ export class MoootEndgameModal extends LitElement {
                         </div>
                     </section>
                     ${this.collectibles.activeTestingFeatures ? html`
-                        <section class="collectibles">${this.collectibles.userCollectibles.map((collectible: number) =>
-            html`<mooot-collectible rarity=${collectible}></mooot-collectible>`
+                        <section class="collectibles">${this.collectibles.userCollectibles?.map((collectible: Collectible) =>
+            html`<mooot-collectible name=${collectible.name} rarity=${collectible.rarity}></mooot-collectible>`
         )}</section>    
                     `: null}
                     <div class="modal__buttons">

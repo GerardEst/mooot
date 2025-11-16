@@ -13,6 +13,7 @@ export class Collectible extends LitElement {
         `,
     ]
 
+    @property({ type: String }) name = ''
     @property({ type: Number }) rarity = 0
 
     connectedCallback(): void {
@@ -20,6 +21,6 @@ export class Collectible extends LitElement {
     }
 
     render() {
-        return html`<div class="collectible">${this.rarity}</div>`
+        return html`<div class="collectible">${this.name}</div>`
     }
 }

@@ -1,3 +1,4 @@
+import { Collectible } from '@src/features/game/services/collectibles-controller'
 import { formatTime } from './time-utils'
 
 export interface storedRow {
@@ -24,7 +25,11 @@ export function saveToLocalStorage(word: string, row: number) {
     }
 }
 
-export function saveCollectiblesToLocalStorage(collectibles: number[]) {
+export function saveCollectiblesRaritiesToLocalStorage(rarities: number[]) {
+    localStorage.setItem('mooot:game:rarities', JSON.stringify(rarities))
+}
+
+export function saveCollectiblesToLocalStorage(collectibles: Collectible[]) {
     localStorage.setItem('mooot:game:collectibles', JSON.stringify(collectibles))
 }
 
@@ -46,6 +51,7 @@ export function checkCleanLocalStorage(localDate: string) {
         console.warn('Saved data is not from today, clearing')
         localStorage.removeItem('moootGameData')
         localStorage.removeItem('mooot:game:crono')
+        localStorage.removeItem('mooot:game:rarities')
         localStorage.removeItem('mooot:game:collectibles')
 
         return true
@@ -78,6 +84,13 @@ export function cleanGameboard() {
     root.querySelectorAll?.('.keyboard__key').forEach((key) => {
         ; (key as HTMLElement).classList.remove('correct', 'present', 'absent')
     })
+}
+
+export function getLocalUserCollectibles() {
+    const collectibles = localStorage.getItem('mooot:game:collectibles')
+    if (!collectibles) return null
+
+    return JSON.parse(collectibles)
 }
 
 export function getTodayTime() {
