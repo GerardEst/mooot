@@ -37,9 +37,9 @@ export class PagesMenu extends LitElement {
     protected render() {
         const path =
             typeof window !== 'undefined' ? window.location.pathname : ''
-        const isJoc = path === '/joc' || path === '/joc/'
+        const isJoc = path === '/'
         const items = isJoc
-            ? navItems.filter((item) => item.href !== '/joc/')
+            ? navItems.filter((item) => item.href !== '/')
             : navItems
 
         return html`

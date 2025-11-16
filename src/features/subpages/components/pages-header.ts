@@ -53,7 +53,7 @@ export class PagesHeader extends LitElement {
         return html`
             <header>
                 <div class="left">
-                    <a class="logo" href="/joc/" title="Joc">
+                    <a class="logo" href="/" title="Joc">
                         <img
                             src="/assets/moootbot_M.png"
                             alt="Mooot"
@@ -64,7 +64,7 @@ export class PagesHeader extends LitElement {
                     </a>
                     <h1>${this.title}</h1>
                 </div>
-                <a class="backBtn" href="/joc/" title="Ves al joc">
+                <a class="backBtn" href="/" title="Ves al joc">
                     Ves al joc
                 </a>
             </header>

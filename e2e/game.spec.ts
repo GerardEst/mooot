@@ -64,7 +64,7 @@ test.beforeEach(async ({ page }) => {
 test('win on first try shows endgame modal with the correct info', async ({
     page,
 }) => {
-    await page.goto('/joc/')
+    await page.goto('/')
 
     await test.step('type target word and submit', async () => {
         for (const l of ['A', 'B', 'C', 'D', 'E']) await clickKey(page, l)
@@ -114,7 +114,7 @@ test('win on first try shows endgame modal with the correct info', async ({
 })
 
 test('six valid misses end with modal with correct info', async ({ page }) => {
-    await page.goto('/joc/')
+    await page.goto('/')
 
     await test.step('play six valid wrong guesses', async () => {
         const guesses = ['AAAAA', 'BBBBB', 'CCCCC', 'DDDDD', 'EEEEE', 'FFFFF']
@@ -164,7 +164,7 @@ test('six valid misses end with modal with correct info', async ({ page }) => {
 test('typing into a specific clicked cell works end-to-end', async ({
     page,
 }) => {
-    await page.goto('/joc/')
+    await page.goto('/')
 
     await test.step('place C in third cell via cell click + key', async () => {
         await page.locator('mooot-joc-game').locator('#l1_3').click()
@@ -208,7 +208,7 @@ test('typing into a specific clicked cell works end-to-end', async ({
 test('mix targeted cell click then sequential input completes the word', async ({
     page,
 }) => {
-    await page.goto('/joc/')
+    await page.goto('/')
 
     await test.step('place D in fourth cell via click', async () => {
         await page.locator('mooot-joc-game').locator('#l1_4').click()
@@ -244,7 +244,7 @@ test('mix targeted cell click then sequential input completes the word', async (
 test('edge cases: selection, deletion, and enter constraints', async ({
     page,
 }) => {
-    await page.goto('/joc/')
+    await page.goto('/')
 
     await test.step('cannot submit incomplete guess', async () => {
         await clickKey(page, 'A')
@@ -291,7 +291,7 @@ test('edge cases: selection, deletion, and enter constraints', async ({
 })
 
 test('colors: correct letters paint green', async ({ page }) => {
-    await page.goto('/joc/')
+    await page.goto('/')
     for (const l of ['A', 'B', 'C', 'D', 'E']) await clickKey(page, l)
     await pressEnter(page)
     for (let i = 1; i <= 5; i++)
@@ -301,7 +301,7 @@ test('colors: correct letters paint green', async ({ page }) => {
 })
 
 test('colors: present letters paint orange', async ({ page }) => {
-    await page.goto('/joc/')
+    await page.goto('/')
     for (const l of ['E', 'A', 'B', 'C', 'D']) await clickKey(page, l)
     await pressEnter(page)
     for (let i = 1; i <= 5; i++)
@@ -313,7 +313,7 @@ test('colors: present letters paint orange', async ({ page }) => {
 })
 
 test('colors: absent letters paint gray', async ({ page }) => {
-    await page.goto('/joc/')
+    await page.goto('/')
     for (const l of ['Z', 'Z', 'Z', 'Z', 'Z']) await clickKey(page, l)
     await pressEnter(page)
     for (let i = 1; i <= 5; i++)
@@ -341,7 +341,7 @@ test('colors: duplicate handling keeps keyboard green for mixed correct/present'
             body: JSON.stringify(['AABCD', 'ABADE', 'ABCDE', 'EABCD', 'ZZZZZ']),
         })
     })
-    await page.goto('/joc/')
+    await page.goto('/')
     for (const l of ['A', 'B', 'A', 'D', 'E']) await clickKey(page, l)
     await pressEnter(page)
     await expect(cell(page, 1, 1)).toHaveClass(/correct/)
@@ -368,7 +368,7 @@ test('keyboard: correct stays green even after later absent', async ({ page }) =
         })
     })
 
-    await page.goto('/joc/')
+    await page.goto('/')
 
     // First row: make 'A' correct at position 1
     for (const l of ['A', 'Q', 'Q', 'Q', 'Q']) await clickKey(page, l)
