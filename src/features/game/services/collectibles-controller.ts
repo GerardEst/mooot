@@ -9,7 +9,7 @@ type Rarity = 0 | 1 | 2 | 3;
 type Row = [Rarity, Rarity, Rarity, Rarity, Rarity];
 type CollectiblesMatrix = [Row, Row, Row, Row, Row, Row];
 
-export class FlagsController implements ReactiveController {
+export class CollectiblesController implements ReactiveController {
     host: ReactiveControllerHost;
 
     userCollectibles: number[] = []
@@ -23,7 +23,7 @@ export class FlagsController implements ReactiveController {
         [0, 0, 0, 0, 0]
     ]
 
-    constructor(host: ReactiveControllerHost, userId: number | false) {
+    constructor(host: ReactiveControllerHost) {
         (this.host = host).addController(this);
     }
 
@@ -33,6 +33,7 @@ export class FlagsController implements ReactiveController {
         const testingUser = await getIsUserTester(getUserId())
         this.activeTestingFeatures = testingUser
 
+        this.loadStoredCollectibles()
         this.loadCollectibles()
 
         this.host.requestUpdate()
@@ -56,7 +57,9 @@ export class FlagsController implements ReactiveController {
             collectiblesInTheRow.push(collectible)
             this.userCollectibles.push(collectible)
             saveCollectiblesToLocalStorage(this.userCollectibles)
-            saveUserCollectible(collectible)
+
+            // TODO - Aixo no ho fem al descobrir-lo. Anem guardant els coleccionables en aquet controller i al final quan els ensenyem els guardem tots de cop
+            // saveUserCollectible(collectible)
 
             // TODO - es aixo gaire ineficient? esta refrescant tot el compondent de joc sencer?
             this.host.requestUpdate()

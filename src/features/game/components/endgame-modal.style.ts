@@ -79,6 +79,12 @@ export const modalStyles = css`
         flex-direction: column;
     }
 
+    .collectibles{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
     .motbot_nextleague {
         padding: 0.5rem 0.6rem;
         border-radius: 4px;

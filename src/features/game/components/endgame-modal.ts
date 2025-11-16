@@ -8,13 +8,14 @@ import { global } from '@src/core/app-reset-styles'
 
 import '@src/shared/components/button-mooot'
 import '@src/shared/components/stat-display'
-import { FlagsController } from '../services/collectibles-controller'
-import { getUserId } from '@src/core/telegram'
+import '@src/shared/components/collectible'
+
+import { CollectiblesController } from '../services/collectibles-controller'
 
 @customElement('mooot-endgame-modal')
 export class MoootEndgameModal extends LitElement {
     static styles = [global, modalStyles]
-    private flags = new FlagsController(this, getUserId());
+    private collectibles = new CollectiblesController(this);
 
     @property({ type: String }) points = '0'
     @property({ type: String }) time = '00:00:00'
@@ -27,10 +28,6 @@ export class MoootEndgameModal extends LitElement {
 
     @property({ type: Boolean }) private sharing = false
     @property({ type: Boolean }) private sharingOpen = false
-
-    connectedCallback(): void {
-        super.connectedCallback()
-    }
 
     firstUpdated() {
         this.fillStats()
@@ -172,9 +169,9 @@ export class MoootEndgameModal extends LitElement {
                             ></stat-display>
                         </div>
                     </section>
-                    ${this.flags.activeTestingFeatures ? html`
-                        <section>${this.flags.userCollectibles.map((collectible: number) =>
-            collectible
+                    ${this.collectibles.activeTestingFeatures ? html`
+                        <section class="collectibles">${this.collectibles.userCollectibles.map((collectible: number) =>
+            html`<mooot-collectible rarity=${collectible}></mooot-collectible>`
         )}</section>    
                     `: null}
                     <div class="modal__buttons">
