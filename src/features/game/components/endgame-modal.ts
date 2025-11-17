@@ -31,12 +31,10 @@ export class MoootEndgameModal extends LitElement {
     @property({ type: Boolean }) private sharing = false
     @property({ type: Boolean }) private sharingOpen = false
 
-    async firstUpdated() {
+    firstUpdated() {
         this.fillStats()
-        await this.collectibles.grantCollectiblesToUser()
-        this.revealCollectibles()
+        this.loadCollectibles()
     }
-
     private async fillStats() {
         this.word = (await words.getTodayNiceWord()) || ''
         this.modalTitle = this.computeTitle(Number(this.points))
@@ -48,8 +46,15 @@ export class MoootEndgameModal extends LitElement {
             this.modalTitle = this.computeTitle(Number(this.points))
         }
         if (changed.has('active') && this.active && this.collectibles.activeTestingFeatures) {
-            this.collectibles.grantCollectiblesToUser()
+            this.loadCollectibles()
         }
+    }
+
+    async loadCollectibles() {
+        // Primer ens assegurem que els coleccionables estan carregats al controlador
+        await this.collectibles.grantCollectiblesToUser()
+        this.revealCollectibles()
+
     }
 
     private computeTitle(points: number) {
