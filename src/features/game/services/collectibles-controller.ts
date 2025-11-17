@@ -10,11 +10,12 @@ import { getCurrentMonth } from "@src/shared/utils/time-utils";
 type Rarity = 0 | 1 | 2 | 3;
 type Row = [Rarity, Rarity, Rarity, Rarity, Rarity];
 type CollectiblesMatrix = [Row, Row, Row, Row, Row, Row];
-export interface Collectible {
+export interface CollectibleInterface {
     id: number,
     name: string,
     month: number,
-    rarity: number
+    rarity: number,
+    image_tag: string,
 }
 
 export class CollectiblesController implements ReactiveController {
@@ -31,7 +32,7 @@ export class CollectiblesController implements ReactiveController {
         [0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0]
     ]
-    userCollectibles: Collectible[] = []
+    userCollectibles: CollectibleInterface[] = []
 
     constructor(host: ReactiveControllerHost) {
         (this.host = host).addController(this);
@@ -100,7 +101,7 @@ export class CollectiblesController implements ReactiveController {
 
             if (error) throw error
 
-            this.userCollectibles = data as unknown as Collectible[]
+            this.userCollectibles = data as unknown as CollectibleInterface[]
             saveCollectiblesToLocalStorage(this.userCollectibles)
 
             this.host.requestUpdate()

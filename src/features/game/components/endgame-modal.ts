@@ -10,7 +10,7 @@ import '@src/shared/components/button-mooot'
 import '@src/shared/components/stat-display'
 import '@src/shared/components/collectible'
 
-import { CollectiblesController, Collectible } from '../services/collectibles-controller'
+import { CollectiblesController, CollectibleInterface } from '../services/collectibles-controller'
 
 @customElement('mooot-endgame-modal')
 export class MoootEndgameModal extends LitElement {
@@ -174,8 +174,8 @@ export class MoootEndgameModal extends LitElement {
                         </div>
                     </section>
                     ${this.collectibles.activeTestingFeatures ? html`
-                        <section class="collectibles">${this.collectibles.userCollectibles?.map((collectible: Collectible) =>
-            html`<mooot-collectible name=${collectible.name} rarity=${collectible.rarity}></mooot-collectible>`
+                        <section class="collectibles">${this.collectibles.userCollectibles?.map((collectible: CollectibleInterface) =>
+            html`<mooot-collectible .collectibleData=${collectible}></mooot-collectible>`
         )}</section>    
                     `: null}
                     <div class="modal__buttons">
