@@ -31,6 +31,7 @@ export class MoootEndgameModal extends LitElement {
 
     firstUpdated() {
         this.fillStats()
+        this.collectibles.grantCollectiblesToUser()
     }
 
     private async fillStats() {
@@ -44,7 +45,7 @@ export class MoootEndgameModal extends LitElement {
             this.modalTitle = this.computeTitle(Number(this.points))
         }
         if (changed.has('active') && this.active && this.collectibles.activeTestingFeatures) {
-            await this.collectibles.grantCollectiblesToUser()
+            this.collectibles.grantCollectiblesToUser()
         }
     }
 

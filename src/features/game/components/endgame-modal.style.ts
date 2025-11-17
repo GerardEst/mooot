@@ -83,6 +83,8 @@ export const modalStyles = css`
         display: flex;
         justify-content: center;
         align-items: center;
+        gap: 10px;
+        padding: var(--spacing);
     }
 
     .motbot_nextleague {

@@ -1,5 +1,5 @@
 import { LitElement, css, html } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
+import { customElement, property, state } from 'lit/decorators.js'
 import { global } from '@src/core/app-reset-styles'
 
 @customElement('mooot-collectible')
@@ -8,7 +8,10 @@ export class Collectible extends LitElement {
         global,
         css`
             .collectible{
-                padding: 2rem;
+                background-color: var(--present-color);
+                width: 100px;
+                height: 120px;
+                border-radius: 15px;
             }
         `,
     ]
@@ -16,11 +19,21 @@ export class Collectible extends LitElement {
     @property({ type: String }) name = ''
     @property({ type: Number }) rarity = 0
 
+    @state() revealed = false
+
     connectedCallback(): void {
         super.connectedCallback()
     }
 
     render() {
-        return html`<div class="collectible">${this.name}</div>`
+        return html`
+            <div class="collectible" @click=${() => this.revealed = true}>
+                ${this.revealed ? html`
+                        ${this.name}
+                ` : html`
+                ${this.rarity}
+                `}
+            </div>
+        `
     }
 }
