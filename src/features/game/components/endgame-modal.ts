@@ -10,7 +10,9 @@ import '@src/shared/components/button-mooot'
 import '@src/shared/components/stat-display'
 import '@src/shared/components/collectible'
 
-import { CollectiblesController, CollectibleInterface } from '../services/collectibles-controller'
+import { CollectiblesController } from '../services/collectibles-controller'
+import { repeat } from 'lit/directives/repeat.js'
+
 
 @customElement('mooot-endgame-modal')
 export class MoootEndgameModal extends LitElement {
@@ -29,9 +31,10 @@ export class MoootEndgameModal extends LitElement {
     @property({ type: Boolean }) private sharing = false
     @property({ type: Boolean }) private sharingOpen = false
 
-    firstUpdated() {
+    async firstUpdated() {
         this.fillStats()
-        this.collectibles.grantCollectiblesToUser()
+        await this.collectibles.grantCollectiblesToUser()
+        this.revealCollectibles()
     }
 
     private async fillStats() {
@@ -67,6 +70,15 @@ export class MoootEndgameModal extends LitElement {
 
     private buildDicUrl(word: string) {
         return `https://dlc.iec.cat/Results?DecEntradaText=${word}&AllInfoMorf=False&OperEntrada=0&OperDef=0&OperEx=0&OperSubEntrada=0&OperAreaTematica=0&InfoMorfType=0&OperCatGram=False&AccentSen=False&CurrentPage=0&refineSearch=0&Actualitzacions=False`
+    }
+
+    private revealCollectibles() {
+        for (let i = 1; i <= this.collectibles.userCollectibles?.length; i++) {
+            setTimeout(() => {
+                this.collectibles.userCollectibles[i - 1].revealed = true
+                this.requestUpdate()
+            }, 500 * i)
+        }
     }
 
     private onModalCloseClick = () => {
@@ -173,10 +185,20 @@ export class MoootEndgameModal extends LitElement {
                             ></stat-display>
                         </div>
                     </section>
-                    ${this.collectibles.activeTestingFeatures ? html`
-                        <section class="collectibles">${this.collectibles.userCollectibles?.map((collectible: CollectibleInterface) =>
-            html`<mooot-collectible .collectibleData=${collectible}></mooot-collectible>`
-        )}</section>    
+                    ${this.collectibles.activeTestingFeatures && this.collectibles.userCollectibles ? html`
+                        <section class="collectibles">
+                            ${repeat(
+            this.collectibles.userCollectibles,
+            (item, index) => `${item.id}_${index}`,
+            item => html`
+                            <mooot-collectible
+                                id="collectible_${item.id}"
+                                .collectibleData=${item}
+                                ?revealed=${item.revealed}
+                            ></mooot-collectible>
+                            `
+        )}
+                            </section>    
                     `: null}
                     <div class="modal__buttons">
                         <button-mooot

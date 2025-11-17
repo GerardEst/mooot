@@ -17,6 +17,10 @@ export interface CollectibleInterface {
     rarity: number,
     image_tag: string,
 }
+export interface CollectibleInterfaceFront extends CollectibleInterface {
+    revealed: boolean
+}
+
 
 export class CollectiblesController implements ReactiveController {
     host: ReactiveControllerHost;
@@ -32,7 +36,7 @@ export class CollectiblesController implements ReactiveController {
         [0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0]
     ]
-    userCollectibles: CollectibleInterface[] = []
+    userCollectibles: CollectibleInterfaceFront[] = []
 
     constructor(host: ReactiveControllerHost) {
         (this.host = host).addController(this);
@@ -101,7 +105,7 @@ export class CollectiblesController implements ReactiveController {
 
             if (error) throw error
 
-            this.userCollectibles = data as unknown as CollectibleInterface[]
+            this.userCollectibles = data as unknown as CollectibleInterfaceFront[]
             saveCollectiblesToLocalStorage(this.userCollectibles)
 
             this.host.requestUpdate()

@@ -83,7 +83,7 @@ export const modalStyles = css`
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 10px;
+        gap: 20px;
         padding: var(--spacing);
     }
 
