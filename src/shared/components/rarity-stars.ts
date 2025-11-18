@@ -8,9 +8,15 @@ export class RarityStars extends LitElement {
     static styles = [
         global,
         css`
+            :host{
+                width: 100%
+            }
             .rarityStars{
                 display: flex;
                 gap: 10px;
+                background-color: white;
+                border-radius: 20px;
+                justify-content: center;
             }
             .icon{
                 width:30px;

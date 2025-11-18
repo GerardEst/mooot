@@ -42,9 +42,10 @@ export class Collectible extends LitElement {
                 justify-content: flex-end;
                 box-sizing: border-box;
                 padding: 10px;
+                gap: 5px;
                 .image{
                     position: absolute;
-                    top: -40px;
+                    top: -50px;
                     left: 5%;
                     width: 90%;
 
@@ -62,17 +63,6 @@ export class Collectible extends LitElement {
                     //transform: translateY(5px) scale(0.98);
                     opacity: 0;
                 }
-                .rarity{
-                    background-color: white;
-                    border-radius: 20px;
-                    
-                    transition: 1s ease-in-out 100ms;
-                    // transform: translateY(5px) scale(0.98);
-                    opacity: 0;
-                    p{
-                        transform: scale(1.3)
-                    }
-                }
                 &.revealed{
                     & .image{
                         opacity: 1;
@@ -80,11 +70,6 @@ export class Collectible extends LitElement {
                     }
 
                     & .name{
-                        opacity: 1;
-                        transform: translateY(0) scale(1);
-                    }
-
-                    & .rarity{
                         opacity: 1;
                         transform: translateY(0) scale(1);
                     }
@@ -110,9 +95,7 @@ export class Collectible extends LitElement {
                 <div class="name">
                     <p>${this.collectibleData?.name}</p>
                 </div>
-                <div class="rarity">
-                    <rarity-stars rarity=${this.collectibleData?.rarity || 1}></rarity-stars>
-                </div>
+                <rarity-stars rarity=${this.collectibleData?.rarity || 1}></rarity-stars>
             </div>
         `
     }
