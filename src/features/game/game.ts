@@ -348,8 +348,10 @@ export class MoootJocGame extends LitElement {
         const cell = (this.renderRoot as ShadowRoot).getElementById(
             `l${row}_${col}`
         ) as HTMLElement | null
-        if (!cell) return
-        if (text !== undefined) cell.textContent = text
+        const cellText = cell?.querySelector('p')
+        if (!cell || !cellText) return
+
+        if (text !== undefined) cellText.textContent = text
         if (status) cell.classList.add(status)
     }
 
@@ -424,10 +426,13 @@ export class MoootJocGame extends LitElement {
                             id="${`l${rowIndex + 1}_${cellIndex + 1}`}"
                             class="
                                 wordgrid__cell 
-                                ${this.selectedCell?.row === rowIndex + 1 && this.selectedCell.col === cellIndex + 1 ? 'selected' : ''} 
-                                ${(this.collectibles.activeTestingFeatures && this.collectibles.collectiblesMatrix[rowIndex][cellIndex]) ? 'collectible collectible_' + this.collectibles.collectiblesMatrix[rowIndex][cellIndex] : ''}"
+                                ${this.selectedCell?.row === rowIndex + 1 && this.selectedCell.col === cellIndex + 1 ? 'selected' : ''} "
                             @click="${() => this.onCellClick(rowIndex + 1, cellIndex + 1)}"
-                        ></div>`
+                        >
+                            ${(this.collectibles.activeTestingFeatures && this.collectibles.collectiblesMatrix[rowIndex][cellIndex]) ? html`
+                                <div class="collectible collectible_${this.collectibles.collectiblesMatrix[rowIndex][cellIndex]}"></div>` : ''}
+                                <p></p>
+                        </div>`
         )}
                     </div>`
         )}

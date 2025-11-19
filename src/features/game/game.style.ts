@@ -30,8 +30,15 @@ export const game = css`
         box-sizing: border-box;
         color: #717171;
         padding-top: 3px;
-        &.collectible{
-            background: #ededed url('/assets/icons/collectible_present.svg') no-repeat center/30px;
+        & .collectible{
+            width: 100%;
+            height: 100%;
+            opacity: 0.8;
+            background: url('/assets/icons/collectible_present.svg') no-repeat center/30px;
+        }
+        & p{
+            position: absolute;
+
         }
     }
     .wordgrid > .wordgrid__row > .wordgrid__cell.selected {
@@ -68,8 +75,8 @@ export const game = css`
         padding-bottom: 2px;
         box-shadow: inset 0 -3px #c9edc8, inset 0 5px 20px #ffffffb8;
         background-color: var(--color-green-success);
-        &.collectible{
-            background: #ededed url('/assets/present-open.svg') no-repeat center/30px;
+        & .collectible{
+            background: url('/assets/icons/collectible_present-open.svg') no-repeat center/30px;
         }
     }
     .wordgrid > .wordgrid__row > .wordgrid__cell.correct.hard-reveal {
@@ -89,6 +96,9 @@ export const game = css`
         color: #b9b9b9;
         box-shadow: inset 0px 3px 0px 0px #a9a9a9, inset 0px 5px 10px #b5b5b5;
         padding-top: 3px;
+        & .collectible{
+            opacity: 0.1;
+        }
     }
 
     /* Animations */
