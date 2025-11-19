@@ -77,9 +77,9 @@ class MenuHeader extends LitElement {
                     label="Perfil"
                 ></button-mooot>
                 <button-mooot
-                    ?selected=${this.activeMenuSection === 'leagues'}
-                    @button-click=${() => this.onClickMenuSection('leagues')}
-                    label="Lligues"
+                    ?selected=${this.activeMenuSection === 'album'}
+                    @button-click=${() => this.onClickMenuSection('album')}
+                    label="Àlbum"
                 ></button-mooot>
             </div>
         </header>`

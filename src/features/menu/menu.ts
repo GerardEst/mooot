@@ -11,7 +11,7 @@ import '@src/features/subpages/components/pages-menu'
 import '@src/shared/components/stat-display'
 import '@src/features/trophies/trophies-expositor'
 import '@src/features/menu/components/menu-stats'
-import '@src/features/menu/components/menu-leagues'
+import '@src/features/menu/components/menu-album'
 import { supalog } from '@src/core/api/logs'
 import { telegramDisableClosingOnSwipe, telegramEnableClosingOnSwipe } from '@src/core/telegram'
 
@@ -21,7 +21,7 @@ export class MoootMenu extends LitElement {
 
     @property() activeMenuSection: string = 'profile'
 
-    menuSections = ['trophies', 'profile', 'leagues']
+    menuSections = ['trophies', 'profile', 'album']
 
     // When navigating programmatically, hold the target index to avoid
     // scroll events temporarily overriding the clicked active state.
@@ -130,9 +130,9 @@ export class MoootMenu extends LitElement {
                             <menu-stats></menu-stats>
                         </div>
                     </div>
-                    <div id="menu-leagues" class="menu_section">
+                    <div id="menu-album" class="menu_section">
                         <div class="menu_section_content">
-                            <menu-leagues></menu-leagues>
+                            <menu-album></menu-album>
                         </div>
                     </div>
                 </div>

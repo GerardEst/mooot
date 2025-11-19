@@ -1,4 +1,4 @@
-import { Collectible } from '@src/features/game/services/collectibles-controller'
+import { CollectibleInterface } from '@src/features/game/services/collectibles-controller'
 import { formatTime } from './time-utils'
 
 export interface storedRow {
@@ -29,7 +29,7 @@ export function saveCollectiblesRaritiesToLocalStorage(rarities: number[]) {
     localStorage.setItem('mooot:game:rarities', JSON.stringify(rarities))
 }
 
-export function saveCollectiblesToLocalStorage(collectibles: Collectible[]) {
+export function saveCollectiblesToLocalStorage(collectibles: CollectibleInterface[]) {
     localStorage.setItem('mooot:game:collectibles', JSON.stringify(collectibles))
 }
 

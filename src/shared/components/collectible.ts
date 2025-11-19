@@ -31,6 +31,12 @@ export class Collectible extends LitElement {
                 &.revealed{
                     opacity: 1;
                 }
+                &.disabled{
+                    opacity: 0.6;
+                    background: none;
+                    border: 2px dashed var(--present-border-color);
+                    box-shadow: none;
+                }
             }
             .collectible{
                 position: relative;
@@ -74,12 +80,19 @@ export class Collectible extends LitElement {
                         transform: translateY(0) scale(1);
                     }
                 }
+                &.disabled{
+                    & .image{
+                        top: -20px;
+                        filter: brightness(0) contrast(0.1)    
+                    }
+                }
             }
         `,
     ]
 
     @property({ type: Object }) collectibleData: CollectibleInterfaceFront | null = null
     @property({ type: Boolean }) revealed = false
+    @property({ type: Boolean }) disabled = false
 
     connectedCallback(): void {
         super.connectedCallback()
@@ -87,14 +100,17 @@ export class Collectible extends LitElement {
 
     render() {
         return html`
-            <div class="background ${this.revealed ? 'revealed' : null}"></div>
-            <div class="collectible ${this.revealed ? 'revealed' : null}" @click=${() => this.revealed = true}>
+            <div class="background ${this.revealed ? 'revealed' : null} ${this.disabled ? 'disabled' : null}"></div>
+            <div class="collectible ${this.revealed ? 'revealed' : null} ${this.disabled ? 'disabled' : null}" @click=${() => this.revealed = true}>
                 <div class="image">
                     <img width="100%" src="assets/collectibles/${this.collectibleData?.image_tag}.webp">
                 </div>
-                <div class="name">
-                    <p>${this.collectibleData?.name}</p>
-                </div>
+                ${!this.disabled ? html`
+                        <div class="name">
+                            <p>${this.collectibleData?.name}</p>
+                        </div>
+                    ` : null
+            }
                 <rarity-stars rarity=${this.collectibleData?.rarity || 1}></rarity-stars>
             </div>
         `
