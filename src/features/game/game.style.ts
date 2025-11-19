@@ -31,16 +31,7 @@ export const game = css`
         color: #717171;
         padding-top: 3px;
         &.collectible{
-            background: #ededed url('/assets/present.svg') no-repeat center/30px;
-        }
-        &.collectible_1{
-            background-color: #cccccc;
-        }
-        &.collectible_2{
-            background-color: #818181;
-        }
-        &.collectible_3{
-            background-color: #444444;
+            background: #ededed url('/assets/icons/collectible_present.svg') no-repeat center/30px;
         }
     }
     .wordgrid > .wordgrid__row > .wordgrid__cell.selected {
