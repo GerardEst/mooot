@@ -3,12 +3,17 @@ import { LitElement, html, css } from 'lit'
 import { state } from 'lit/decorators.js'
 
 import '@src/shared/components/collectible'
+import { getMonthName } from '@src/shared/utils/time-utils'
 
 export class MenuAlbum extends LitElement {
     static styles = css`
         .month_collectibles{
             display: flex;
             flex-direction: column;
+        }
+        .month_name{
+            text-transform: capitalize;
+            font-weight: 900;
         }
         .month_collectibles_list{
             display: grid;
@@ -32,7 +37,7 @@ export class MenuAlbum extends LitElement {
         for (let i = 11; i <= 12; i++) {
             months.push(html`
                 <div class="month_collectibles">
-                <p>Mes ${i}</p>
+                <p class="month_name">${getMonthName(i)}</p>
                 <div class="month_collectibles_list">
                 ${this.allCollectibles
                     .filter(collectible => collectible.month === i)

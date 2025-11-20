@@ -18,3 +18,8 @@ function pad(value: number): string {
 export function getCurrentMonth(): number {
     return new Date().getMonth() + 1
 }
+
+export function getMonthName(monthNum: number): string {
+    const today = new Date()
+    return new Date(today.getFullYear(), monthNum - 1, 1).toLocaleString('ca-CA', { month: "long" })
+}
