@@ -34,25 +34,25 @@ export class Keyboard extends LitElement {
                 background-color: #f3f3f3;
                 cursor: pointer;
                 transition: background-color 0.3s ease;
-                color: var(--text-color);
+                color: var(--keyboard-text);
             }
             .keyboard > .keyboard__row > .keyboard__key.present,
             .keyboard > .keyboard__row > .keyboard__enter.present,
             .keyboard > .keyboard__row > .keyboard__back.present {
-                background-color: var(--present-color);
-                color: var(--used-text-color);
+                background-color: var(--keyboard-present);
+                color: var(--keyboard-used);
             }
             .keyboard > .keyboard__row > .keyboard__key.absent,
             .keyboard > .keyboard__row > .keyboard__enter.absent,
             .keyboard > .keyboard__row > .keyboard__back.absent {
-                background-color: var(--missing-color);
+                background-color: var(--keyboard-missing);
                 color: white;
             }
             .keyboard > .keyboard__row > .keyboard__key.correct,
             .keyboard > .keyboard__row > .keyboard__enter.correct,
             .keyboard > .keyboard__row > .keyboard__back.correct {
-                background-color: var(--correct-color);
-                color: var(--used-text-color);
+                background-color: var(--keyboard-correct);
+                color: var(--keyboard-used);
             }
             .keyboard > .keyboard__row > .keyboard__key > img,
             .keyboard > .keyboard__row > .keyboard__enter > img,

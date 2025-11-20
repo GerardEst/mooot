@@ -13,7 +13,7 @@ class MenuHeader extends LitElement {
                 position: relative;
                 display: flex;
                 flex-direction: column;
-                background: var(--present-color);
+                background: var(--keyboard-present);
                 /* background: linear-gradient(
                     157deg,
                     rgba(255, 246, 197, 1) 31%,

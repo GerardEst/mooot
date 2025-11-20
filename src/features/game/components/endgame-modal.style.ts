@@ -46,7 +46,7 @@ export const modalStyles = css`
         display: flex;
         justify-content: space-between;
         position: relative;
-        background-color: var(--present-color);
+        background-color: var(--keyboard-present);
         padding: var(--spacing);
         padding-bottom: 0.7rem;
     }
@@ -69,7 +69,7 @@ export const modalStyles = css`
         display: grid;
         gap: 0.5rem;
         grid-template-columns: 1fr 1fr;
-        background-color: var(--present-color);
+        background-color: var(--keyboard-present);
         padding: var(--spacing);
         padding-top: 0.9rem;
     }
@@ -90,15 +90,15 @@ export const modalStyles = css`
     .motbot_nextleague {
         padding: 0.5rem 0.6rem;
         border-radius: 4px;
-        border: 1px solid var(--present-border-color);
-        background-color: var(--present-color);
+        border: 1px solid var(--keyboard-border-present);
+        background-color: var(--keyboard-present);
     }
 
     .modal button,
     .modal .button {
         border: none;
         background-color: var(--button-color);
-        color: var(--text-color);
+        color: var(--keyboard-text);
         border: 1px solid var(--button-border-color);
         padding: 0.8rem 1rem;
         border-radius: 4px;
@@ -112,7 +112,7 @@ export const modalStyles = css`
     .modal button.button--danger {
         background-color: var(--button-danger-color);
         border: 1px solid var(--button-danger-border-color);
-        color: var(--text-color);
+        color: var(--keyboard-text);
     }
     .modal .button img,
     .modal button img {

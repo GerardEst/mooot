@@ -12,7 +12,7 @@ export const global = css`
 
     .smallText {
         font-size: 0.8rem;
-        color: var(--text-color);
+        color: var(--keyboard-text);
         font-style: italic;
     }
 

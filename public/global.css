@@ -1,17 +1,20 @@
 /* Make custom properties available in both document and shadow roots */
 :host,
 :root {
-  --cell: #f9f9f9;
+  --cell: #ededed;
   --cell-border: #ccc;
+  --cell-present: #e9b600;
+  --cell-absent: #b9b9b9;
+  --cell-text: #717171;
 
-  --correct-color: var(--color-green-success);
-  --correct-border-color: var(--color-green-success--border);
-  --present-color: #ffe99a;
-  --present-border-color: #fdc264;
-  --missing-color: #848484;
-  --missing-border-color: #3a3a3a;
-  --text-color: #333333;
-  --used-text-color: var(--text-color);
+  --keyboard-correct: var(--color-green-success);
+  --keyboard-border-correct: var(--color-green-success--border);
+  --keyboard-present: #ffe99a;
+  --keyboard-border-present: #fdc264;
+  --keyboard-missing: #848484;
+  --keyboard-border-missing: #3a3a3a;
+  --keyboard-text: #333333;
+  --keyboard-used: var(--keyboard-text);
 
   --color-red-warning: #ffe4e4;
   --color-red-warning--border: #ffb5b5;
@@ -28,8 +31,8 @@
   --button-color: var(--color-green-success);
   --button-border-color: var(--color-green-success--border);
 
-  --button-danger-color: var(--present-color);
-  --button-danger-border-color: var(--present-border-color);
+  --button-danger-color: var(--keyboard-present);
+  --button-danger-border-color: var(--keyboard-border-present);
   --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -86,7 +89,7 @@ a {
 
 .smallText {
   font-size: 0.8rem;
-  color: var(--text-color);
+  color: var(--keyboard-text);
   font-style: italic;
 }
 

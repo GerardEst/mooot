@@ -36,9 +36,9 @@ export class PagesHeader extends LitElement {
             align-items: center;
             gap: 8px;
             padding: 4px 12px;
-            border: 1px solid var(--present-border-color);
+            border: 1px solid var(--keyboard-border-present);
             border-radius: 8px;
-            color: var(--present-border-color);
+            color: var(--keyboard-border-present);
             text-decoration: none;
             background: white;
         }

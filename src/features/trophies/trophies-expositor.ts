@@ -21,7 +21,7 @@ export class TrophiesExpositor extends LitElement {
                 padding: 15px;
                 border-radius: 14px;
                 width: 100%;
-                background-color: var(--present-color);
+                background-color: var(--keyboard-present);
                 box-shadow: inset 0 0 3px 4px #00000017;
                 &:before {
                     content: '';

@@ -23,7 +23,7 @@ export class Collectible extends LitElement {
                 width: 100%;
                 height: 100%;
                 border-radius: 10px;
-                box-shadow: 3px 3px 0 0 var(--present-border-color);
+                box-shadow: 3px 3px 0 0 var(--keyboard-border-present);
                 overflow: hidden;
 
                 transition: opacity 1s ease-in-out;
@@ -34,7 +34,7 @@ export class Collectible extends LitElement {
                 &.disabled{
                     opacity: 0.6;
                     background: none;
-                    border: 2px dashed var(--present-border-color);
+                    border: 2px dashed var(--keyboard-border-present);
                     box-shadow: none;
                 }
             }

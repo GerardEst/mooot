@@ -27,7 +27,7 @@ export class PagesMenu extends LitElement {
             margin: auto;
         }
         a {
-            color: var(--present-border-color);
+            color: var(--keyboard-border-present);
         }
         a:hover {
             text-decoration: underline;

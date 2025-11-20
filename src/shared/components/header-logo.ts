@@ -19,10 +19,10 @@ export class MoootHeaderLogo extends LitElement {
                 display: grid;
                 place-content: center;
                 font-size: 0.8rem;
-                color: var(--text-color);
+                color: var(--keyboard-text);
                 font-family: 'Jua';
 
-                background-color: var(--present-color);
+                background-color: var(--keyboard-present);
                 box-sizing: border-box;
                 color: #e9b600;
                 box-shadow: inset 0px -2px 0px 0px #e9b600;

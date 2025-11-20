@@ -211,7 +211,7 @@ export class MoootJocGame extends LitElement {
         this.updateCell(
             this.gameState.currentRow,
             this.gameState.currentColumn,
-            ' '
+            ''
         )
         this.recomputeCurrentWordFromRow(this.gameState.currentRow)
     }
@@ -429,9 +429,10 @@ export class MoootJocGame extends LitElement {
                                 ${this.selectedCell?.row === rowIndex + 1 && this.selectedCell.col === cellIndex + 1 ? 'selected' : ''} "
                             @click="${() => this.onCellClick(rowIndex + 1, cellIndex + 1)}"
                         >
+                            <p></p>
                             ${(this.collectibles.activeTestingFeatures && this.collectibles.collectiblesMatrix[rowIndex][cellIndex]) ? html`
+                               
                                 <div class="collectible collectible_${this.collectibles.collectiblesMatrix[rowIndex][cellIndex]}"></div>` : ''}
-                                <p></p>
                         </div>`
         )}
                     </div>`

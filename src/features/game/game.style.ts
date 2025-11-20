@@ -1,7 +1,6 @@
 import { css } from 'lit'
 
 export const game = css`
-    /* Word grid */
     .wordgrid {
         --spacing: 10px;
         flex: 1;
@@ -23,97 +22,71 @@ export const game = css`
         align-items: center;
         justify-content: center;
         font-size: 1.3rem;
-        overflow: hidden;
         position: relative;
         font-family: 'jua';
-        background-color: #ededed;
+        background-color: var(--cell);
         box-sizing: border-box;
-        color: #717171;
+        color: var(--cell-text);
         padding-top: 3px;
+        & p{
+            position: absolute;
+        }
         & .collectible{
             width: 100%;
             height: 100%;
             opacity: 0.8;
             background: url('/assets/icons/collectible_present.svg') no-repeat center/30px;
+            transition: 300ms cubic-bezier(0.510, -0.375, 0.180, 1.270);
+            transform: translateY(-2px)
         }
-        & p{
-            position: absolute;
-
+        & p:not(:empty) ~ .collectible{
+            background: url('/assets/icons/collectible_present.svg') no-repeat left top/20px;
+            transform: translateY(-4px) translateX(-3px) rotate(8deg);
         }
-    }
-    .wordgrid > .wordgrid__row > .wordgrid__cell.selected {
-        box-shadow: inset 0 0 10px 2px #898989;
-        background-color: #d3d3d3;
-    }
-    .wordgrid > .wordgrid__row > .wordgrid__cell::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background-color: var(--cell);
-        opacity: 0;
-        border-radius: 4px;
-        will-change: opacity, border-radius;
-        pointer-events: none;
-        border-radius: 3px;
-        outline: 1px solid var(--cell-border);
-    }
-    .wordgrid > .wordgrid__row > .wordgrid__cell.soft-reveal {
-        animation: cell-scale-pop 400ms var(--ease-smooth) both;
-    }
-    .wordgrid > .wordgrid__row > .wordgrid__cell.hard-reveal {
-        animation: cell-scale-big-pop 600ms var(--ease-smooth) both;
-    }
-    .wordgrid > .wordgrid__row > .wordgrid__cell.soft-reveal::after {
-        animation: cell-overlay-fade 400ms var(--ease-smooth) both;
-    }
-    .wordgrid > .wordgrid__row > .wordgrid__cell.hard-reveal::after {
-        animation: cell-overlay-fade 600ms var(--ease-smooth) both;
-    }
-    .wordgrid > .wordgrid__row > .wordgrid__cell.correct {
-        color: #4d684a;
-        box-sizing: border-box;
-        padding-bottom: 2px;
-        box-shadow: inset 0 -3px #c9edc8, inset 0 5px 20px #ffffffb8;
-        background-color: var(--color-green-success);
-        & .collectible{
-            background: url('/assets/icons/collectible_present-open.svg') no-repeat center/30px;
+        &.selected{
+            box-shadow: inset 0 0 10px 2px #898989;
+            background-color: #d3d3d3;
         }
-    }
-    .wordgrid > .wordgrid__row > .wordgrid__cell.correct.hard-reveal {
-        animation: cell-scale-big-pop 600ms var(--ease-smooth) both,
-            success-shine 600ms var(--ease-smooth) both;
-    }
-    .wordgrid > .wordgrid__row > .wordgrid__cell.present {
-        background-color: var(--present-color);
-        box-sizing: border-box;
-        color: #e9b600;
-        box-shadow: inset 0px -3px 0px 0px #e9b600, inset 0 5px 20px #ffffffb8;
-        padding-bottom: 2px;
-    }
-    .wordgrid > .wordgrid__row > .wordgrid__cell.absent {
-        background-color: #e1dede;
-        box-sizing: border-box;
-        color: #b9b9b9;
-        box-shadow: inset 0px 3px 0px 0px #a9a9a9, inset 0px 5px 10px #b5b5b5;
-        padding-top: 3px;
-        & .collectible{
-            opacity: 0.1;
+        &.soft-reveal {
+            animation: cell-scale-pop 400ms var(--ease-smooth) both;
+        }
+        &.hard-reveal {
+            animation: cell-scale-big-pop 600ms var(--ease-smooth) both;
+        }
+        &.correct {
+            color: #4d684a;
+            box-sizing: border-box;
+            padding-bottom: 2px;
+            box-shadow: inset 0 -3px #c9edc8, inset 0 5px 20px #ffffffb8;
+            background-color: var(--color-green-success);
+            & .collectible{
+               background: url('/assets/icons/collectible_present-open.svg') no-repeat left top/20px !important;
+            }
+        }
+        &.correct.hard-reveal {
+            animation: cell-scale-big-pop 600ms var(--ease-smooth) both,
+                success-shine 600ms var(--ease-smooth) both;
+        }
+        &.present {
+            background-color: var(--keyboard-present);
+            box-sizing: border-box;
+            color: var(--cell-present);
+            box-shadow: inset 0px -3px 0px 0px var(--cell-present), inset 0 5px 20px #ffffffb8;
+            padding-bottom: 2px;
+        }
+        &.absent {
+            background-color: #e1dede;
+            box-sizing: border-box;
+            color: var(--cell-absent);
+            box-shadow: inset 0px 3px 0px 0px var(--cell-absent), inset 0px 5px 10px #b5b5b5;
+            padding-top: 3px;
+            & .collectible{
+                filter: grayscale(1);
+            }
         }
     }
 
     /* Animations */
-    @keyframes cell-overlay-fade {
-        0% {
-            opacity: 1;
-        }
-        60% {
-            opacity: 0.2;
-        }
-        100% {
-            opacity: 0;
-        }
-    }
-
     @keyframes cell-scale-pop {
         0% {
             border-radius: 4px;
