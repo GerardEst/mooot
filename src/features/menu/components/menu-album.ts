@@ -12,9 +12,9 @@ export class MenuAlbum extends LitElement {
         }
         .month_collectibles_list{
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
             grid-template-rows: auto;
-            gap: 20px;
+            gap: 30px 15px;
         }
     `
     @state() allCollectibles = []

@@ -12,9 +12,7 @@ export class Collectible extends LitElement {
         css`
             :host{
                 position: relative;
-                perspective: 100px;
-                width: 100px;
-                height: 120px;
+                max-width: 100px;
             }
             .background{
                 position: absolute;
@@ -50,13 +48,11 @@ export class Collectible extends LitElement {
                 padding: 10px;
                 gap: 5px;
                 .image{
-                    position: absolute;
-                    top: -50px;
-                    left: 5%;
                     width: 90%;
+                    height: 50px;
 
                     transition: 500ms cubic-bezier(0.850, 0.185, 0.105, 1.365) 500ms;
-                    transform: translateY(10px) scale(0.9);
+                    transform: translateY(-20px) scale(0.9);
                     opacity: 0;
                 }
                 .name{
@@ -66,13 +62,12 @@ export class Collectible extends LitElement {
                     font-weight: 700;
                     
                     transition: 1s ease-out 300ms;
-                    //transform: translateY(5px) scale(0.98);
                     opacity: 0;
                 }
                 &.revealed{
                     & .image{
                         opacity: 1;
-                        transform: translateY(0) scale(1);
+                        transform: translateY(-30px) scale(1);
                     }
 
                     & .name{
@@ -82,7 +77,6 @@ export class Collectible extends LitElement {
                 }
                 &.disabled{
                     & .image{
-                        top: -20px;
                         filter: brightness(0) contrast(0.1)    
                     }
                 }
