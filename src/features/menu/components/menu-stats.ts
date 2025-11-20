@@ -1,6 +1,7 @@
 import { LitElement, html, css } from 'lit'
 import { global } from '@src/core/app-reset-styles'
 import '@src/shared/components/stat-display'
+import '@src/shared/components/callout-creategroups'
 
 export class MenuStats extends LitElement {
     static styles = [
@@ -30,6 +31,7 @@ export class MenuStats extends LitElement {
             ></stat-display>
             <stat-display key="streak" name="Ratxa actual"></stat-display>
             <stat-display key="maxStreak" name="Ratxa màxima"></stat-display>
+            <callout-creategroups></callout-creategroups>
         </div>`
     }
 }

@@ -42,7 +42,7 @@ class CalloutCreategroups extends LitElement {
                         >Psst, ${this.userName}, vols crear una lliga amb altra
                         gent?</strong
                     ><br />
-                    <i>Crea un grup de Telegram, afegeix els teus amics i a mooot_cat_bot, i a jugar</i>
+                    <i>Crea un grup de Telegram, afegeix els teus amics i a @mooot_cat_bot</i>
                 </p>
                 <div class="callout_buttons">
                     <button-mooot

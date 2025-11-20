@@ -6,7 +6,6 @@ import { global } from '@src/core/app-reset-styles'
 
 import '@src/shared/components/divider'
 import '@src/features/menu/components/menu-header'
-import '@src/shared/components/callout-creategroups'
 import '@src/features/subpages/components/pages-menu'
 import '@src/shared/components/stat-display'
 import '@src/features/trophies/trophies-expositor'
@@ -137,7 +136,6 @@ export class MoootMenu extends LitElement {
                     </div>
                 </div>
                 <div class="menu_footer">
-                    <callout-creategroups></callout-creategroups>
                     <pages-menu></pages-menu>
                 </div>
             </section>

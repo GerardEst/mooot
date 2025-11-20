@@ -56,9 +56,10 @@ export const menu = css`
             display: flex;
             flex-direction: column;
             gap: 16px;
-            padding: 16px 10px;
+            padding: 8px 10px;
             width: 100%;
             box-sizing: border-box;
+            background-color: white;
         }
     }
     .motbot_trophies {
