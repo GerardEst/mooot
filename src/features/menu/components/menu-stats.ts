@@ -11,11 +11,16 @@ export class MenuStats extends LitElement {
                 display: flex;
                 flex-direction: column;
                 gap: 2rem;
+                height: 100%;
             }
             div {
+                flex: 1;
                 display: flex;
                 flex-direction: column;
                 gap: 0.8rem;
+            }
+            callout-creategroups{
+                margin-top: auto;
             }
         `,
     ]

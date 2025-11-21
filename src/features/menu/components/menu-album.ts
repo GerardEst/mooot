@@ -14,13 +14,16 @@ export class MenuAlbum extends LitElement {
             height: 100%;
             padding: 3px; // Perquè es vegin les sombres de les cartes de l'última columna
         }
-        .month_collectibles{
+        .month_collectibles:not(:first-child){
             display: flex;
             flex-direction: column;
+            margin-top: 50px;
         }
         .month_name{
             text-transform: capitalize;
             font-weight: 900;
+            font-size: 1.2rem;
+            margin: 0;
         }
         .month_collectibles_list{
             display: grid;
