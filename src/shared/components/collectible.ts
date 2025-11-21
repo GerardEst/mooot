@@ -1,7 +1,7 @@
 import { LitElement, css, html } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { global } from '@src/core/app-reset-styles'
-import { CollectibleInterfaceFront } from '@src/features/game/services/collectibles-controller'
+import { CollectibleInterface, CollectibleInterfaceFront } from '@src/features/game/services/collectibles-controller'
 
 import '@src/shared/components/rarity-stars'
 
@@ -85,7 +85,7 @@ export class Collectible extends LitElement {
         `,
     ]
 
-    @property({ type: Object }) collectibleData: CollectibleInterfaceFront | null = null
+    @property({ type: Object }) collectibleData: CollectibleInterfaceFront | CollectibleInterface | null = null
     @property({ type: Boolean }) revealed = false
     @property({ type: Boolean }) disabled = false
 

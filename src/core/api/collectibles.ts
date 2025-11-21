@@ -19,7 +19,7 @@ export async function saveUserCollectible(collectibleId: number) {
     }
 }
 
-export async function getUserCollectibles() {
+export async function getUserCollectiblesIds() {
     const userId = getUserId()
 
     try {

@@ -1,9 +1,10 @@
-import { getAllCollectibles, getUserCollectibles } from '@src/core/api/collectibles'
+import { getAllCollectibles, getUserCollectiblesIds } from '@src/core/api/collectibles'
 import { LitElement, html, css } from 'lit'
 import { state } from 'lit/decorators.js'
 
 import '@src/shared/components/collectible'
 import { getMonthName } from '@src/shared/utils/time-utils'
+import { CollectibleInterface } from '@src/features/game/services/collectibles-controller'
 
 export class MenuAlbum extends LitElement {
     static styles = css`
@@ -32,14 +33,14 @@ export class MenuAlbum extends LitElement {
             gap: 30px 15px;
         }
     `
-    @state() allCollectibles = []
-    @state() userCollectibles = []
+    @state() allCollectibles: CollectibleInterface[] | undefined = []
+    @state() userCollectiblesIds: number[] | undefined = []
 
     async connectedCallback(): Promise<void> {
         super.connectedCallback()
 
         this.allCollectibles = await getAllCollectibles()
-        this.userCollectibles = await getUserCollectibles()
+        this.userCollectiblesIds = await getUserCollectiblesIds()
     }
 
     render() {
@@ -49,13 +50,12 @@ export class MenuAlbum extends LitElement {
                 <div class="month_collectibles">
                 <p class="month_name">${getMonthName(i)}</p>
                 <div class="month_collectibles_list">
-                ${this.allCollectibles
-                    .filter(collectible => collectible.month === i)
+                ${this.allCollectibles?.filter(collectible => collectible.month === i)
                     .map(collectible => html`
                         <mooot-collectible 
                             .collectibleData=${collectible} 
                             ?revealed=${true} 
-                            ?disabled=${!this.userCollectibles.includes(collectible.id)}>
+                            ?disabled=${!this.userCollectiblesIds?.includes(collectible.id)}>
                         </mooot-collectible>
                     `)
                 }
