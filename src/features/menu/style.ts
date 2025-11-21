@@ -10,7 +10,6 @@ export const menu = css`
         width: 100%;
         height: calc(100% - 1px);
         background-color: white;
-        timeline-scope: --menu-x;
         &.active {
             display: flex;
         }
@@ -18,12 +17,9 @@ export const menu = css`
             flex: 1;
             display: flex;
             overflow-x: auto;
-            min-height: calc(100% + -60px);
             scroll-snap-type: x mandatory;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
-            scroll-timeline-name: --menu-x;
-            scroll-timeline-axis: inline;
             /* Hide scrollbar across browsers */
             scrollbar-width: none; /* Firefox */
             -ms-overflow-style: none; /* IE 10+ */
@@ -51,8 +47,6 @@ export const menu = css`
             }
         }
         & .menu_footer {
-            position: absolute;
-            bottom: 0;
             display: flex;
             flex-direction: column;
             gap: 16px;
@@ -71,64 +65,6 @@ export const menu = css`
             flex: 1;
             flex-direction: column;
             gap: 0.4rem;
-        }
-    }
-
-    @keyframes amplify-height {
-        from {
-            transform: translateY(0);
-            /* min-height: 0; */
-        }
-        to {
-            transform: translateY(-75px);
-            /* min-height: 100%; */
-        }
-    }
-
-    @keyframes hide-header {
-        from {
-            transform: translateY(0);
-        }
-        to {
-            transform: translateY(-75px);
-        }
-    }
-    @keyframes hide-footer {
-        from {
-            transform: translateY(0);
-        }
-        to {
-            transform: translateY(182px);
-        }
-    }
-
-    @supports (animation-timeline: --foo) and (scroll-timeline-name: --bar) {
-        .menu menu-header {
-            animation-name: hide-header;
-            animation-duration: 1s;
-            animation-direction: reverse;
-            animation-timing-function: linear;
-            animation-fill-mode: both;
-            animation-timeline: --menu-x;
-            animation-range: 0% 50%;
-        }
-        .menu .menu_footer {
-            animation-name: hide-footer;
-            animation-duration: 1s;
-            animation-timing-function: linear;
-            animation-direction: reverse;
-            animation-fill-mode: both;
-            animation-timeline: --menu-x;
-            animation-range: 0% 50%;
-        }
-        .menu_content {
-            animation-name: amplify-height;
-            animation-duration: 1s;
-            animation-timing-function: linear;
-            animation-direction: reverse;
-            animation-fill-mode: both;
-            animation-timeline: --menu-x;
-            animation-range: 0% 50%;
         }
     }
 `

@@ -23,6 +23,7 @@ export class Collectible extends LitElement {
                 border-radius: 10px;
                 box-shadow: 3px 3px 0 0 var(--keyboard-border-present);
                 overflow: hidden;
+                box-sizing: border-box;
 
                 transition: opacity 1s ease-in-out;
                 opacity: 0;

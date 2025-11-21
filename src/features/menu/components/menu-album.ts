@@ -7,6 +7,13 @@ import { getMonthName } from '@src/shared/utils/time-utils'
 
 export class MenuAlbum extends LitElement {
     static styles = css`
+        .album{
+            display: flex;
+            flex-direction: column;
+            overflow: auto;
+            height: 100%;
+            padding: 3px; // Perquè es vegin les sombres de les cartes de l'última columna
+        }
         .month_collectibles{
             display: flex;
             flex-direction: column;
@@ -49,11 +56,12 @@ export class MenuAlbum extends LitElement {
                         </mooot-collectible>
                     `)
                 }
-            </div>    
-            </div>
+                </div>    
+                </div>
             `)
         }
-        return html`${months}`
+        return html`
+            <div class="album">${months}</div>`
     }
 }
 
