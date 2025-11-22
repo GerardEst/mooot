@@ -17,7 +17,7 @@ export const modalStyles = css`
         padding: 20px;
         box-sizing: border-box;
         h2 {
-            color: #7f6300;
+            color: var(--text-dark);
         }
     }
     .modal.active {

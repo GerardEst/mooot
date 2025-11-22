@@ -18,7 +18,7 @@ class CalloutCreategroups extends LitElement {
                 border-radius: 5px;
                 padding: 15px;
                 p {
-                    color: rgb(127 99 0);
+                    color: var(--text-dark);
                     font-size: 0.8rem;
                 }
                 .callout_buttons {

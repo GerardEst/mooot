@@ -25,6 +25,7 @@ export class MenuAlbum extends LitElement {
             font-weight: 900;
             font-size: 1.2rem;
             margin: 0;
+            color: var(--text-dark);
         }
         .month_collectibles_list{
             display: grid;

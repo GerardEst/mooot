@@ -34,6 +34,8 @@
   --button-danger-color: var(--keyboard-present);
   --button-danger-border-color: var(--keyboard-border-present);
   --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --text-dark: rgb(127 99 0);
 }
 
 html,

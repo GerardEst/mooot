@@ -61,6 +61,7 @@ export class Collectible extends LitElement {
                     text-align: center;
                     line-height: 1.3;
                     font-weight: 700;
+                    color: var(--text-dark);
                     
                     transition: 1s ease-out 300ms;
                     opacity: 0;

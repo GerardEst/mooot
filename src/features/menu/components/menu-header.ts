@@ -23,7 +23,7 @@ class MenuHeader extends LitElement {
                 padding-bottom: 12px;
                 gap: var(--spacing);
                 h4 {
-                    color: rgb(127 99 0);
+                    color: var(--text-dark);
                 }
                 & .sections {
                     display: flex;
