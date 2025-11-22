@@ -19,11 +19,12 @@ export class EndgameModalCollectibles extends LitElement {
                 position: absolute;
                 bottom: 40px;
                 left: 50%;
-                transform: translateX(-50%);
+                transform: translateX(-70%) scale(0);
                 opacity: 0;
-                transition: opacity 1s;
+                transition: 200ms;
                 &.revealed{
                     opacity: 1;
+                    transform: translateX(-60%) scale(1);
                 }
             }
            .collectibles{
@@ -48,36 +49,18 @@ export class EndgameModalCollectibles extends LitElement {
         `,
     ]
 
-    /** Esta apunt per currarnos una aparició més guai de tot. Primer els regals, després els sobres de cada un.
-     * El dubte  que queda és, fem aquesta aparició aquí mateix o dins el component del collectible? 
-     * Potser simplement animar aquí el que seria el conteinidor, es a dir la carta en si, i al component tot lo de dins.
-     * Aqui el zoom i lo que sigui, al component la imatge, les estrelles...
-     * 
-     * Lo increible ja seria que gemini em fes una animació de com apareixen, i que al pitjar s'activi l'animació també
-     */
-    @property({ type: Array }) collectibles: CollectibleInterfaceFront[] = [{
-        id: 20,
-        image_tag: "neules",
-        month: 11,
-        name: "Coleccionable 5", rarity: 1,
-        revealed: false
-    }, {
-        id: 20,
-        image_tag: "neules",
-        month: 11,
-        name: "Coleccionable 5", rarity: 1,
-        revealed: false
-    }]
-    @state() collectiblesContainers: any[] = this.collectibles.map(collectible => {
-        return { revealed: false }
-    })
+    @property({ type: Array }) collectibles: CollectibleInterfaceFront[] = []
+    @state() collectiblesContainers: any[] = []
 
     connectedCallback(): void {
         super.connectedCallback()
 
-        setTimeout(() => {
-            this.revealCollectiblesContainers()
-        }, 100)
+        this.collectiblesContainers = this.collectibles.map(collectible => {
+            return { revealed: false }
+        })
+
+
+        this.revealCollectiblesContainers()
 
         // Revelar coleccionables després d'un moment, perquè tingui temps
         // de donar a entendre que venen dels regals aconseguits
@@ -91,7 +74,7 @@ export class EndgameModalCollectibles extends LitElement {
             setTimeout(() => {
                 this.collectiblesContainers[i - 1].revealed = true
                 this.requestUpdate()
-            }, 500 * i)
+            }, 200 * i)
         }
     }
 
