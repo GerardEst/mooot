@@ -65,6 +65,10 @@ export class Collectible extends LitElement {
                     transition: 1s ease-out 300ms;
                     opacity: 0;
                 }
+                & rarity-stars{
+                    transition: 1s ease-out 300ms;
+                    opacity: 0;
+                }
                 &.revealed{
                     & .image{
                         opacity: 1;
@@ -72,6 +76,10 @@ export class Collectible extends LitElement {
                     }
 
                     & .name{
+                        opacity: 1;
+                        transform: translateY(0) scale(1);
+                    }
+                    & rarity-stars{
                         opacity: 1;
                         transform: translateY(0) scale(1);
                     }

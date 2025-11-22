@@ -8,7 +8,7 @@ import { global } from '@src/core/app-reset-styles'
 
 import '@src/shared/components/button-mooot'
 import '@src/shared/components/stat-display'
-import '@src/shared/components/collectible'
+import '@src/features/game/components/endgame-modal-collectibles'
 
 import { CollectiblesController } from '../services/collectibles-controller'
 import { repeat } from 'lit/directives/repeat.js'
@@ -33,7 +33,7 @@ export class MoootEndgameModal extends LitElement {
 
     firstUpdated() {
         this.fillStats()
-        this.loadCollectibles()
+        this.collectibles.grantCollectiblesToUser()
     }
     private async fillStats() {
         this.word = (await words.getTodayNiceWord()) || ''
@@ -46,15 +46,8 @@ export class MoootEndgameModal extends LitElement {
             this.modalTitle = this.computeTitle(Number(this.points))
         }
         if (changed.has('active') && this.active && this.collectibles.activeTestingFeatures) {
-            this.loadCollectibles()
+            this.collectibles.grantCollectiblesToUser()
         }
-    }
-
-    async loadCollectibles() {
-        // Primer ens assegurem que els coleccionables estan carregats al controlador
-        await this.collectibles.grantCollectiblesToUser()
-        this.revealCollectibles()
-
     }
 
     private computeTitle(points: number) {
@@ -75,15 +68,6 @@ export class MoootEndgameModal extends LitElement {
 
     private buildDicUrl(word: string) {
         return `https://dlc.iec.cat/Results?DecEntradaText=${word}&AllInfoMorf=False&OperEntrada=0&OperDef=0&OperEx=0&OperSubEntrada=0&OperAreaTematica=0&InfoMorfType=0&OperCatGram=False&AccentSen=False&CurrentPage=0&refineSearch=0&Actualitzacions=False`
-    }
-
-    private revealCollectibles() {
-        for (let i = 1; i <= this.collectibles.userCollectibles?.length; i++) {
-            setTimeout(() => {
-                this.collectibles.userCollectibles[i - 1].revealed = true
-                this.requestUpdate()
-            }, 500 * i)
-        }
     }
 
     private onModalCloseClick = () => {
@@ -167,43 +151,35 @@ export class MoootEndgameModal extends LitElement {
                                 <p><span id="stats-time">${this.time}</span></p>
                             </div>
                         </div>
-                        <div class="stats">
-                            <stat-display
-                                key="games"
-                                name="Partides jugades"
-                            ></stat-display>
-                            <stat-display
-                                key="totalPoints"
-                                name="Punts totals"
-                            ></stat-display>
-                            <stat-display
-                                key="averagePoints"
-                                name="Mitjana de punts"
-                            ></stat-display>
-                            <stat-display
-                                key="streak"
-                                name="Ratxa actual"
-                            ></stat-display>
-                            <stat-display
-                                key="maxStreak"
-                                name="Ratxa màxima"
-                            ></stat-display>
-                        </div>
+                        ${!this.collectibles.activeTestingFeatures ? html`
+                            <div class="stats">
+                                <stat-display
+                                    key="games"
+                                    name="Partides jugades"
+                                ></stat-display>
+                                <stat-display
+                                    key="totalPoints"
+                                    name="Punts totals"
+                                ></stat-display>
+                                <stat-display
+                                    key="averagePoints"
+                                    name="Mitjana de punts"
+                                ></stat-display>
+                                <stat-display
+                                    key="streak"
+                                    name="Ratxa actual"
+                                ></stat-display>
+                                <stat-display
+                                    key="maxStreak"
+                                    name="Ratxa màxima"
+                                ></stat-display>
+                            </div>
+                            ` : null}
                     </section>
                     ${this.collectibles.activeTestingFeatures && this.collectibles.userCollectibles ? html`
                         <section class="collectibles">
-                            ${repeat(
-            this.collectibles.userCollectibles,
-            (item, index) => `${item.id}_${index}`,
-            item => html`
-                            <mooot-collectible
-                                id="collectible_${item.id}"
-                                .collectibleData=${item}
-                                ?revealed=${item.revealed}
-                            ></mooot-collectible>
-                            `
-        )}
-                            </section>    
+                            <endgame-modal-collectibles .collectibles=${this.collectibles.userCollectibles}></endgame-modal-collectibles>
+                        </section>    
                     `: null}
                     <div class="modal__buttons">
                         <button-mooot
